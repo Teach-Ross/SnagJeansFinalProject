@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.test.model.JeanTemplateEntity" table="JeanTemplate" schema="Denim_Store_DB">
+        <id name="templateId">
+            <column name="TemplateID" sql-type="int(11)"/>
+        </id>
+        <property name="jeanStyle">
+            <column name="JeanStyle" sql-type="varchar(12)" length="12"/>
+        </property>
+        <property name="color">
+            <column name="Color" sql-type="varchar(7)" length="7"/>
+        </property>
+        <property name="templateName">
+            <column name="TemplateName" sql-type="varchar(55)" length="55"/>
+        </property>
+        <property name="distressed">
+            <column name="Distressed" sql-type="tinyint(1)"/>
+        </property>
+        <property name="cropped">
+            <column name="Cropped" sql-type="tinyint(1)"/>
+        </property>
+        <property name="waistSize">
+            <column name="WaistSize" sql-type="int(11)"/>
+        </property>
+        <property name="inseamLength">
+            <column name="InseamLength" sql-type="int(11)"/>
+        </property>
+        <property name="price">
+            <column name="Price" sql-type="decimal(5,2)" precision="5" scale="2"/>
+        </property>
+    </class>
+</hibernate-mapping>

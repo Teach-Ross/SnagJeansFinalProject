@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.test.model.UserEntity" table="User" schema="Denim_Store_DB">
+        <id name="userId">
+            <column name="UserId" sql-type="int(11)"/>
+        </id>
+        <property name="name">
+            <column name="Name" sql-type="varchar(25)" length="25"/>
+        </property>
+        <property name="address">
+            <column name="Address" sql-type="varchar(55)" length="55" not-null="true"/>
+        </property>
+        <property name="city">
+            <column name="City" sql-type="varchar(25)" length="25" not-null="true"/>
+        </property>
+        <property name="state">
+            <column name="State" sql-type="varchar(2)" length="2" not-null="true"/>
+        </property>
+        <property name="zip">
+            <column name="Zip" sql-type="varchar(10)" length="10" not-null="true"/>
+        </property>
+    </class>
+</hibernate-mapping>
