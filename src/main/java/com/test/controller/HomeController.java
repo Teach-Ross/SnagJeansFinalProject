@@ -66,6 +66,25 @@ public class HomeController {
 
     }
 
+    //Create UserEntity and insert into database
+    @RequestMapping("welcomeNew")
+
+    public String welcomeNew(){
+        return "welcomeNew";
+    }
+    //asks user if they would like to create blank template or build template from inspiration
+    @RequestMapping("newTemplate")
+    public String newTemplate(){
+        return "newTemplate";
+    }
+
+    //pulls users old templates from database, allows user to select one to edit
+    @RequestMapping("editTemplate")
+    public String editTemplate(){
+        return "editTemplate";
+    }
+
+    @RequestMapping("build")
     public String jeansImages(Model model)
     {
         //used to generate random offset for search query and to generate random product index
