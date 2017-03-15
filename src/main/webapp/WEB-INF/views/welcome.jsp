@@ -13,9 +13,9 @@
 <body>
 <form action="template2">
 
-<button type="submit" name="id" value="${both1}"><img src="${image1}" alt="jeans1"></button>
-<button type="submit" name="id" value="${both2}"><img src="${image2}" alt="jeans2"></button>
-<button type="submit" name="id" value="${both3}"><img src="${image3}" alt="jeans3"></button>
+<button type="submit" name="jean" value="${jean1}"><img src="${image1}" alt="jeans1"></button>
+<button type="submit" name="jean" value="${jean2}"><img src="${image2}" alt="jeans2"></button>
+<button type="submit" name="jean" value="${jean3}"><img src="${image3}" alt="jeans3"></button>
 </form>
 
 

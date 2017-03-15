@@ -32,6 +32,13 @@ public class UserDao {
 
     }
 
+    public void select(UserEntity user){
+
+        Session session = getSessionFactory().openSession();
+        session.beginTransaction();
+        Criteria c = session.createCriteria(UserEntity.class);
+    }
+
     public boolean emailExists(String email) {
         Session session = getSessionFactory().openSession();
         session.beginTransaction();

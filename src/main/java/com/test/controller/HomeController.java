@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
 
@@ -119,28 +120,39 @@ public class HomeController {
             JSONObject productObject = ar.getJSONObject(numbers[0]);
             String image1 = productObject.getJSONObject("image").getJSONObject("sizes").getJSONObject("XLarge").getString("url");
             int id1 = productObject.getInt("id");
-
+            String idString =  Integer.toString(id1);
+            ArrayList<String> jean1 = new ArrayList<String>();
+            jean1.add(image1);
+            jean1.add(idString);
 
             model.addAttribute("image1", image1);
             model.addAttribute("id1", id1);
-            Object[] both1 = {image1, id1};
-            model.addAttribute("both1", both1);
+            model.addAttribute("jean1", jean1);
+
 
             JSONObject productObject2 = ar.getJSONObject(numbers[1]);
             String image2 = productObject2.getJSONObject("image").getJSONObject("sizes").getJSONObject("XLarge").getString("url");
             int id2 = productObject2.getInt("id");
+            String idString2 =  Integer.toString(id2);
+            ArrayList<String> jean2 = new ArrayList<String>();
+            jean2.add(image2);
+            jean2.add(idString2);
 
             model.addAttribute("image2", image2);
             model.addAttribute("id2", id2);
+            model.addAttribute("jean2", jean2);
 
             JSONObject productObject3 = ar.getJSONObject(numbers[2]);
             String image3 = productObject3.getJSONObject("image").getJSONObject("sizes").getJSONObject("XLarge").getString("url");
             int id3 = productObject3.getInt("id");
+            String idString3 =  Integer.toString(id3);
+            ArrayList<String> jean3= new ArrayList<String>();
+            jean3.add(image3);
+            jean3.add(idString3);
 
             model.addAttribute("image3", image3);
             model.addAttribute("id3", id3);
-
-
+            model.addAttribute("jean3", jean3);
 
             return "welcome";
 
@@ -253,7 +265,14 @@ public class HomeController {
 
     @RequestMapping("template2")
     public String displayTemplate(Model model,
-    @RequestParam("id") String productId) {
+    @RequestParam("jean") ArrayList<String> jean) {
+
+        String imageUrl = jean.get(0).substring(1);
+        int length = jean.get(1).length();
+        String productId = jean.get(1).substring(0, length-1);
+        String htmlColor = getHtml(imageUrl);
+        model.addAttribute("htmlColor", htmlColor);
+
         try {
             //provides access to by sending requests through http protocol to other http servers
             HttpClient http = HttpClientBuilder.create().build();
@@ -281,12 +300,16 @@ public class HomeController {
             //gather product category
             JSONArray categoryArray = obj.getJSONArray("categories");
             String category = categoryArray.getJSONObject(0).getString("name");
-            String brandName = obj.getString("brandedName");
+            String brandedName = obj.getString("brandedName");
             String description = obj.getString("description");
 
             JeanStyleEnum styleEnum = getStyle(description, category);
+            boolean cropped = checkCropped(description, category, brandedName);
+            boolean distress = checkDistress(description, category);
             model.addAttribute("style", styleEnum);
             model.addAttribute("list", JeanStyleEnum.values());
+            model.addAttribute("cropped", cropped);
+            model.addAttribute("distress", distress);
 
             for (int i = 0; i < categoryArray.length(); i++) {
                 JSONObject tag = categoryArray.getJSONObject(i);
@@ -324,12 +347,18 @@ public class HomeController {
             @RequestParam("waistsize") int waistSize,
             @RequestParam("inseamsize") int inseamSize,
             @RequestParam("style") JeanStyleEnum styleEnum,
+            @RequestParam("color") String htmlColor,
+            @RequestParam("cropped") String cropped,
+            @RequestParam("distress") String distress,
             Model model){
 
         model.addAttribute("out1", styleEnum.toString());
         model.addAttribute("out2", waistSize);
         model.addAttribute("out3", inseamSize);
-        model.addAttribute("out4", styleEnum);
+        model.addAttribute("out4", htmlColor);
+        model.addAttribute("out5", cropped);
+        model.addAttribute("out6", distress);
+
 
 
 
@@ -412,5 +441,60 @@ public class HomeController {
         }
         return JeanStyleEnum.STRAIGHT;
     }
+
+    public String getHtml(String imageUrl){
+
+        String apiKey = "acc_9cf903d4cf36e57",
+                apiSecret = "d8254b91c035c098d5a35a93190609a7";
+        try {
+            com.mashape.unirest.http.HttpResponse<JsonNode> respoonse2 = Unirest.get("https://api.imagga.com/v1/colors")
+                    .queryString("url", imageUrl)
+                    .basicAuth(apiKey, apiSecret)
+                    .header("Accept", "application/json")
+                    .asJson();
+
+            JSONArray obj2 = respoonse2.getBody().getObject().getJSONArray("results");
+
+            JSONArray obj = respoonse2.getBody().getObject().getJSONArray("results").getJSONObject(0).getJSONObject("info").getJSONArray("foreground_colors");
+
+            return obj.getJSONObject(0).getString("html_code");
+
+        } catch (UnirestException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private boolean checkCropped(String description, String category, String brandedName){
+        if(category.contains("Cropped")){
+            return true;
+        }
+
+        String b = brandedName.toLowerCase();
+        if(b.contains("ankle")|b.contains("crop")|b.contains("capri")|b.contains("cutoff")){
+            return true;
+        }
+
+        String d = description.toLowerCase();
+        if(d.contains("ankle")|d.contains("crop")|d.contains("capri")|d.contains("cutoff")){
+            return true;
+        }
+
+
+
+        return false;
+    }
+
+    private boolean checkDistress(String description, String category) {
+        if (category.contains("Distressed")) {
+            return true;
+        }
+        String d = description.toLowerCase();
+        if (d.contains("hole") | d.contains("distress") | d.contains("shred") |d.contains("rip") |d.contains("destroy")){
+            return true;
+        }
+        return false;
+    }
+
 
 }

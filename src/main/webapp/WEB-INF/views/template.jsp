@@ -10,12 +10,18 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>${htmlColor}</title>
+
+    <style>
+        #rect{
+            background-color: ${htmlColor};
+    </style>
+
 
 </head>
 <body>
 
-<form action="gather" method="post">
+<form action="gather" method="get">
 <select name="waistsize" id="select1">
     <option>Select Waist Size</option>
 </select>
@@ -23,15 +29,28 @@
     <option>Select Inseam Size</option>
 </select>
 
-<select name="style" id="styleList">
+<select name="style" id="select3">
     <option selected="${style}" value="">Select Jean Style</option>
     <c:set var="test1" value="${style}"/><c:forEach items="${list}" var="option">
     <option value="${option}">
         <c:out value="${option}"></c:out>
     </option>
 </c:forEach>
-
 </select>
+
+    <input type='hidden' value="" name="cropped">
+    <input type="checkbox" name="cropped" id="cropped" value="1">
+    <label for="cropped">Cropped</label>
+
+    <input type='hidden' value="" name="distress">
+    <input type="checkbox" name="distress" id="distress" value="1">
+    <label for="distress">Distressed</label>
+
+
+    <p>Select Fabric Swatch:
+        <input name="color" class="jscolor {onFineChange:'update(this)'}" value="${htmlColor}">
+        <p id="rect" style="border:1px solid gray; width:161px; height:100px;"></p>
+
     <input type="submit" value="Submit">
 </form>
 
@@ -46,13 +65,14 @@ ${color}
 ${colorName0}
 <br>
 ${categoryName0}
+<br>
+${cropped}
+<br>
+${distress}
 
 
-<script src="jscolor.js"></script>
-<p>Select Fabric Swatch:
-    <input class="jscolor {onFineChange:'update(this)'}" value="cc66ff">
 
-<p id="rect" style="border:1px solid gray; width:161px; height:100px;">
+
 
 
 
@@ -65,16 +85,19 @@ ${categoryName0}
 
 
 </body>
-<script src="jscolor.js"></script>
-<script>
-    function update(jscolor) {
-        // 'jscolor' instance can be used as a string
-        document.getElementById('rect').style.backgroundColor = '#' + jscolor
-    }
-</script>
-<script>
 
-    var e = document.getElementById("styleList");
+<script>
+    var cropped = "${cropped}";
+    var check1 = (cropped === "true");
+    document.getElementById("cropped").checked = check1;
+
+    var distress = "${distress}";
+    var check2 = (distress === "true");
+    document.getElementById("distress").checked = check2;
+</script>
+
+<script>
+    var e = document.getElementById("select3");
     //e.options[e.selectedIndex].value = "T"; // does not work
     e.value="${style}";
 
@@ -93,29 +116,13 @@ ${categoryName0}
     dropDown("select2", 20, 40);
 
 
-
- /*   var select = document.getElementById("select1");
-
-    for(var i = 20; i <= 40; i += 2) {
-        var opt = i;
-        var el = document.createElement("option");
-        el.textContent = opt;
-        el.value = opt;
-        el.name = "waistsize";
-        select.appendChild(el);
-    }
-
-    var select = document.getElementById("select2");
-
-    for(var i = 20; i <= 40; i += 2) {
-        var opt = i;
-        var el = document.createElement("option");
-        el.textContent = opt;
-        el.value = opt;
-        el.name = "inseamsize";
-        select.appendChild(el);
-    }*/
 </script>
-
+<script src="jscolor.js"></script>
+<script>
+    function update(jscolor) {
+        // 'jscolor' instance can be used as a string
+        document.getElementById('rect').style.backgroundColor = '#' + jscolor
+    }
+</script>
 </html>
 
