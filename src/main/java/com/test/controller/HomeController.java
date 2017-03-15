@@ -37,6 +37,7 @@ public class HomeController {
 
         response.addCookie(new Cookie("userID", "" + "Ross"));
 
+
         FBConnection fbConnection = new FBConnection();
         return new
                 ModelAndView("landingpage","message", fbConnection.getFBAuthUrl());
@@ -159,6 +160,8 @@ public class HomeController {
             model.addAttribute("image3", image3);
             model.addAttribute("id3", id3);
             model.addAttribute("jean3", jean3);
+
+
 
             return "welcome";
 
@@ -365,7 +368,7 @@ public class HomeController {
         model.addAttribute("out4", htmlColor);
         model.addAttribute("out5", cropped);
         model.addAttribute("out6", distress);
-        model.addAttribute("user", userId);
+        model.addAttribute("userId", userId);
 
 
 
