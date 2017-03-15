@@ -84,7 +84,7 @@ public class HomeController {
         String id = fbProfileData.get("id").toString();
 
 
-        if (accessUser.userIdExistsTwo(id)) {
+        if (accessUser.userIdExists(id)) {
             return new
             ModelAndView("welcomeExists","message",id);
         }
@@ -99,9 +99,21 @@ public class HomeController {
     //Create UserEntity and insert into database
     @RequestMapping("welcomeNew")
 
-    public String welcomeNew(){
-        return "welcomeNew";
+    public ModelAndView welcomeNew(@RequestParam("name") String name,
+                                   @RequestParam("address") String address,
+                                   @RequestParam("city") String city,
+                                   @RequestParam("state") String state,
+                                   @RequestParam("zip") String zip) {
+
+        System.out.println("name = " + name);
+        System.out.println("address = " + address);
+        System.out.println("city = " + city);
+        System.out.println("state = " + state);
+        System.out.println("zip = " + zip);
+
+        return null;
     }
+    
     //asks user if they would like to create blank template or build template from inspiration
     @RequestMapping("newTemplate")
     public String newTemplate(){

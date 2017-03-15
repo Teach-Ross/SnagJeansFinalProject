@@ -11,6 +11,8 @@
     <title>Exists</title>
 </head>
 <body>
-${message}
+<h1>Existing User Page</h1>
+
+<p> UserID: ${message} </p>
 </body>
 </html>

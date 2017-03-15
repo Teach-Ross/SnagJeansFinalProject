@@ -10,7 +10,21 @@
 <head>
     <title>New</title>
 </head>
+<h1>New User Page</h1>
 <body>
-${message}
+<p> UserID: ${message} </p>
+
+<form action="welcomeNew">
+
+    Enter Name: <input type="text" name="name"</input><br>
+    Enter Address: <input type="text" name="address"</input> <br>
+    Enter City: <input type="text" name="city"</input><br>
+    Enter State: <input type="text" name="state"</input><br>
+    Enter Zip: <input type="text" name="zip"</input><br>
+    <button type="submit" name="submit">Submit</button>
+
+</form>
+
+
 </body>
 </html>
