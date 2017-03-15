@@ -5,19 +5,12 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.test.DAO.UserDao;
 import com.test.model.JeanStyleEnum;
-import com.test.model.User;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
@@ -27,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Map;
@@ -293,6 +285,16 @@ public class HomeController {
         }
 
         return "result2";
+    }
+
+    @RequestMapping("templateBlank")
+    public String displayBlankTemplate(Model model){
+
+        model.addAttribute("list", JeanStyleEnum.values());
+
+        model.addAttribute("style", "whatever");
+
+        return "templateBlank";
     }
 
     @RequestMapping("template")
