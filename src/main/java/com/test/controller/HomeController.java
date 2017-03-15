@@ -5,12 +5,19 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.test.DAO.UserDao;
 import com.test.model.JeanStyleEnum;
+import com.test.model.User;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
@@ -35,10 +42,10 @@ public class HomeController {
 
     @RequestMapping("/")
 
-    public ModelAndView landingPage(HttpServletResponse response)
+    public ModelAndView landingPage()
     {
 
-        response.addCookie(new Cookie("userID", "" + "Ross"));
+
 
 
         FBConnection fbConnection = new FBConnection();
@@ -50,7 +57,7 @@ public class HomeController {
     @RequestMapping("welcome2")
 
     public ModelAndView helloWorld2(@RequestParam("code") String code,
-                                    @CookieValue("userID") String userID) {
+                                    HttpServletResponse response) {
 
 
         if (code == null || code.equals("")) {
@@ -73,16 +80,17 @@ public class HomeController {
         // out = out.concat("<div>You are "+fbProfileData.get("gender"));;
         out = out.concat("<div>You are "+fbProfileData.get("id"));
 
-        String saveUserID = fbProfileData.get("id").toString();
+
+        String id = fbProfileData.get("id").toString();
 
 
-        if (accessUser.userIdExists(saveUserID)) {
+        if (accessUser.userIdExistsTwo(id)) {
             return new
-            ModelAndView("welcomeExists","message",out);
+            ModelAndView("welcomeExists","message",id);
         }
         else {
             return new
-            ModelAndView("welcomeNew","message",out);
+            ModelAndView("welcomeNew","message",id);
         }
 
 

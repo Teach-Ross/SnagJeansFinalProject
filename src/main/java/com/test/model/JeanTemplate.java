@@ -1,14 +1,13 @@
 package com.test.model;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.math.BigDecimal;
 
-/**
- * Created by Kirstie34 on 3/14/17.
- */
 @Entity
-@Table(name = "JeanTemplate", schema = "Denim_Store_DB", catalog = "")
-public class JeanTemplateEntity {
+public class JeanTemplate {
     private int templateId;
     private String jeanStyle;
     private String color;
@@ -17,7 +16,7 @@ public class JeanTemplateEntity {
     private byte cropped;
     private int waistSize;
     private int inseamLength;
-    private float price;
+    private BigDecimal price;
 
     @Id
     @Column(name = "TemplateID", nullable = false)
@@ -101,11 +100,11 @@ public class JeanTemplateEntity {
 
     @Basic
     @Column(name = "Price", nullable = false, precision = 2)
-    public float getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
@@ -114,7 +113,7 @@ public class JeanTemplateEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        JeanTemplateEntity that = (JeanTemplateEntity) o;
+        JeanTemplate that = (JeanTemplate) o;
 
         if (templateId != that.templateId) return false;
         if (distressed != that.distressed) return false;
@@ -124,7 +123,7 @@ public class JeanTemplateEntity {
         if (jeanStyle != null ? !jeanStyle.equals(that.jeanStyle) : that.jeanStyle != null) return false;
         if (color != null ? !color.equals(that.color) : that.color != null) return false;
         if (templateName != null ? !templateName.equals(that.templateName) : that.templateName != null) return false;
-        if (price != that.price) return false;
+        if (price != null ? !price.equals(that.price) : that.price != null) return false;
 
         return true;
     }
@@ -139,7 +138,7 @@ public class JeanTemplateEntity {
         result = 31 * result + (int) cropped;
         result = 31 * result + waistSize;
         result = 31 * result + inseamLength;
-        result = 31 * result + (int) price;
+        result = 31 * result + (price != null ? price.hashCode() : 0);
         return result;
     }
 }

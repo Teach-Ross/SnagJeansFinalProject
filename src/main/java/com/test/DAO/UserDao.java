@@ -1,12 +1,14 @@
 package com.test.DAO;
 
-import com.test.model.UserEntity;
+import com.test.model.User;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+
+import java.util.ArrayList;
 
 public class UserDao {
     private SessionFactory sessionFactory;
@@ -18,7 +20,7 @@ public class UserDao {
     }
 
 
-    public void insert(UserEntity user) {
+    public void insert(User user) {
         Session session = getSessionFactory().openSession();
         session.beginTransaction();
         session.save(user);
@@ -26,27 +28,48 @@ public class UserDao {
         session.close();
     }
 
-    public void delete(UserEntity user) {
+    public void delete(User user) {
         Session session = getSessionFactory().openSession();
         session.beginTransaction();
 
     }
 
-    public void select(UserEntity user){
+    public void select(User user){
 
         Session session = getSessionFactory().openSession();
         session.beginTransaction();
-        Criteria c = session.createCriteria(UserEntity.class);
+        Criteria c = session.createCriteria(User.class);
     }
 
     public boolean userIdExists(String userId) {
         Session session = getSessionFactory().openSession();
         session.beginTransaction();
-        Criteria userIdSearch = session.createCriteria(UserEntity.class);
-        userIdSearch.add(Restrictions.eq("UserID", userId));
-        userIdSearch.setProjection(Projections.rowCount());
-        Long rowCount = (Long) userIdSearch.uniqueResult();
-        return (rowCount > 0);
+        Criteria userIdSearch = session.createCriteria(User.class);
+        ArrayList<User> customerList = (ArrayList<User>) userIdSearch.list();
+        for(User user: customerList){
+            if(user.getUserId().equals(userId)){
+                return true;
+            }
+        }
+
+        return false;
+
+    }
+
+        public boolean userIdExistsTwo(String userId){
+
+        SessionFactory sessionFactory;
+        Configuration cfg2 = new Configuration().configure("hibernate.cfg.xml");
+        SessionFactory sessionFactory1 = cfg2.buildSessionFactory();
+        Session session = sessionFactory1.openSession();
+        session.beginTransaction();
+        Criteria userIdSearch = session.createCriteria(User.class)
+                .add(Restrictions.eq("UserID", userId))
+                .setProjection(Projections.rowCount());
+
+            Long rowCount = (Long) userIdSearch.uniqueResult();
+            return (rowCount > 0);
+
     }
 }
 

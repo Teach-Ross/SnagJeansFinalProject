@@ -4,9 +4,9 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 
-    <class name="com.test.model.UserEntity" table="User" schema="Denim_Store_DB">
+    <class name="com.test.model.User" table="User" schema="Denim_Store_DB">
         <id name="userId">
-            <column name="UserId" sql-type="int(11)"/>
+            <column name="UserID" sql-type="varchar(20)" length="20"/>
         </id>
         <property name="name">
             <column name="Name" sql-type="varchar(25)" length="25"/>
