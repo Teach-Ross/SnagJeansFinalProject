@@ -17,6 +17,7 @@ public class JeanTemplate {
     private int waistSize;
     private int inseamLength;
     private BigDecimal price;
+    private String userId;
 
     @Id
     @Column(name = "TemplateID", nullable = false)
@@ -140,5 +141,15 @@ public class JeanTemplate {
         result = 31 * result + inseamLength;
         result = 31 * result + (price != null ? price.hashCode() : 0);
         return result;
+    }
+
+    @Basic
+    @Column(name = "UserID", nullable = false, length = 20)
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

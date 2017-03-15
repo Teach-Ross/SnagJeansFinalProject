@@ -65,7 +65,7 @@ public class UserDao {
         Session session = sessionFactory1.openSession();
         session.beginTransaction();
         Criteria userIdSearch = session.createCriteria(User.class)
-                .add(Restrictions.eq("UserID", userId))
+                .add(Restrictions.eq("userId", userId))
                 .setProjection(Projections.rowCount());
 
             Long rowCount = (Long) userIdSearch.uniqueResult();

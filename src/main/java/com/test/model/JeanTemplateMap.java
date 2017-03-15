@@ -1,90 +1,55 @@
 package com.test.model;
 
 public class JeanTemplateMap {
-    private JeanEntity temp = new JeanEntity();
+    private JeanTemplate temp = new JeanTemplate();
 
-    public JeanEntity returnNewJeanEntity(String description, String category, String htmlColor){
-        checkCropped(description, category);
-        checkDistress(description, category);
-        this.temp.setHtmlColor(htmlColor);
-
+   /* @RequestParam("waistsize") int waistSize,
+    @RequestParam("inseamsize") int inseamSize,
+    @RequestParam("style") JeanStyleEnum styleEnum,
+    @RequestParam("color") String htmlColor,
+    @RequestParam("cropped") String cropped,
+    @RequestParam("distress") String distress,
+    @CookieValue("userID") String userId,
+    Model model){
+*/
+    public JeanTemplate returnNewJeanEntity(int waiseSize, int inseamSize, JeanStyleEnum styleEnum, String htmlColor, String cropped, String distress, String userdId) {
+        temp.setWaistSize(waiseSize);
+        temp.setInseamLength(inseamSize);
+        temp.setJeanStyle(styleEnum.toString());
+        temp.setColor(htmlColor);
+        this.setCropped(cropped);
+        this.setDistress(distress);
+        temp.setUserId(userdId);
 
         return this.temp;
-
-
-    }
-
-    private void setStyle(String description, String category){
-
-       //matches category against JeanStyleEnum Enum directly
-        for(JeanStyleEnum style: JeanStyleEnum.values()){
-            if(style.toString().contains(category)){
-                this.temp.setStyle(style);
-                return;
-            }
-        }
-
-        //matches for keywords in description to find JeanStyleEnum
-        String d = description.toLowerCase();
-        if(d.contains("skinny") | d.contains("leggings")){
-            this.temp.setStyle(JeanStyleEnum.SKINNY);
-            return;
-        }else if(category.contains("Classic")| d.contains("straight")){
-            this.temp.setStyle(JeanStyleEnum.STRAIGHT);
-        }
-        else if(d.contains("relaxed")){
-            this.temp.setStyle(JeanStyleEnum.RELAXED);
-            return;
-        }else if(d.contains("flare")){
-            this.temp.setStyle(JeanStyleEnum.FLARE);
-            return;
-        }else if(d.contains("bootcut")){
-            this.temp.setStyle(JeanStyleEnum.BOOTCUT);
-            return;
-        }
-
-
     }
 
 
-    /*  @param description - gathered from ShopStyleAPI
-        @param category - gathered from ShopStyle API
-        tests parameters for keywords to set JeanEntity boolean distressed
-        default returns false
+    /*  @param cropped gathered from html checkbox
+        method sets cropped byte value(mysql holder for boolean)
      */
+    private void setCropped(String cropped) {
 
-    private void checkDistress(String description, String category) {
-        if (category.contains("Distressed")) {
-            this.temp.setDistressed(true);
-            return;
-        }
-        String d = description.toLowerCase();
-        if (d.contains("hole") | d.contains("distress")) {
-            this.temp.setDistressed(true);
-            return;
-        }
-        this.temp.setDistressed(false);
-    }
 
-    /*  @param description - gathered from ShopStyleAPI
-        @param category - gathered from ShopStyle API
-        tests parameters for keywords to set JeanEntity boolean cropped
-        default returns false
-     */
-    private void checkCropped(String description, String category){
-        if(category.contains("Cropped")){
-            this.temp.setCropped(true);
+        //checkbox will return empty string value for non-cropped jeans
+        if (cropped.isEmpty()) {
+            temp.setCropped((byte) 0);
             return;
         }
-
-        String d = description.toLowerCase();
-        if(d.contains("ankle")|d.contains("crop")|d.contains("capri")|d.contains("cutoff")){
-            this.temp.setCropped(true);
-            return;
-        }
-        this.temp.setCropped(false);
+        temp.setCropped((byte) 1);
     }
 
 
+    /*  @param distress gathered from html checkbox
+         method sets distressed byte value(mysql holder for boolean)
+      */
+    private void setDistress(String distress) {
 
+        //checkbox will return empty string value for non-distressed jeans
+        if (distress.isEmpty()) {
+            temp.setDistressed((byte) 0);
+            return;
+        }
+        temp.setDistressed((byte) 1);
+    }
 }
