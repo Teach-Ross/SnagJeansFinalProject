@@ -39,13 +39,13 @@ public class UserDao {
         Criteria c = session.createCriteria(UserEntity.class);
     }
 
-    public boolean emailExists(String email) {
+    public boolean userIdExists(String userId) {
         Session session = getSessionFactory().openSession();
         session.beginTransaction();
-        Criteria emailSearch = session.createCriteria(UserEntity.class);
-        emailSearch.add(Restrictions.eq("email", email).ignoreCase());
-        emailSearch.setProjection(Projections.rowCount());
-        Long rowCount = (Long) emailSearch.uniqueResult();
+        Criteria userIdSearch = session.createCriteria(UserEntity.class);
+        userIdSearch.add(Restrictions.eq("UserID", userId));
+        userIdSearch.setProjection(Projections.rowCount());
+        Long rowCount = (Long) userIdSearch.uniqueResult();
         return (rowCount > 0);
     }
 }

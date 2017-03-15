@@ -22,12 +22,7 @@ public class FBConnection {
 
     static String accessToken = "";
 
-    private String getRedirectUri(String userId){
-        if(testObject.emailExists(userId)){
-            return "http://localhost:8080/welcomeExist";
-        }
-        return "http://localhost:8080/welcomeNew";
-    }
+
 
     public String getFBAuthUrl() {
         String fbLoginUrl = "";

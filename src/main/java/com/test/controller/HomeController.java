@@ -3,6 +3,7 @@ package com.test.controller;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import com.test.DAO.UserDao;
 import com.test.model.JeanStyleEnum;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
@@ -29,6 +30,8 @@ import java.util.Random;
 
 @Controller
 public class HomeController {
+
+    public UserDao accessUser = new UserDao();
 
     @RequestMapping("/")
 
@@ -65,12 +68,23 @@ public class HomeController {
         String out = "";
         out = out.concat("<h1>Facebook Login using Java</h1>");
         out = out.concat("<h2>Application Main Menu</h2>");
-        out = out.concat("<div>Welcome "+fbProfileData.get("name"));
-        out = out.concat("<div>Your Email: "+fbProfileData.get("email"));
-        out = out.concat("<div>You are "+fbProfileData.get("gender"));;
+        // out = out.concat("<div>Welcome "+fbProfileData.get("name"));
+        // out = out.concat("<div>Your Email: "+fbProfileData.get("email"));
+        // out = out.concat("<div>You are "+fbProfileData.get("gender"));;
+        out = out.concat("<div>You are "+fbProfileData.get("id"));
 
-        return new
-                ModelAndView("welcome2","message",out);
+        String saveUserID = fbProfileData.get("id").toString();
+
+
+        if (accessUser.userIdExists(saveUserID)) {
+            return new
+            ModelAndView("welcomeExists","message",out);
+        }
+        else {
+            return new
+            ModelAndView("welcomeNew","message",out);
+        }
+
 
     }
 
