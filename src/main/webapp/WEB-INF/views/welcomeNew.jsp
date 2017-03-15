@@ -21,10 +21,15 @@
     Enter City: <input type="text" name="city"</input><br>
     Enter State: <input type="text" name="state"</input><br>
     Enter Zip: <input type="text" name="zip"</input><br>
+    Enter Userid: <input type="text" name="userId"</input><br>
+    <br>
+    <br>
+    Enter Type of Form (1/Blank, 2/Build):
+           <input type="text" name="template"</input>
+
     <button type="submit" name="submit">Submit</button>
 
 </form>
-
 
 </body>
 </html>

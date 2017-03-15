@@ -5,6 +5,7 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.test.DAO.UserDao;
 import com.test.model.JeanStyleEnum;
+import com.test.model.User;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -95,17 +96,39 @@ public class HomeController {
                                    @RequestParam("address") String address,
                                    @RequestParam("city") String city,
                                    @RequestParam("state") String state,
-                                   @RequestParam("zip") String zip) {
+                                   @RequestParam("zip") String zip,
+                                   @RequestParam("userId") String userId,
+                                   @RequestParam("template") String template)
 
-        System.out.println("name = " + name);
+    {
+
+        /* System.out.println("name = " + name);
         System.out.println("address = " + address);
         System.out.println("city = " + city);
         System.out.println("state = " + state);
         System.out.println("zip = " + zip);
+        System.out.println("userid = " + userId); */
+        System.out.println("template = " + template);
 
-        return null;
+        User addUser = new User();
+
+        addUser.setName(name);
+        addUser.setAddress(address);
+        addUser.setCity(city);
+        addUser.setState(state);
+        addUser.setZip(zip);
+        addUser.setUserId(userId);
+        accessUser.insert(addUser);
+
+        if (template.equals("1")) {
+            return new
+                    ModelAndView("templateBlank", " ", " ");
+        } else {
+            return new
+                    ModelAndView("welcome", " ", " ");
+        }
     }
-    
+
     //asks user if they would like to create blank template or build template from inspiration
     @RequestMapping("newTemplate")
     public String newTemplate(){

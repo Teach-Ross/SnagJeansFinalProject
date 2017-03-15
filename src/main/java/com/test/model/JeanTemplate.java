@@ -1,12 +1,13 @@
 package com.test.model;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.math.BigDecimal;
 
+/**
+ * Created by mpjoh on 3/15/2017.
+ */
 @Entity
+@Table(name = "JeanTemplate", schema = "Denim_Store_DB", catalog = "")
 public class JeanTemplate {
     private int templateId;
     private String jeanStyle;
@@ -109,6 +110,16 @@ public class JeanTemplate {
         this.price = price;
     }
 
+    @Basic
+    @Column(name = "UserID", nullable = false, length = 20)
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -125,6 +136,7 @@ public class JeanTemplate {
         if (color != null ? !color.equals(that.color) : that.color != null) return false;
         if (templateName != null ? !templateName.equals(that.templateName) : that.templateName != null) return false;
         if (price != null ? !price.equals(that.price) : that.price != null) return false;
+        if (userId != null ? !userId.equals(that.userId) : that.userId != null) return false;
 
         return true;
     }
@@ -140,6 +152,7 @@ public class JeanTemplate {
         result = 31 * result + waistSize;
         result = 31 * result + inseamLength;
         result = 31 * result + (price != null ? price.hashCode() : 0);
+        result = 31 * result + (userId != null ? userId.hashCode() : 0);
         return result;
     }
 

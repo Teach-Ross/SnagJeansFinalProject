@@ -46,7 +46,7 @@ public class UserDao {
         session.beginTransaction();
         Criteria userIdSearch = session.createCriteria(User.class);
         ArrayList<User> customerList = (ArrayList<User>) userIdSearch.list();
-        String testNewUserID = "567890123456";
+        String testNewUserID = "999";
         for(User user: customerList){
             if(user.getUserId().equals(testNewUserID)){
                 return true;
