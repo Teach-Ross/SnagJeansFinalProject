@@ -4,6 +4,8 @@ package com.test.controller;
  * Created by mpjoh on 3/14/2017.
  */
 
+import com.test.DAO.UserDao;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -16,8 +18,16 @@ public class FBConnection {
     public static final String FB_APP_ID = "1482030681829960";
     public static final String FB_APP_SECRET = "bc0f6bb0537ee9d32feb0cea1487d178";
     public static final String REDIRECT_URI = "http://localhost:8080/welcome2";
+    public UserDao testObject = new UserDao();
 
     static String accessToken = "";
+
+    private String getRedirectUri(String userId){
+        if(testObject.emailExists(userId)){
+            return "http://localhost:8080/welcomeExist";
+        }
+        return "http://localhost:8080/welcomeNew";
+    }
 
     public String getFBAuthUrl() {
         String fbLoginUrl = "";

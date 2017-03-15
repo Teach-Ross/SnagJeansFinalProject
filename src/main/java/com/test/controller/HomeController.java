@@ -14,10 +14,13 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
@@ -29,9 +32,11 @@ public class HomeController {
 
     @RequestMapping("/")
 
-
-    public ModelAndView landingPage()
+    public ModelAndView landingPage(HttpServletResponse response)
     {
+
+        response.addCookie(new Cookie("userID", "" + "Ross"));
+
         FBConnection fbConnection = new FBConnection();
         return new
                 ModelAndView("landingpage","message", fbConnection.getFBAuthUrl());
@@ -40,7 +45,8 @@ public class HomeController {
 
     @RequestMapping("welcome2")
 
-    public ModelAndView helloWorld2(@RequestParam("code") String code) {
+    public ModelAndView helloWorld2(@RequestParam("code") String code,
+                                    @CookieValue("userID") String userID) {
 
 
         if (code == null || code.equals("")) {
@@ -350,6 +356,7 @@ public class HomeController {
             @RequestParam("color") String htmlColor,
             @RequestParam("cropped") String cropped,
             @RequestParam("distress") String distress,
+            @CookieValue("userID") String userId,
             Model model){
 
         model.addAttribute("out1", styleEnum.toString());
@@ -358,6 +365,7 @@ public class HomeController {
         model.addAttribute("out4", htmlColor);
         model.addAttribute("out5", cropped);
         model.addAttribute("out6", distress);
+        model.addAttribute("user", userId);
 
 
 
