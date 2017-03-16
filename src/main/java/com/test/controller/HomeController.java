@@ -341,6 +341,7 @@ public class HomeController {
             @RequestParam("color") String htmlColor,
             @RequestParam("cropped") String cropped,
             @RequestParam("distress") String distress,
+            @RequestParam("templateId") int templateId,
             @CookieValue("userTag") String userId,
             Model model) {
 

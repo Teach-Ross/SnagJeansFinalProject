@@ -1,4 +1,3 @@
-
 <%--
   Created by IntelliJ IDEA.
   User: rteach
@@ -13,7 +12,7 @@
     <title>Snag Jeans</title>
 
     <style>
-        #rect{
+        #rect {
             background-color: ${color};
     </style>
 
@@ -23,21 +22,22 @@
 <h1>Please complete your jean template below:</h1>
 <br>
 <form action="gather" method="get">
-<select name="waistsize" id="select1">
-    <option>Select Waist Size</option>
-</select>
-<select name="inseamsize" id="select2">
-    <option>Select Inseam Size</option>
-</select>
+    <input id="templateId" type="hidden" name="templateId" value="0">
+    <select name="waistsize" id="select1">
+        <option>Select Waist Size</option>
+    </select>
+    <select name="inseamsize" id="select2">
+        <option>Select Inseam Size</option>
+    </select>
 
-<select name="style" id="select3">
-    <option selected="${style}" value="">Select Jean Style</option>
-    <c:set var="test1" value="${style}"/><c:forEach items="${list}" var="option">
-    <option value="${option}">
-        <c:out value="${option}"></c:out>
-    </option>
-</c:forEach>
-</select>
+    <select name="style" id="select3">
+        <option selected="${style}" value="">Select Jean Style</option>
+        <c:set var="test1" value="${style}"/><c:forEach items="${list}" var="option">
+        <option value="${option}">
+            <c:out value="${option}"></c:out>
+        </option>
+    </c:forEach>
+    </select>
 
     <input type='hidden' value="" name="cropped">
     <input type="checkbox" name="cropped" id="cropped" value="1">
@@ -50,23 +50,10 @@
 
     <p>Select Fabric Swatch:
         <input name="color" class="jscolor {onFineChange:'update(this)'}" value="${color}">
-        <p id="rect" style="border:1px solid gray; width:161px; height:100px;"></p>
+    <p id="rect" style="border:1px solid gray; width:161px; height:100px;"></p>
 
     <input type="submit" value="Submit">
 </form>
-
-<input id="templateId" type="text" value="0">
-
-
-
-
-
-
-
-
-
-
-
 
 
 </body>
@@ -84,11 +71,11 @@
 <script>
     var e = document.getElementById("select3");
     //e.options[e.selectedIndex].value = "T"; // does not work
-    e.value="${style}";
+    e.value = "${style}";
 
-    function dropDown(id, min, max){
+    function dropDown(id, min, max) {
         var select = document.getElementById(id);
-        for(var i = min; i <= max; i++) {
+        for (var i = min; i <= max; i++) {
             var opt = i;
             var el = document.createElement("option");
             el.textContent = opt;
@@ -108,15 +95,15 @@
     var test2 = "${inseamSize}";
     var test3 = "${templateId}";
 
-    if(!isEmpty(test1)){
-        document.getElementById("select1").value= test1;
+    if (!isEmpty(test1)) {
+        document.getElementById("select1").value = test1;
     }
 
-    if(!isEmpty(test2)){
-        document.getElementById("select2").value= test2;
+    if (!isEmpty(test2)) {
+        document.getElementById("select2").value = test2;
     }
 
-    if(!isEmpty(test3)){
+    if (!isEmpty(test3)) {
         document.getElementById("templateId").value = test3;
     }
 
