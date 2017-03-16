@@ -1,5 +1,6 @@
 package com.test.DAO;
 
+import com.test.model.JeanTemplate;
 import com.test.model.User;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -39,6 +40,14 @@ public class UserDao {
         Criteria c = session.createCriteria(User.class);
     }
 
+    public User selectUser(String userId){
+        User user = new User();
+        Session session = getSessionFactory().openSession();
+        session.beginTransaction();
+        user = (User) session.get(User.class, userId);
+        session.close();
+        return user;
+    }
 
         public boolean userIdExists(String userId){
 

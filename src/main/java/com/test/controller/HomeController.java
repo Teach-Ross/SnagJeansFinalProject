@@ -68,7 +68,6 @@ public class HomeController {
         FBGraph fbGraph = new FBGraph(accessToken);
         String graph = fbGraph.getFBGraph();
         Map fbProfileData = fbGraph.getGraphData(graph);
-        model.addAttribute("message", fbProfileData.get("name"));
 
         String id = fbProfileData.get("id").toString();
 
@@ -77,8 +76,15 @@ public class HomeController {
         response.addCookie(userCookie);
 
 
+        User newUser = accessUser.selectUser(id);
+        String userName = newUser.getName();
+
+        model.addAttribute("message", userName);
+
         if (accessUser.userIdExists(id)) {
-            return "welcomeExists";
+            return
+            ("welcomeExists");
+
         } else {
             return "welcomeNew";
         }
