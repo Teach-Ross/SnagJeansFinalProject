@@ -156,13 +156,4 @@ public class JeanTemplate {
         return result;
     }
 
-    @Basic
-    @Column(name = "UserID", nullable = false, length = 20)
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
 }
