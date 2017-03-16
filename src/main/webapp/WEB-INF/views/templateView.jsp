@@ -27,14 +27,22 @@
         <tr>
             <td>${template.templateName}</td>
             <td>${template.jeanStyle}</td>
-            <c:if test="${message.message != null}">
-                <div class="msg">test1: ${message.message}</div>
-            </c:if>
-            <c:if test="${message.message != ''}">
-                <div class="msg">test2: ${message.message}</div>
-            </c:if>
-            <td id="cropped">${template.cropped}</td>
-            <td id="distress"> ${template.distressed}</td>
+            <c:choose>
+                <c:when test="${template.cropped != 0}">
+                    <td>YES</td>
+                </c:when>
+                <c:otherwise>
+                    <td>NO</td>
+                </c:otherwise>
+            </c:choose>
+            <c:choose>
+                <c:when test="${template.distressed != 0}">
+                    <td>YES</td>
+                </c:when>
+                <c:otherwise>
+                    <td>NO</td>
+                </c:otherwise>
+            </c:choose>
             <td style="background-color:${template.color};"><b></b></td>
             <td>${template.waistSize}</td>
             <td>${template.inseamLength}</td>
