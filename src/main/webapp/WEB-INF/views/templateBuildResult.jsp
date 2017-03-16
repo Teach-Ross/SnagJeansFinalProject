@@ -20,7 +20,8 @@
 
 </head>
 <body>
-
+<h1>Please complete your jean template below:</h1>
+<br>
 <form action="gather" method="get">
 <select name="waistsize" id="select1">
     <option>Select Waist Size</option>

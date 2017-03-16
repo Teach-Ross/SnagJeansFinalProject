@@ -12,7 +12,8 @@
     <title>Snag Jeans</title>
 </head>
 <body>
-
+<h1>Please complete your jean template below:</h1>
+<br>
 <form action="gather" method="get" onsubmit="validate()">
     <select value="" name="waistsize" id="select1">
         <option value="null">Select Waist Size</option>

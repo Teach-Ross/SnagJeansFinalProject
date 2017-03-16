@@ -11,7 +11,6 @@
     <title>Snag Jeans</title>
 </head>
 <body>
-
 <form action="templateBlank">
     <input type="submit" value="Create Template From Scratch">
 </form>

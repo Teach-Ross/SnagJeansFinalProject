@@ -11,7 +11,8 @@
     <title>Snag Jeans</title>
 </head>
 <body>
-
+<h1>Would you like to save or discard your template?</h1>
+<br>
 <form action="templateSave" id="form1">
     Enter Template Name: <input type="text" name="templateName">
     <button type="submit" form="form1" value="Submit">Save Template</button>

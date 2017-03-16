@@ -11,6 +11,8 @@
     <title>Title</title>
 </head>
 <body>
+<h1>Select a pair of jeans to use as inspriation:</h1>
+<br>
 <form action="templateBuildResult">
 
 <button type="submit" name="jean" value="${jean1}"><img src="${image1}" alt="jeans1"></button>

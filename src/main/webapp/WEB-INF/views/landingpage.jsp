@@ -11,7 +11,8 @@
     <title>Snag Jeans</title>
 </head>
 <body>
-<h1>Snag Jeans Landing Page</h1>
+<h1>Welcome to Snag Jeans</h1>
+<h2>Please log in:</h2>
 <div id="left">
     <a href="${message}">FB Login!</a>
 </div>

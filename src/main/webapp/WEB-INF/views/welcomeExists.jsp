@@ -12,7 +12,7 @@
 </head>
 <body>
 
-<p> Welcome ${message} !</p>
+<p> Welcome ${message}!</p>
 
 <form action="newTemplate">
     <input type="submit" value="Create New Template">
