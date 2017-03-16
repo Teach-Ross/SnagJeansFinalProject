@@ -101,6 +101,11 @@ public class HomeController {
         return null;
     }
 
+    @RequestMapping("home")
+    public String home(){
+        return "welcomeExists";
+    }
+
     //asks user if they would like to create blank template or build template from inspiration
     @RequestMapping("newTemplate")
     public String newTemplate() {
@@ -338,7 +343,6 @@ public class HomeController {
         if(userJean.getCropped() != 0){
             bd = bd.add(new BigDecimal(5));
         }
-        userJean.setTemplateName("myTemp");
 
         userJean.setPrice(bd);
 
@@ -350,12 +354,15 @@ public class HomeController {
     }
 
     @RequestMapping("templateSave")
-    public String saveTemplate(@RequestParam("templateId") int templateId, Model model)
+    public String saveTemplate(
+            @RequestParam("templateName") String templateName,
+                               Model model)
     {
 
+        userJean.setTemplateName(templateName);
         accessTemplate.insert(userJean);
 
-        model.addAttribute("message", templateId);
+
 
         return "templateSave";
     }

@@ -11,11 +11,17 @@
     <title>Snag Jeans</title>
 </head>
 <body>
-<form action="templateSave">
-    <input type='hidden' value="${templateId}" name="templateId">
-    <input type="submit" value="Save Template">
+
+<form action="templateSave" id="form1">
+    Enter Template Name: <input type="text" name="templateName">
+    <button type="submit" form="form1" value="Submit">Save Template</button>
 </form>
 
+<br>
+<br>
+<form action="home">
+    <input type="submit" value="Discard Changes">
+</form>
 
 </body>
 </html>

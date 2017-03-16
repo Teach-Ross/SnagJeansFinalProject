@@ -21,6 +21,7 @@
         <th>Jean Color</th>
         <th>Waist Size</th>
         <th>Inseam Length</th>
+        <th>Price</th>
     </tr>
     <c:forEach var="template" items="${templateList}">
         <tr>
@@ -31,6 +32,7 @@
             <td style="background-color:${template.color};"><b></b></td>
             <td>${template.waistSize}</td>
             <td>${template.inseamLength}</td>
+            <td>$ ${template.price}</td>
             <td><a href="selectTemplate?id=${template.templateId}"> Select </a></td>
             <td><a href="deleteTemplate?id=${template.templateId}"> Delete </a></td>
         </tr>
