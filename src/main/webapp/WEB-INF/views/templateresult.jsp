@@ -18,7 +18,6 @@
 </form>
 
 <br>
-<br>
 <form action="home">
     <input type="submit" value="Discard Changes">
 </form>

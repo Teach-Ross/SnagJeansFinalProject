@@ -27,6 +27,12 @@
         <tr>
             <td>${template.templateName}</td>
             <td>${template.jeanStyle}</td>
+            <c:if test="${message.message != null}">
+                <div class="msg">test1: ${message.message}</div>
+            </c:if>
+            <c:if test="${message.message != ''}">
+                <div class="msg">test2: ${message.message}</div>
+            </c:if>
             <td id="cropped">${template.cropped}</td>
             <td id="distress"> ${template.distressed}</td>
             <td style="background-color:${template.color};"><b></b></td>
