@@ -12,7 +12,7 @@
 </head>
 <h1>New User Page</h1>
 <body>
-<p> UserID: ${message} </p>
+<!-- p> UserID: ${message} </p-->
 
 <form action="welcomeNew">
 

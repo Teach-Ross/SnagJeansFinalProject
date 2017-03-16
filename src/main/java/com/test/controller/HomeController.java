@@ -8,6 +8,7 @@ import com.test.DAO.UserDao;
 import com.test.model.JeanStyleEnum;
 import com.test.model.JeanTemplate;
 import com.test.model.JeanTemplateMap;
+import com.test.model.User;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -90,17 +91,29 @@ public class HomeController {
                                    @RequestParam("address") String address,
                                    @RequestParam("city") String city,
                                    @RequestParam("state") String state,
-                                   @RequestParam("zip") String zip) {
+                                   @RequestParam("zip") String zip,
+                                   @CookieValue("userTag") String userId) {
 
 
-
-        System.out.println("name = " + name);
+        /*System.out.println("name = " + name);
         System.out.println("address = " + address);
         System.out.println("city = " + city);
         System.out.println("state = " + state);
-        System.out.println("zip = " + zip);
+        System.out.println("zip = " + zip); */
 
-        return null;
+        User addUser = new User();
+
+        addUser.setUserId(userId);
+        addUser.setName(name);
+        addUser.setAddress(address);
+        addUser.setCity(city);
+        addUser.setState(state);
+        addUser.setZip(zip);
+        // addUser.setUserId("567890123456");
+        accessUser.insert(addUser);
+
+        return new
+                ModelAndView("welcomeExists"," "," ");
     }
 
     @RequestMapping("home")
