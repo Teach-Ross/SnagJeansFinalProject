@@ -113,7 +113,7 @@ public class HomeController {
         accessUser.insert(addUser);
 
         return new
-                ModelAndView("welcomeExists"," "," ");
+                ModelAndView("templateDirect"," "," ");
     }
 
     @RequestMapping("home")
@@ -371,15 +371,20 @@ public class HomeController {
     @RequestMapping("templateSave")
     public String saveTemplate(
             @RequestParam("templateName") String templateName,
+            @CookieValue("userTag") String userID,
                                Model model)
     {
 
         userJean.setTemplateName(templateName);
+
         accessTemplate.insert(userJean);
 
+        ArrayList<JeanTemplate> templateList = accessTemplate.selectAllUserTemplates(userID);
+
+        model.addAttribute("templateList", templateList);
 
 
-        return "templateSave";
+        return "templateView";
     }
 
     public JeanStyleEnum getStyle(String description, String category) {
