@@ -9,21 +9,20 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Snag Jeans</title>
 </head>
 <body>
 
-
-<form action="gather" method="get">
+<form action="gather" method="get" onsubmit="validate()">
     <select value="" name="waistsize" id="select1">
-        <option value=" ">Select Waist Size</option>
+        <option value="null">Select Waist Size</option>
     </select>
     <select value="" name="inseamsize" id="select2">
-        <option value=" ">Select Inseam Size</option>
+        <option value="">Select Inseam Size</option>
     </select>
 
     <select name="style" id="select3">
-        <option selected="${style}" value="">Select Jean Style</option>
+        <option value="">Select Jean Style</option>
         <c:set var="test1" value=""/><c:forEach items="${list}" var="option">
         <option value="${option}">
             <c:out value="${option}"></c:out>
@@ -49,6 +48,8 @@
 </form>
 
 </body>
+<script>
+</script>
 
 <script>
     function dropDown(id, min, max){

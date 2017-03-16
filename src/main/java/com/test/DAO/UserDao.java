@@ -8,8 +8,6 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
-import java.util.ArrayList;
-
 public class UserDao {
     private SessionFactory sessionFactory;
     private Configuration cfg = new Configuration().configure("hibernate.cfg.xml");
@@ -41,23 +39,8 @@ public class UserDao {
         Criteria c = session.createCriteria(User.class);
     }
 
-    public boolean userIdExists(String userId) {
-        Session session = getSessionFactory().openSession();
-        session.beginTransaction();
-        Criteria userIdSearch = session.createCriteria(User.class);
-        ArrayList<User> customerList = (ArrayList<User>) userIdSearch.list();
-        String testNewUserID = "999";
-        for(User user: customerList){
-            if(user.getUserId().equals(testNewUserID)){
-                return true;
-            }
-        }
 
-        return false;
-
-    }
-
-        public boolean userIdExistsTwo(String userId){
+        public boolean userIdExists(String userId){
 
         SessionFactory sessionFactory;
         Configuration cfg2 = new Configuration().configure("hibernate.cfg.xml");
@@ -68,8 +51,8 @@ public class UserDao {
                 .add(Restrictions.eq("userId", userId))
                 .setProjection(Projections.rowCount());
 
-            Long rowCount = (Long) userIdSearch.uniqueResult();
-            return (rowCount > 0);
+        Long rowCount = (Long) userIdSearch.uniqueResult();
+        return (rowCount > 0);
 
     }
 }

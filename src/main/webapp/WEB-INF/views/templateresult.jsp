@@ -8,16 +8,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Snag Jeans</title>
 </head>
 <body>
-${out1}
-${out2}
-${out3}
-${out4}
-${out5}
-${out6}
-${userId}
+<form action="templateSave">
+    <input type='hidden' value="${templateId}" name="templateId">
+    <input type="submit" value="Save Template">
+</form>
+
 
 </body>
 </html>
