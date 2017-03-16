@@ -55,7 +55,7 @@
     <input type="submit" value="Submit">
 </form>
 
-
+<input id="templateId" type="text" value="0">
 
 
 
@@ -106,6 +106,7 @@
 
     var test1 = "${waistSize}";
     var test2 = "${inseamSize}";
+    var test3 = "${templateId}";
 
     if(!isEmpty(test1)){
         document.getElementById("select1").value= test1;
@@ -114,6 +115,11 @@
     if(!isEmpty(test2)){
         document.getElementById("select2").value= test2;
     }
+
+    if(!isEmpty(test3)){
+        document.getElementById("templateId").value = test3;
+    }
+
 
 </script>
 <script src="jscolor.js"></script>

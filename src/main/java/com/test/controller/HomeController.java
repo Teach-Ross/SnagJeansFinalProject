@@ -171,6 +171,7 @@ public class HomeController {
         model.addAttribute("color", temp.getColor());
         model.addAttribute("waistSize", temp.getWaistSize());
         model.addAttribute("inseamSize", temp.getInseamLength());
+        model.addAttribute("templateId", templateId);
 
 
         return "templateBuildResult";
@@ -333,7 +334,7 @@ public class HomeController {
     }
 
     @RequestMapping("gather")
-    public String displayTemplate2(
+    public String displayTemplate(
             @RequestParam("waistsize") int waistSize,
             @RequestParam("inseamsize") int inseamSize,
             @RequestParam("style") JeanStyleEnum styleEnum,
@@ -342,6 +343,7 @@ public class HomeController {
             @RequestParam("distress") String distress,
             @CookieValue("userTag") String userId,
             Model model) {
+
 
         BigDecimal bd = new BigDecimal(40.00);
 
