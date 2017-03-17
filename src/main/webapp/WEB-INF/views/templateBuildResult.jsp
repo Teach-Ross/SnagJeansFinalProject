@@ -59,6 +59,7 @@
     <p id="rect" style="border:1px solid gray; width:161px; height:100px;"></p>
 
     <input type="submit" value="Submit" onclick="return Validate()">
+    <div style="color:red;"id="errors"></div>
 </form>
 
 
@@ -79,7 +80,7 @@
         var test3 = document.getElementById("style")
         if (test.value == "null" || test2.value == "null" || test3.value == "null") {
             //If the "Please Select" option is selected display error.
-            alert("Please select an option!");
+            document.getElementById("errors").innerHTML="Please Select All Options";
             return false;
         }
         return true;
