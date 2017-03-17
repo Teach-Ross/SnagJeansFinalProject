@@ -16,15 +16,29 @@
 
 <form action="welcomeNew">
 
-    Enter Name: <input type="text" name="name"</input> ${errormessage}<br>
+    Enter Name: <input type="text" id="name" name="name"</input><br>
     Enter Address: <input type="text" name="address"</input> <br>
     Enter City: <input type="text" name="city"</input><br>
     Enter State: <input type="text" name="state"</input><br>
     Enter Zip: <input type="text" name="zip"</input><br>
-    <button type="submit" name="submit">Submit</button>
+    <br>
+    <div id="errors"></div>
+    <br>
+    <input type="submit" value="Submit" onclick="return Validate()"><br>
 
 </form>
 </body>
 <script>
+
+    function Validate() {
+        var test = document.getElementById("name");
+        console.log("name =" + test.value + ".");
+        if (test.value == "") {
+            document.getElementById("errors").
+                innerHTML="Name is missing and is a required field";
+            return false;
+        }
+        return true;
+    }
 </script>
 </html>
