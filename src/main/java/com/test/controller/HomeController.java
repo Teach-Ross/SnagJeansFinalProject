@@ -165,229 +165,258 @@ public class HomeController {
 
     }
 
-        @RequestMapping("/selectTemplate")
-        public String selectTemplate(@RequestParam("id") int templateId, Model model){
-            JeanTemplate temp = accessTemplate.selectTemplate(templateId);
+    @RequestMapping("/selectTemplate")
+    public String selectTemplate(@RequestParam("id") int templateId, Model model){
+        JeanTemplate temp = accessTemplate.selectTemplate(templateId);
 
-            JeanStyleEnum style = JeanStyleEnum.valueOf(temp.getJeanStyle().toUpperCase());
-            boolean cropped = (temp.getCropped() != 0);
-            boolean distress = (temp.getDistressed() != 0);
+        JeanStyleEnum style = JeanStyleEnum.valueOf(temp.getJeanStyle().toUpperCase());
+        boolean cropped = (temp.getCropped() != 0);
+        boolean distress = (temp.getDistressed() != 0);
 
 
+        model.addAttribute("list", JeanStyleEnum.values());
+        model.addAttribute("style", style);
+        model.addAttribute("cropped", cropped);
+        model.addAttribute("distress", distress);
+        model.addAttribute("color", temp.getColor());
+        model.addAttribute("waistSize", temp.getWaistSize());
+        model.addAttribute("inseamSize", temp.getInseamLength());
+        model.addAttribute("templateId", templateId);
+
+
+        return "templateBuildResult";
+    }
+
+    @RequestMapping("/templateBlank")
+    public String displayBlankTemplate(Model model) {
+
+        model.addAttribute("list", JeanStyleEnum.values());
+
+        return "templateBlank";
+    }
+
+    @RequestMapping("/templateBuild")
+    public String jeansImages(Model model) {
+        //used to generate random offset for search query and to generate random product index
+        Random random = new Random();
+
+        try {
+            //provides access to by sending requests through http protocol to other http servers
+            HttpClient http = HttpClientBuilder.create().build();
+
+            //address to call, port 80 is a default
+            //port number 443 for https connection (usually)
+            HttpHost host = new HttpHost("api.shopstyle.com", 80, "http");
+
+            //reference to location we are trying to retrieve data from
+            int offset = random.nextInt(250);
+            HttpGet getPage = new HttpGet("/api/v2/products?pid=uid5921-39054839-10&fts=jeans&limit=25&offset=" + offset);
+
+            //execute HTTP request and get HTTP response back
+            HttpResponse resp = http.execute(host, getPage);
+
+            // Put the JSON to a string object
+            String jsonString = EntityUtils.toString(resp.getEntity());
+            JSONObject obj = new JSONObject(jsonString);
+
+
+            JSONArray ar = obj.getJSONArray("products");
+
+            //used to store useful
+
+            //identify random product
+            int[] numbers = random.ints(0, 24).distinct().limit(3).toArray();
+            JSONObject productObject = ar.getJSONObject(numbers[0]);
+            String image1 = productObject.getJSONObject("image").getJSONObject("sizes").getJSONObject("XLarge").getString("url");
+            int id1 = productObject.getInt("id");
+            String idString = Integer.toString(id1);
+            ArrayList<String> jean1 = new ArrayList<String>();
+            jean1.add(image1);
+            jean1.add(idString);
+
+            model.addAttribute("image1", image1);
+            model.addAttribute("jean1", jean1);
+
+
+            JSONObject productObject2 = ar.getJSONObject(numbers[1]);
+            String image2 = productObject2.getJSONObject("image").getJSONObject("sizes").getJSONObject("XLarge").getString("url");
+            int id2 = productObject2.getInt("id");
+            String idString2 = Integer.toString(id2);
+            ArrayList<String> jean2 = new ArrayList<String>();
+            jean2.add(image2);
+            jean2.add(idString2);
+
+            model.addAttribute("image2", image2);
+            model.addAttribute("jean2", jean2);
+
+            JSONObject productObject3 = ar.getJSONObject(numbers[2]);
+            String image3 = productObject3.getJSONObject("image").getJSONObject("sizes").getJSONObject("XLarge").getString("url");
+            int id3 = productObject3.getInt("id");
+            String idString3 = Integer.toString(id3);
+            ArrayList<String> jean3 = new ArrayList<String>();
+            jean3.add(image3);
+            jean3.add(idString3);
+
+            model.addAttribute("image3", image3);
+            model.addAttribute("jean3", jean3);
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+        }
+
+
+        return "templateBuild";
+    }
+
+
+
+    @RequestMapping("templateBuildResult")
+    public String displayTemplate(Model model,
+                                  @RequestParam("jean") ArrayList<String> jean) {
+
+        String imageUrl = jean.get(0).substring(1);
+        int length = jean.get(1).length();
+        String productId = jean.get(1).substring(0, length - 1);
+        String htmlColor = getHtml(imageUrl);
+        model.addAttribute("color", htmlColor);
+
+        try {
+            //provides access to by sending requests through http protocol to other http servers
+            HttpClient http = HttpClientBuilder.create().build();
+
+            //address to call, port 80 is a default
+            //port number 443 for https connection (usually)
+            HttpHost host = new HttpHost("api.shopstyle.com", 80, "http");
+
+            //reference to location we are trying to retrieve data from
+            String productUrl = "http://api.shopstyle.com/api/v2/products/" + productId + "?pid=uid5921-39054839-10";
+            HttpGet getPage = new HttpGet(productUrl);
+
+            //execute HTTP request and get HTTP response back
+            HttpResponse resp = http.execute(host, getPage);
+
+            // Put the JSON to a string object
+            String jsonString = EntityUtils.toString(resp.getEntity());
+            JSONObject obj = new JSONObject(jsonString);
+
+
+            //gather product name and description
+            model.addAttribute("name", obj.getString("brandedName"));
+            model.addAttribute("description", obj.getString("description"));
+
+            //gather product category
+            JSONArray categoryArray = obj.getJSONArray("categories");
+            String category = categoryArray.getJSONObject(0).getString("name");
+            String brandedName = obj.getString("brandedName");
+            String description = obj.getString("description");
+
+            JeanStyleEnum styleEnum = getStyle(description, category);
+            boolean cropped = checkCropped(description, category, brandedName);
+            boolean distress = checkDistress(description, category);
+            model.addAttribute("style", styleEnum);
             model.addAttribute("list", JeanStyleEnum.values());
-            model.addAttribute("style", style);
             model.addAttribute("cropped", cropped);
             model.addAttribute("distress", distress);
-            model.addAttribute("color", temp.getColor());
-            model.addAttribute("waistSize", temp.getWaistSize());
-            model.addAttribute("inseamSize", temp.getInseamLength());
-            model.addAttribute("templateId", templateId);
-            model.addAttribute("templateName", temp.getTemplateName());
 
-
-            return "templateBuildResult";
-        }
-
-        @RequestMapping("/templateBlank")
-        public String displayBlankTemplate(Model model) {
-
-            model.addAttribute("list", JeanStyleEnum.values());
-
-            return "templateBlank";
-        }
-
-        @RequestMapping("/templateBuild")
-        public String jeansImages(Model model) {
-            //used to generate random offset for search query and to generate random product index
-            Random random = new Random();
-
-            try {
-                //provides access to by sending requests through http protocol to other http servers
-                HttpClient http = HttpClientBuilder.create().build();
-
-                //address to call, port 80 is a default
-                //port number 443 for https connection (usually)
-                HttpHost host = new HttpHost("api.shopstyle.com", 80, "http");
-
-                //reference to location we are trying to retrieve data from
-                int offset = random.nextInt(250);
-                HttpGet getPage = new HttpGet("/api/v2/products?pid=uid5921-39054839-10&fts=jeans&limit=25&offset=" + offset);
-
-                //execute HTTP request and get HTTP response back
-                HttpResponse resp = http.execute(host, getPage);
-
-                // Put the JSON to a string object
-                String jsonString = EntityUtils.toString(resp.getEntity());
-                JSONObject obj = new JSONObject(jsonString);
-
-
-                JSONArray ar = obj.getJSONArray("products");
-
-                //used to store useful
-
-                //identify random product
-                int[] numbers = random.ints(0, 24).distinct().limit(3).toArray();
-                JSONObject productObject = ar.getJSONObject(numbers[0]);
-                String image1 = productObject.getJSONObject("image").getJSONObject("sizes").getJSONObject("XLarge").getString("url");
-                int id1 = productObject.getInt("id");
-                String idString = Integer.toString(id1);
-                ArrayList<String> jean1 = new ArrayList<String>();
-                jean1.add(image1);
-                jean1.add(idString);
-
-                model.addAttribute("image1", image1);
-                model.addAttribute("jean1", jean1);
-
-
-                JSONObject productObject2 = ar.getJSONObject(numbers[1]);
-                String image2 = productObject2.getJSONObject("image").getJSONObject("sizes").getJSONObject("XLarge").getString("url");
-                int id2 = productObject2.getInt("id");
-                String idString2 = Integer.toString(id2);
-                ArrayList<String> jean2 = new ArrayList<String>();
-                jean2.add(image2);
-                jean2.add(idString2);
-
-                model.addAttribute("image2", image2);
-                model.addAttribute("jean2", jean2);
-
-                JSONObject productObject3 = ar.getJSONObject(numbers[2]);
-                String image3 = productObject3.getJSONObject("image").getJSONObject("sizes").getJSONObject("XLarge").getString("url");
-                int id3 = productObject3.getInt("id");
-                String idString3 = Integer.toString(id3);
-                ArrayList<String> jean3 = new ArrayList<String>();
-                jean3.add(image3);
-                jean3.add(idString3);
-
-                model.addAttribute("image3", image3);
-                model.addAttribute("jean3", jean3);
-            } catch (java.io.IOException e) {
-                e.printStackTrace();
+            for (int i = 0; i < categoryArray.length(); i++) {
+                JSONObject tag = categoryArray.getJSONObject(i);
+                String name = "categoryName" + i;
+                model.addAttribute(name, tag.getString("name"));
             }
 
+            JSONArray colorArray = obj.getJSONArray("colors");
+            JSONObject color = obj.getJSONArray("colors").getJSONObject(0);
+            model.addAttribute("colorName", color.getString("name"));
 
-            return "templateBuild";
-        }
-
-
-
-        @RequestMapping("templateBuildResult")
-        public String displayTemplate(Model model,
-                @RequestParam("jean") ArrayList<String> jean) {
-
-            String imageUrl = jean.get(0).substring(1);
-            int length = jean.get(1).length();
-            String productId = jean.get(1).substring(0, length - 1);
-            String htmlColor = getHtml(imageUrl);
-            model.addAttribute("color", htmlColor);
-
-            try {
-                //provides access to by sending requests through http protocol to other http servers
-                HttpClient http = HttpClientBuilder.create().build();
-
-                //address to call, port 80 is a default
-                //port number 443 for https connection (usually)
-                HttpHost host = new HttpHost("api.shopstyle.com", 80, "http");
-
-                //reference to location we are trying to retrieve data from
-                String productUrl = "http://api.shopstyle.com/api/v2/products/" + productId + "?pid=uid5921-39054839-10";
-                HttpGet getPage = new HttpGet(productUrl);
-
-                //execute HTTP request and get HTTP response back
-                HttpResponse resp = http.execute(host, getPage);
-
-                // Put the JSON to a string object
-                String jsonString = EntityUtils.toString(resp.getEntity());
-                JSONObject obj = new JSONObject(jsonString);
-
-
-                //gather product name and description
-                model.addAttribute("name", obj.getString("brandedName"));
-                model.addAttribute("description", obj.getString("description"));
-
-                //gather product category
-                JSONArray categoryArray = obj.getJSONArray("categories");
-                String category = categoryArray.getJSONObject(0).getString("name");
-                String brandedName = obj.getString("brandedName");
-                String description = obj.getString("description");
-
-                JeanStyleEnum styleEnum = getStyle(description, category);
-                boolean cropped = checkCropped(description, category, brandedName);
-                boolean distress = checkDistress(description, category);
-                model.addAttribute("style", styleEnum);
-                model.addAttribute("list", JeanStyleEnum.values());
-                model.addAttribute("cropped", cropped);
-                model.addAttribute("distress", distress);
-
-                for (int i = 0; i < categoryArray.length(); i++) {
-                    JSONObject tag = categoryArray.getJSONObject(i);
-                    String name = "categoryName" + i;
-                    model.addAttribute(name, tag.getString("name"));
+            for (int i = 0; i < colorArray.length(); i++) {
+                JSONObject color2 = colorArray.getJSONObject(i);
+                JSONArray ar = color2.getJSONArray("canonicalColors");
+                for (int j = 0; j < ar.length(); j++) {
+                    String colorName = "colorName" + j;
+                    model.addAttribute(colorName, ar.getJSONObject(j).getString("name"));
                 }
 
-                JSONArray colorArray = obj.getJSONArray("colors");
-                JSONObject color = obj.getJSONArray("colors").getJSONObject(0);
-                model.addAttribute("colorName", color.getString("name"));
-
-                for (int i = 0; i < colorArray.length(); i++) {
-                    JSONObject color2 = colorArray.getJSONObject(i);
-                    JSONArray ar = color2.getJSONArray("canonicalColors");
-                    for (int j = 0; j < ar.length(); j++) {
-                        String colorName = "colorName" + j;
-                        model.addAttribute(colorName, ar.getJSONObject(j).getString("name"));
-                    }
-
-                }
-
-            } catch (java.io.IOException e) {
-                e.printStackTrace();
             }
-            return "templateBuildResult";
+
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+        }
+        return "templateBuildResult";
+    }
+
+    @RequestMapping("gather")
+    public String displayTemplate(
+            @RequestParam("waistsize") int waistSize,
+            @RequestParam("inseamsize") int inseamSize,
+            @RequestParam("style") JeanStyleEnum styleEnum,
+            @RequestParam("color") String htmlColor,
+            @RequestParam("cropped") String cropped,
+            @RequestParam("distress") String distress,
+            @RequestParam(value = "templateId", required = false) int templateId,
+            @RequestParam(value = "templateName", required = false) String templateName,
+            @CookieValue("userTag") String userId,
+            Model model) {
+
+
+        BigDecimal bd = new BigDecimal(40.00);
+
+        userJean.setWaistSize(waistSize);
+        userJean.setInseamLength(inseamSize);
+        userJean.setJeanStyle(styleEnum.toString());
+        userJean.setColor(htmlColor);
+        userJean.setUserId(userId);
+        userJean.setCropped(templateMap.checkboxToBtye(cropped));
+        userJean.setDistressed(templateMap.checkboxToBtye(distress));
+        if(userJean.getDistressed() != 0){
+            bd = bd.add(new BigDecimal(5));
+        }
+        if(userJean.getCropped() != 0){
+            bd = bd.add(new BigDecimal(5));
         }
 
-        @RequestMapping("gather")
-        public String displayTemplate(
-        @RequestParam("waistsize") int waistSize,
-        @RequestParam("inseamsize") int inseamSize,
-        @RequestParam("style") JeanStyleEnum styleEnum,
-        @RequestParam("color") String htmlColor,
-        @RequestParam("cropped") String cropped,
-        @RequestParam("distress") String distress,
-        @RequestParam(value = "templateId", required = false) int templateId,
-        @RequestParam(value = "templateName", required = false) String templateName,
-        @CookieValue("userTag") String userId,
-        Model model) {
+        userJean.setPrice(bd);
 
-
-            BigDecimal bd = new BigDecimal(40.00);
-
-            userJean.setWaistSize(waistSize);
-            userJean.setInseamLength(inseamSize);
-            userJean.setJeanStyle(styleEnum.toString());
-            userJean.setColor(htmlColor);
-            userJean.setUserId(userId);
-            userJean.setCropped(templateMap.checkboxToBtye(cropped));
-            userJean.setDistressed(templateMap.checkboxToBtye(distress));
-            if(userJean.getDistressed() != 0){
-                bd = bd.add(new BigDecimal(5));
-            }
-            if(userJean.getCropped() != 0){
-                bd = bd.add(new BigDecimal(5));
-            }
-
-            userJean.setPrice(bd);
-
-            String tempName = templateName;
-            if(templateName != null){
-                userJean.setTemplateName(tempName);
-            }
-
-            model.addAttribute("templateId", templateId);
-
-            if(templateId != 0){
-                return "templateResultEdit";
-            }
-            return "templateResult";
+        String tempName = templateName;
+        if(!tempName.isEmpty()){
+            userJean.setTemplateName(tempName);
         }
+
+        model.addAttribute("templateId", templateId);
+
+        if(templateId != 0){
+            return "templateResultEdit";
+        }
+        return "templateResult";
+    }
+
+    @RequestMapping("templateSave")
+    public String saveTemplate(
+            @RequestParam(value = "templateId", required = false) String templateId,
+            @RequestParam(value="templateName", required = false) String templateName,
+            @CookieValue("userTag") String userID,
+            Model model)
+    {
+
+        String temp = templateId;
+
+        if(temp != null){
+            userJean.setTemplateId(Integer.valueOf(temp));
+            accessTemplate.update(userJean, Integer.valueOf(temp));
+        }else {
+            userJean.setTemplateName(templateName);
+
+            accessTemplate.insert(userJean);
+        }
+
+        ArrayList<JeanTemplate> templateList = accessTemplate.selectAllUserTemplates(userID);
+
+        model.addAttribute("templateList", templateList);
+
+
+
+        return "templateView";
+    }
+
+
 
     public JeanStyleEnum getStyle(String description, String category) {
 
@@ -418,15 +447,15 @@ public class HomeController {
         String apiKey = "acc_9cf903d4cf36e57",
                 apiSecret = "d8254b91c035c098d5a35a93190609a7";
         try {
-            com.mashape.unirest.http.HttpResponse<JsonNode> response2 = Unirest.get("https://api.imagga.com/v1/colors")
+            com.mashape.unirest.http.HttpResponse<JsonNode> respoonse2 = Unirest.get("https://api.imagga.com/v1/colors")
                     .queryString("url", imageUrl)
                     .basicAuth(apiKey, apiSecret)
                     .header("Accept", "application/json")
                     .asJson();
 
-            JSONArray obj2 = response2.getBody().getObject().getJSONArray("results");
+            JSONArray obj2 = respoonse2.getBody().getObject().getJSONArray("results");
 
-            JSONArray obj = response2.getBody().getObject().getJSONArray("results").getJSONObject(0).getJSONObject("info").getJSONArray("foreground_colors");
+            JSONArray obj = respoonse2.getBody().getObject().getJSONArray("results").getJSONObject(0).getJSONObject("info").getJSONArray("foreground_colors");
 
             return obj.getJSONObject(0).getString("html_code");
 
@@ -465,6 +494,5 @@ public class HomeController {
         }
         return false;
     }
-
 
 }
