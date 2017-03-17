@@ -55,6 +55,14 @@
 
 
 </table>
+
+<form action="templateBlank">
+    <input type="submit" value="Create New Template From Scratch">
+</form>
+<form action="templateBuild">
+    <input type="submit" value="Create New Template From Inspiration">
+</form>
+
 </body>
 
 <%--<script>

@@ -14,16 +14,17 @@
 <body>
 <h1>Please complete your jean template below:</h1>
 <br>
-<form action="gather" method="get" onsubmit="validate()">
-    <select value="" name="waistsize" id="select1">
+<form action="gather" method="get">
+    <input id="templateId" type="hidden" name="templateId" value="0">
+    <input type="hidden" name="templateName" value="">
+    <select name="waistsize" id="select1">
         <option value="null">Select Waist Size</option>
     </select>
-    <select value="" name="inseamsize" id="select2">
-        <option value="">Select Inseam Size</option>
+    <select  name="inseamsize" id="select2">
+        <option value="null">Select Inseam Size</option>
     </select>
-
-    <select name="style" id="select3">
-        <option value="">Select Jean Style</option>
+    <select name="style" id="style">
+        <option value="null">Select Jean Style</option>
         <c:set var="test1" value=""/><c:forEach items="${list}" var="option">
         <option value="${option}">
             <c:out value="${option}"></c:out>
@@ -45,11 +46,24 @@
         <input name="color" class="jscolor {onFineChange:'update(this)'}">
     <p id="rect" style="border:1px solid gray; width:161px; height:100px;"></p>
 
-    <input type="submit" value="Submit">
+    <input type="submit" value="Submit" onclick="return Validate()">
 </form>
 
 </body>
 <script>
+
+    function Validate() {
+        var test = document.getElementById("select1");
+        var test2 = document.getElementById("select2");
+        var test3 = document.getElementById("style")
+        if (test.value == "null" || test2.value == "null" || test3.value == "null") {
+            //If the "Please Select" option is selected display error.
+            alert("Please select an option!");
+            return false;
+        }
+        return true;
+    }
+
 </script>
 
 <script>

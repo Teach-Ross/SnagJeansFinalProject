@@ -39,9 +39,7 @@ public class TemplateDao {
         Session session =getSessionFactory().openSession();
         session.beginTransaction();
         jeanTemplate.setTemplateId(templateId);
-        JeanTemplate temp = (JeanTemplate) session.get(JeanTemplate.class, templateId);
-        temp = jeanTemplate;
-        session.saveOrUpdate(temp);
+        session.saveOrUpdate(jeanTemplate);
         session.getTransaction().commit();
         session.close();
     }

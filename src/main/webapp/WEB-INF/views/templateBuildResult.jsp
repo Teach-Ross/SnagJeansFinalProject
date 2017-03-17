@@ -23,16 +23,17 @@
 <br>
 <form action="gather" method="get">
     <input id="templateId" type="hidden" name="templateId" value="0">
+    <input type="hidden" name="templateName" value="${templateName}">
     <select name="waistsize" id="select1">
-        <option>Select Waist Size</option>
+        <option value="null">Select Waist Size</option>
     </select>
     <select name="inseamsize" id="select2">
-        <option>Select Inseam Size</option>
+        <option value="null">Select Inseam Size</option>
     </select>
 
     <select name="style" id="style">
 
-        <option value="">Select Jean Style</option>
+        <option value="null">Select Jean Style</option>
 
         <c:forEach items="${list}" var="option">
             <option value="${option}">
@@ -57,7 +58,7 @@
         <input name="color" class="jscolor {onFineChange:'update(this)'}" value="${color}">
     <p id="rect" style="border:1px solid gray; width:161px; height:100px;"></p>
 
-    <input type="submit" value="Submit">
+    <input type="submit" value="Submit" onclick="return Validate()">
 </form>
 
 
@@ -71,6 +72,19 @@
     var distress = "${distress}";
     var check2 = (distress === "true");
     document.getElementById("distress").checked = check2;
+
+    function Validate() {
+        var test = document.getElementById("select1");
+        var test2 = document.getElementById("select2");
+        var test3 = document.getElementById("style")
+        if (test.value == "null" || test2.value == "null" || test3.value == "null") {
+            //If the "Please Select" option is selected display error.
+            alert("Please select an option!");
+            return false;
+        }
+        return true;
+    }
+
 </script>
 
 <script>
