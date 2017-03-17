@@ -1,14 +1,20 @@
 package com.test.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
+import org.hibernate.annotations.Entity;
+
+
 
 /**
  * Created by mpjoh on 3/15/2017.
  */
-@Entity
+@Entity(
+        dynamicUpdate = true
+)
 @Table(name = "JeanTemplate", schema = "Denim_Store_DB", catalog = "")
-public class JeanTemplate {
+public class JeanTemplate implements Serializable{
     private int templateId;
     private String jeanStyle;
     private String color;
@@ -31,6 +37,7 @@ public class JeanTemplate {
     }
 
     @Basic
+
     @Column(name = "JeanStyle", nullable = false, length = 12)
     public String getJeanStyle() {
         return jeanStyle;
@@ -51,7 +58,7 @@ public class JeanTemplate {
     }
 
     @Basic
-    @Column(name = "TemplateName", nullable = false, length = 55)
+    @Column(name = "TemplateName", nullable = true, length = 55, updatable=false)
     public String getTemplateName() {
         return templateName;
     }

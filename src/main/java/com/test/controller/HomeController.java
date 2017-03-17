@@ -52,7 +52,7 @@ public class HomeController {
 
     }
 
-    @RequestMapping("welcome2")
+    @RequestMapping("/welcome2")
 
     public String gatherFbData(@RequestParam("code") String code,
                                HttpServletResponse response, Model model) {
@@ -91,7 +91,7 @@ public class HomeController {
     }
 
     //Create UserEntity and insert into database
-    @RequestMapping("welcomeNew")
+    @RequestMapping("/welcomeNew")
 
     public ModelAndView welcomeNew(@RequestParam("name") String name,
                                    @RequestParam("address") String address,
@@ -122,19 +122,19 @@ public class HomeController {
                 ModelAndView("templateDirect"," "," ");
     }
 
-    @RequestMapping("home")
+    @RequestMapping("/home")
     public String home(){
         return "welcomeExists";
     }
 
     //asks user if they would like to create blank template or build template from inspiration
-    @RequestMapping("newTemplate")
+    @RequestMapping("/newTemplate")
     public String newTemplate() {
         return "templateDirect";
     }
 
     //pulls users old templates from database, allows user to select one to edit
-    @RequestMapping("editTemplate")
+    @RequestMapping("/editTemplate")
     public String editTemplate(Model model, @CookieValue("userTag") String userID) {
         ArrayList<JeanTemplate> templateList = accessTemplate.selectAllUserTemplates(userID);
 
@@ -143,7 +143,7 @@ public class HomeController {
         return "templateView";
     }
 
-    @RequestMapping("deleteTemplate")
+    @RequestMapping("/deleteTemplate")
     public String deleteCustomer(@RequestParam("id") int templateId,
                                  @CookieValue("userTag") String userID,
                                  Model model)
@@ -161,7 +161,7 @@ public class HomeController {
 
     }
 
-    @RequestMapping("selectTemplate")
+    @RequestMapping("/selectTemplate")
     public String selectTemplate(@RequestParam("id") int templateId, Model model){
         JeanTemplate temp = accessTemplate.selectTemplate(templateId);
 
@@ -183,7 +183,7 @@ public class HomeController {
         return "templateBuildResult";
     }
 
-    @RequestMapping("templateBlank")
+    @RequestMapping("/templateBlank")
     public String displayBlankTemplate(Model model) {
 
         model.addAttribute("list", JeanStyleEnum.values());
@@ -191,7 +191,7 @@ public class HomeController {
         return "templateBlank";
     }
 
-    @RequestMapping("templateBuild")
+    @RequestMapping("/templateBuild")
     public String jeansImages(Model model) {
         //used to generate random offset for search query and to generate random product index
         Random random = new Random();
@@ -370,27 +370,34 @@ public class HomeController {
 
         userJean.setPrice(bd);
 
-        model.addAttribute("out1", cropped);
-        model.addAttribute("out2", distress);
+        model.addAttribute("templateId", templateId);
 
-
+        if(templateId != 0){
+            return "templateResultEdit";
+        }
         return "templateResult";
     }
 
     @RequestMapping("templateSave")
     public String saveTemplate(
-            @RequestParam("templateName") String templateName,
+            @RequestParam(value = "templateId", required = false) int templateId,
+            @RequestParam(value="templateName", required = false) String templateName,
             @CookieValue("userTag") String userID,
                                Model model)
     {
 
-        userJean.setTemplateName(templateName);
+        if(templateId != 0){
+            accessTemplate.update(userJean, templateId);
+        }else {
+            userJean.setTemplateName(templateName);
 
-        accessTemplate.insert(userJean);
+            accessTemplate.insert(userJean);
+        }
 
-        ArrayList<JeanTemplate> templateList = accessTemplate.selectAllUserTemplates(userID);
+            ArrayList<JeanTemplate> templateList = accessTemplate.selectAllUserTemplates(userID);
 
-        model.addAttribute("templateList", templateList);
+            model.addAttribute("templateList", templateList);
+
 
 
         return "templateView";

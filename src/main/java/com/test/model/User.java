@@ -4,9 +4,10 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.io.Serializable;
 
 @Entity
-public class User {
+public class User implements Serializable{
     private String name;
     private String address;
     private String city;

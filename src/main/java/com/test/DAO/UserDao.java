@@ -1,6 +1,5 @@
 package com.test.DAO;
 
-import com.test.model.JeanTemplate;
 import com.test.model.User;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -26,6 +25,7 @@ public class UserDao {
         session.getTransaction().commit();
         session.close();
     }
+
 
     public void delete(User user) {
         Session session = getSessionFactory().openSession();

@@ -30,14 +30,19 @@
         <option>Select Inseam Size</option>
     </select>
 
-    <select name="style" id="select3">
-        <option selected="${style}" value="">Select Jean Style</option>
-        <c:set var="test1" value="${style}"/><c:forEach items="${list}" var="option">
-        <option value="${option}">
-            <c:out value="${option}"></c:out>
-        </option>
-    </c:forEach>
+    <select name="style" id="style">
+
+        <option value="">Select Jean Style</option>
+
+        <c:forEach items="${list}" var="option">
+            <option value="${option}">
+                <c:out value="${option}"></c:out>
+            </option>
+        </c:forEach>
     </select>
+
+
+
 
     <input type='hidden' value="" name="cropped">
     <input type="checkbox" name="cropped" id="cropped" value="1">
@@ -70,8 +75,13 @@
 
 <script>
     var e = document.getElementById("select3");
+    var f = document.getElementById("style");
+    //e.options[e.selectedIndex].value = "T"; // does not work
+    f.value = "${style}";
     //e.options[e.selectedIndex].value = "T"; // does not work
     e.value = "${style}";
+</script>
+<script>
 
     function dropDown(id, min, max) {
         var select = document.getElementById(id);
