@@ -17,11 +17,11 @@
 <form action="templateBuild">
     <input type="submit" value="Create Template From Inspiration">
 </form>
-<div id="right"
+<!-- div id="right"
 <iframe width="1200" height="615"
         src="http://www.glamour.com/story/flattering-jeans-reese-witherspoon-kendall-jenner-denim"
         frameborder="0" allowfullscreen></iframe>
-</div>
+</div-->
 
 </body>
 </html>
