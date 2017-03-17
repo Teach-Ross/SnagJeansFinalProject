@@ -16,7 +16,7 @@
 
 <form action="welcomeNew">
 
-    Enter Name: <input type="text" name="name"</input><br>
+    Enter Name: <input type="text" name="name"</input> ${errormessage}<br>
     Enter Address: <input type="text" name="address"</input> <br>
     Enter City: <input type="text" name="city"</input><br>
     Enter State: <input type="text" name="state"</input><br>

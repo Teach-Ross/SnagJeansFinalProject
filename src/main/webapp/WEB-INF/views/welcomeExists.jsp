@@ -20,6 +20,11 @@
 <form action="editTemplate">
     <input type="submit" value="View Existing Template">
 </form>
+<div id="right"
+<iframe width="1200" height="615"
+        src="http://www.glamour.com/story/flattering-jeans-reese-witherspoon-kendall-jenner-denim"
+        frameborder="0" allowfullscreen></iframe>
+</div>
 
 </body>
 </html>
