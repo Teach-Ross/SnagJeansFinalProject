@@ -51,16 +51,13 @@ public class UserDao {
 
         public boolean userIdExists(String userId){
 
-        SessionFactory sessionFactory;
-        Configuration cfg2 = new Configuration().configure("hibernate.cfg.xml");
-        SessionFactory sessionFactory1 = cfg2.buildSessionFactory();
-        Session session = sessionFactory1.openSession();
+        Session session = getSessionFactory().openSession();
         session.beginTransaction();
         Criteria userIdSearch = session.createCriteria(User.class)
                 .add(Restrictions.eq("userId", userId))
                 .setProjection(Projections.rowCount());
-
         Long rowCount = (Long) userIdSearch.uniqueResult();
+
         return (rowCount > 0);
 
     }
