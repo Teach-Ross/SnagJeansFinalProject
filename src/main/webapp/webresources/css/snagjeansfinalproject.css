@@ -10,7 +10,8 @@ body {
 
 h3 {
   font-size: 50px;
-  margin-left: 10%
+  margin-left: 25%;
+  margin-top: -5%;
 }
 
 ul {
@@ -24,8 +25,8 @@ div.background {
   /* opacity: .6; */
   /* border: 2px solid #FFE16D ; */
   width: 40%;
-  margin-left: 55%;
-  margin-top: 20%;
+  margin-left: 50%;
+  margin-top: 10%;
 
 }
 
@@ -35,9 +36,8 @@ div.transbox {
   /* background-color: #ffffff; */
   /* border: 1px solid lightgray ; */
   /* opacity: 0.7; */
-  width: 70%;
-  margin-left: auto;
-  margin-right: auto;
+  width: 82%;
+  margin-left: 20%;
   filter: alpha(opacity=60); /* For IE8 and earlier */
   color: #1F467F;
 }
@@ -69,7 +69,7 @@ div.transbox p {
   text-indent: -999em;
   border: 0;
   display: inline-block;
-  margin-left: 10%;
+  margin-left: 20%;
   margin-top: -10%;
 }
 
