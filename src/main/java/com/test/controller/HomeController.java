@@ -27,6 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
@@ -82,9 +83,8 @@ public class HomeController {
             String userName = newUser.getName();
             model.addAttribute("message", userName);
             return
-            "welcomeExists";
-        }
-        else {
+                    "welcomeExists";
+        } else {
             return "welcomeNew";
         }
     }
@@ -109,8 +109,7 @@ public class HomeController {
         if (name.equalsIgnoreCase("")) {
             String errorMessage = "Name is missing and is a required field";
             return new ModelAndView("welcomeNew", "errormessage", errorMessage);
-        }
-        else {
+        } else {
             User addUser = new User();
 
             addUser.setUserId(userId);
@@ -127,7 +126,7 @@ public class HomeController {
     }
 
     @RequestMapping("/home")
-    public String home(){
+    public String home() {
         return "welcomeExists";
     }
 
@@ -150,8 +149,7 @@ public class HomeController {
     @RequestMapping("/deleteTemplate")
     public String deleteCustomer(@RequestParam("id") int templateId,
                                  @CookieValue("userTag") String userID,
-                                 Model model)
-    {
+                                 Model model) {
         // temp will store info for the object that we want to delete
         JeanTemplate temp = new JeanTemplate();
         temp.setTemplateId(templateId);
@@ -166,7 +164,7 @@ public class HomeController {
     }
 
     @RequestMapping("/selectTemplate")
-    public String selectTemplate(@RequestParam("id") int templateId, Model model){
+    public String selectTemplate(@RequestParam("id") int templateId, Model model) {
         JeanTemplate temp = accessTemplate.selectTemplate(templateId);
 
         JeanStyleEnum style = JeanStyleEnum.valueOf(temp.getJeanStyle().toUpperCase());
@@ -197,76 +195,124 @@ public class HomeController {
 
     @RequestMapping("/templateBuild")
     public String jeansImages(Model model) {
+
         //used to generate random offset for search query and to generate random product index
         Random random = new Random();
 
-        try {
-            //provides access to by sending requests through http protocol to other http servers
-            HttpClient http = HttpClientBuilder.create().build();
+        JSONObject obj = gatherImages("/api/v2/products?pid=uid5921-39054839-10&cat=jeans");
 
-            //address to call, port 80 is a default
-            //port number 443 for https connection (usually)
-            HttpHost host = new HttpHost("api.shopstyle.com", 80, "http");
+        JSONArray ar = obj.getJSONArray("products");
 
-            //reference to location we are trying to retrieve data from
-            int offset = random.nextInt(250);
-            HttpGet getPage = new HttpGet("/api/v2/products?pid=uid5921-39054839-10&fts=jeans&limit=25&offset=" + offset);
+        //used to store useful
 
-            //execute HTTP request and get HTTP response back
-            HttpResponse resp = http.execute(host, getPage);
+        //identify random product
+        int[] numbers = random.ints(0, 24).distinct().limit(3).toArray();
+        JSONObject productObject = ar.getJSONObject(numbers[0]);
+        String image1 = productObject.getJSONObject("image").getJSONObject("sizes").getJSONObject("XLarge").getString("url");
+        int id1 = productObject.getInt("id");
+        String idString = Integer.toString(id1);
+        ArrayList<String> jean1 = new ArrayList<String>();
+        jean1.add(image1);
+        jean1.add(idString);
 
-            // Put the JSON to a string object
-            String jsonString = EntityUtils.toString(resp.getEntity());
-            JSONObject obj = new JSONObject(jsonString);
+        model.addAttribute("image1", image1);
+        model.addAttribute("jean1", jean1);
 
+        JSONObject productObject2 = ar.getJSONObject(numbers[1]);
+        String image2 = productObject2.getJSONObject("image").getJSONObject("sizes").getJSONObject("XLarge").getString("url");
+        int id2 = productObject2.getInt("id");
+        String idString2 = Integer.toString(id2);
+        ArrayList<String> jean2 = new ArrayList<String>();
+        jean2.add(image2);
+        jean2.add(idString2);
 
-            JSONArray ar = obj.getJSONArray("products");
+        model.addAttribute("image2", image2);
+        model.addAttribute("jean2", jean2);
 
-            //used to store useful
+        JSONObject productObject3 = ar.getJSONObject(numbers[2]);
+        String image3 = productObject3.getJSONObject("image").getJSONObject("sizes").getJSONObject("XLarge").getString("url");
+        int id3 = productObject3.getInt("id");
+        String idString3 = Integer.toString(id3);
+        ArrayList<String> jean3 = new ArrayList<String>();
+        jean3.add(image3);
+        jean3.add(idString3);
 
-            //identify random product
-            int[] numbers = random.ints(0, 24).distinct().limit(3).toArray();
-            JSONObject productObject = ar.getJSONObject(numbers[0]);
-            String image1 = productObject.getJSONObject("image").getJSONObject("sizes").getJSONObject("XLarge").getString("url");
-            int id1 = productObject.getInt("id");
-            String idString = Integer.toString(id1);
-            ArrayList<String> jean1 = new ArrayList<String>();
-            jean1.add(image1);
-            jean1.add(idString);
-
-            model.addAttribute("image1", image1);
-            model.addAttribute("jean1", jean1);
-
-
-            JSONObject productObject2 = ar.getJSONObject(numbers[1]);
-            String image2 = productObject2.getJSONObject("image").getJSONObject("sizes").getJSONObject("XLarge").getString("url");
-            int id2 = productObject2.getInt("id");
-            String idString2 = Integer.toString(id2);
-            ArrayList<String> jean2 = new ArrayList<String>();
-            jean2.add(image2);
-            jean2.add(idString2);
-
-            model.addAttribute("image2", image2);
-            model.addAttribute("jean2", jean2);
-
-            JSONObject productObject3 = ar.getJSONObject(numbers[2]);
-            String image3 = productObject3.getJSONObject("image").getJSONObject("sizes").getJSONObject("XLarge").getString("url");
-            int id3 = productObject3.getInt("id");
-            String idString3 = Integer.toString(id3);
-            ArrayList<String> jean3 = new ArrayList<String>();
-            jean3.add(image3);
-            jean3.add(idString3);
-
-            model.addAttribute("image3", image3);
-            model.addAttribute("jean3", jean3);
-        } catch (java.io.IOException e) {
-            e.printStackTrace();
-        }
+        model.addAttribute("image3", image3);
+        model.addAttribute("jean3", jean3);
 
 
         return "templateBuild";
     }
 
+    @RequestMapping("/templateBuildPreferences")
+    public String jeanImagesPrefferences(Model model,
+                                         @CookieValue("userTag") String userID) {
+        //used to generate random offset for search query and to generate random product index
+        Random random = new Random();
+
+        ArrayList<JeanTemplate> templateList = accessTemplate.selectAllUserTemplates(userID);
+
+        String name = accessTemplate.selectSearchJeanType(userID);
+        Object[] preferences = accessTemplate.selectSearchCroppedDistressed(userID);
+        boolean crop = (boolean) preferences[0];
+        boolean distress = (boolean) preferences[1];
+        boolean favoriteCroppedDistress = (boolean) preferences[2];
+
+        model.addAttribute("name", name);
+        model.addAttribute("crop", crop);
+        model.addAttribute("distress", distress);
+        String searchQuery = "";
+
+        try {
+            searchQuery = URLEncoder.encode(returnRandomSearch(name, crop, distress, favoriteCroppedDistress), "UTF-8");
+        } catch (java.io.UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        JSONObject obj = gatherImages(searchQuery);
+
+        JSONArray ar = obj.getJSONArray("products");
+
+        //used to store useful
+
+        //identify random product
+        int[] numbers = random.ints(0, 24).distinct().limit(3).toArray();
+        JSONObject productObject = ar.getJSONObject(numbers[0]);
+        String image1 = productObject.getJSONObject("image").getJSONObject("sizes").getJSONObject("XLarge").getString("url");
+        int id1 = productObject.getInt("id");
+        String idString = Integer.toString(id1);
+        ArrayList<String> jean1 = new ArrayList<String>();
+        jean1.add(image1);
+        jean1.add(idString);
+
+        model.addAttribute("image1", image1);
+        model.addAttribute("jean1", jean1);
+
+        JSONObject productObject2 = ar.getJSONObject(numbers[1]);
+        String image2 = productObject2.getJSONObject("image").getJSONObject("sizes").getJSONObject("XLarge").getString("url");
+        int id2 = productObject2.getInt("id");
+        String idString2 = Integer.toString(id2);
+        ArrayList<String> jean2 = new ArrayList<String>();
+        jean2.add(image2);
+        jean2.add(idString2);
+
+        model.addAttribute("image2", image2);
+        model.addAttribute("jean2", jean2);
+
+        JSONObject productObject3 = ar.getJSONObject(numbers[2]);
+        String image3 = productObject3.getJSONObject("image").getJSONObject("sizes").getJSONObject("XLarge").getString("url");
+        int id3 = productObject3.getInt("id");
+        String idString3 = Integer.toString(id3);
+        ArrayList<String> jean3 = new ArrayList<String>();
+        jean3.add(image3);
+        jean3.add(idString3);
+
+        model.addAttribute("image3", image3);
+        model.addAttribute("jean3", jean3);
+
+
+        return "templateBuildPreferences";
+    }
 
 
     @RequestMapping("templateBuildResult")
@@ -299,31 +345,28 @@ public class HomeController {
             JSONObject obj = new JSONObject(jsonString);
 
 
-            //gather product name and description
-            model.addAttribute("name", obj.getString("brandedName"));
-            model.addAttribute("description", obj.getString("description"));
-
             //gather product category
             JSONArray categoryArray = obj.getJSONArray("categories");
-            String category = categoryArray.getJSONObject(0).getString("name");
+            ArrayList<String> categories = new ArrayList<String>();
+            for (int i = 0; i < categoryArray.length(); i++) {
+                JSONObject tag = categoryArray.getJSONObject(i);
+                categories.add(tag.getString("name"));
+            }
+            //gather product name and description
             String brandedName = obj.getString("brandedName");
             String description = obj.getString("description");
 
-            JeanStyleEnum styleEnum = getStyle(description, category);
-            boolean cropped = checkCropped(description, category, brandedName);
-            boolean distress = checkDistress(description, category);
+            JeanStyleEnum styleEnum = templateMap.getStyle(description, categories);
+            boolean cropped = templateMap.checkCropped(description, brandedName, categories);
+            boolean distress = templateMap.checkDistress(description, categories);
             model.addAttribute("style", styleEnum);
             model.addAttribute("list", JeanStyleEnum.values());
             model.addAttribute("cropped", cropped);
             model.addAttribute("distress", distress);
 
-            for (int i = 0; i < categoryArray.length(); i++) {
-                JSONObject tag = categoryArray.getJSONObject(i);
-                String name = "categoryName" + i;
-                model.addAttribute(name, tag.getString("name"));
-            }
 
-            JSONArray colorArray = obj.getJSONArray("colors");
+
+        /*    JSONArray colorArray = obj.getJSONArray("colors");
             JSONObject color = obj.getJSONArray("colors").getJSONObject(0);
             model.addAttribute("colorName", color.getString("name"));
 
@@ -334,8 +377,8 @@ public class HomeController {
                     String colorName = "colorName" + j;
                     model.addAttribute(colorName, ar.getJSONObject(j).getString("name"));
                 }
+                }*/
 
-            }
 
         } catch (java.io.IOException e) {
             e.printStackTrace();
@@ -366,23 +409,23 @@ public class HomeController {
         userJean.setUserId(userId);
         userJean.setCropped(templateMap.checkboxToBtye(cropped));
         userJean.setDistressed(templateMap.checkboxToBtye(distress));
-        if(userJean.getDistressed() != 0){
+        if (userJean.getDistressed() != 0) {
             bd = bd.add(new BigDecimal(5));
         }
-        if(userJean.getCropped() != 0){
+        if (userJean.getCropped() != 0) {
             bd = bd.add(new BigDecimal(5));
         }
 
         userJean.setPrice(bd);
 
         String tempName = templateName;
-        if(!tempName.isEmpty()){
+        if (!tempName.isEmpty()) {
             userJean.setTemplateName(tempName);
         }
 
         model.addAttribute("templateId", templateId);
 
-        if(templateId != 0){
+        if (templateId != 0) {
             return "templateResultEdit";
         }
         return "templateResult";
@@ -391,17 +434,16 @@ public class HomeController {
     @RequestMapping("templateSave")
     public String saveTemplate(
             @RequestParam(value = "templateId", required = false) String templateId,
-            @RequestParam(value="templateName", required = false) String templateName,
+            @RequestParam(value = "templateName", required = false) String templateName,
             @CookieValue("userTag") String userID,
-            Model model)
-    {
+            Model model) {
 
         String temp = templateId;
 
-        if(temp != null){
+        if (temp != null) {
             userJean.setTemplateId(Integer.valueOf(temp));
             accessTemplate.update(userJean, Integer.valueOf(temp));
-        }else {
+        } else {
             userJean.setTemplateName(templateName);
 
             accessTemplate.insert(userJean);
@@ -412,35 +454,9 @@ public class HomeController {
         model.addAttribute("templateList", templateList);
 
 
-
         return "templateView";
     }
 
-
-
-    public JeanStyleEnum getStyle(String description, String category) {
-
-        //matches category against JeanStyleEnum Enum directly
-        for (JeanStyleEnum style : JeanStyleEnum.values()) {
-            if (category.contains(style.toString())) {
-                return style;
-            }
-        }
-        //matches for keywords in description to find JeanStyleEnum
-        String d = description.toLowerCase();
-        if (d.contains("skinny") | d.contains("leggings")) {
-            return JeanStyleEnum.SKINNY;
-        } else if (category.contains("Classic") | d.contains("straight")) {
-            return JeanStyleEnum.STRAIGHT;
-        } else if (d.contains("relaxed")) {
-            return JeanStyleEnum.RELAXED;
-        } else if (d.contains("flare")) {
-            return JeanStyleEnum.FLARE;
-        } else if (d.contains("bootcut")) {
-            return JeanStyleEnum.BOOTCUT;
-        }
-        return JeanStyleEnum.STRAIGHT;
-    }
 
     public String getHtml(String imageUrl) {
 
@@ -465,34 +481,74 @@ public class HomeController {
         return null;
     }
 
-    private boolean checkCropped(String description, String category, String brandedName) {
-        if (category.contains("Cropped")) {
-            return true;
+
+    private String returnRandomSearch(String jeanStyle, boolean cropped, boolean distress, boolean favoriteCroppedDistress) {
+        Random random = new Random();
+        if (jeanStyle.equalsIgnoreCase("Straight")) {
+            jeanStyle = "straight-leg";
         }
 
-        String b = brandedName.toLowerCase();
-        if (b.contains("ankle") | b.contains("crop") | b.contains("capri") | b.contains("cutoff")) {
-            return true;
+        String search0 = "/api/v2/products?pid=uid5921-39054839-10&cat=jeans";
+        String search1 = "/api/v2/products?pid=uid5921-39054839-10&cat=" + jeanStyle.toLowerCase() + "-jeans";
+        String search2;
+        String search3;
+        String search4 = search1;
+
+        if (cropped) {
+            search2 = "/api/v2/products?pid=uid5921-39054839-10&fts=" + jeanStyle.toLowerCase() + "+cropped+jeans";
+        } else {
+            search2 = search1;
+        }
+        if (distress) {
+            search3 = "/api/v2/products?pid=uid5921-39054839-10&fts=" + jeanStyle.toLowerCase() + "+distressed+jeans";
+        }else{
+            search3 = search0;
         }
 
-        String d = description.toLowerCase();
-        if (d.contains("ankle") | d.contains("crop") | d.contains("capri") | d.contains("cutoff")) {
-            return true;
+        if (cropped && distress) {
+            if (favoriteCroppedDistress) {
+                search4 = search2;
+            } else {
+                search4 = search3;
+            }
         }
 
-
-        return false;
+        String[] search = {search0, search1, search2, search3, search4};
+        int[] weight = {0, 1, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4};
+        return search[weight[random.nextInt(12)]];
     }
 
-    private boolean checkDistress(String description, String category) {
-        if (category.contains("Distressed")) {
-            return true;
+    private JSONObject gatherImages(String search) {
+        //used to generate random offset for search query and to generate random product index
+        Random random = new Random();
+
+
+        try {
+            //provides access to by sending requests through http protocol to other http servers
+            HttpClient http = HttpClientBuilder.create().build();
+
+            //address to call, port 80 is a default
+            //port number 443 for https connection (usually)
+            HttpHost host = new HttpHost("api.shopstyle.com", 80, "http");
+
+            //reference to location we are trying to retrieve data from
+            int offset = random.nextInt(250);
+            HttpGet getPage = new HttpGet(search + "&limit=25&offset=" + offset);
+
+            //execute HTTP request and get HTTP response back
+            HttpResponse resp = http.execute(host, getPage);
+
+            // Put the JSON to a string object
+            String jsonString = EntityUtils.toString(resp.getEntity());
+            JSONObject obj = new JSONObject(jsonString);
+
+            return obj;
+
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
         }
-        String d = description.toLowerCase();
-        if (d.contains("hole") | d.contains("distress") | d.contains("shred") | d.contains("rip") | d.contains("destroy")) {
-            return true;
-        }
-        return false;
+        return null;
+
     }
 
 }

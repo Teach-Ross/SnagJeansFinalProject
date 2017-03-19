@@ -84,7 +84,8 @@ public class TemplateDao {
         return (String) array[1];
     }
 
-    public boolean selectSearchCropped(String userId){
+    public Object[] selectSearchCroppedDistressed(String userId){
+        Object[] preferences = new Object[3];
 
         Session session = getSessionFactory().openSession();
         session.beginTransaction();
@@ -93,13 +94,29 @@ public class TemplateDao {
                 .setProjection(Projections.rowCount());
         Long rowCount = (Long) total.uniqueResult();
 
-        Criteria on = session.createCriteria(JeanTemplate.class)
+        Criteria c1 = session.createCriteria(JeanTemplate.class)
                 .add(Restrictions.eq("userId", userId))
                 .add(Restrictions.eq("cropped", (byte) 1))
                 .setProjection(Projections.rowCount());
-        Long countCropped = (Long) on.uniqueResult();
+        Long countCropped = (Long) c1.uniqueResult();
 
-        return (countCropped > (rowCount - countCropped));
+        Criteria c2 = session.createCriteria(JeanTemplate.class)
+                .add(Restrictions.eq("userId", userId))
+                .add(Restrictions.eq("distressed", (byte) 1))
+                .setProjection(Projections.rowCount());
+        Long countDistressed = (Long) c2.uniqueResult();
+
+
+
+        preferences[0] = (countCropped > (rowCount - countCropped));
+        preferences[1] = (countDistressed > (rowCount - countDistressed));
+        preferences[2] = (countCropped > countDistressed);
+
+        return preferences;
+
+    }
+
+
 
     }
 
@@ -142,4 +159,4 @@ public class TemplateDao {
         String m = (String) results.get(0);*/
 
 
-}
+
