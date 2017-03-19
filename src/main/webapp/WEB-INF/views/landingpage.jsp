@@ -22,12 +22,12 @@
 
 <div class="background">
    <div class="transbox">
-      <h1>Welcome to Snag Jeans</h1>
-      <h2>Please log in:</h2>
-      <a href="${message}">FB Login!</a>
+       <img src="/webresources/images/Snag_Logo_R2_Version4.png" alt="Snag Logo"
+            height="300px" width="600px">
+       <h3>Build It. Buy It. Own It.</h3>
+      <a id="FB_Login" href="${message}">FB Login!</a>
    </div>
 </div>
-
 
 </body>
 </html>

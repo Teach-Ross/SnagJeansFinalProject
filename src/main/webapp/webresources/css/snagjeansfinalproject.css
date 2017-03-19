@@ -8,6 +8,11 @@ body {
     color: white;
 }
 
+h3 {
+  font-size: 50px;
+  margin-left: 10%
+}
+
 ul {
   list-style-type: none;
   text-align: left;
@@ -15,11 +20,11 @@ ul {
 
 div.background {
   position: relative;
-  background-color: #FFE16D;
-  opacity: .6;
-  border: 2px solid #FFE16D ;
+  /* background-color: #FFE16D; */
+  /* opacity: .6; */
+  /* border: 2px solid #FFE16D ; */
   width: 40%;
-  margin-left: 50%;
+  margin-left: 55%;
   margin-top: 20%;
 
 }
@@ -30,7 +35,7 @@ div.transbox {
   /* background-color: #ffffff; */
   /* border: 1px solid lightgray ; */
   /* opacity: 0.7; */
-  width: 65%;
+  width: 70%;
   margin-left: auto;
   margin-right: auto;
   filter: alpha(opacity=60); /* For IE8 and earlier */
@@ -54,18 +59,18 @@ div.transbox p {
   margin-bottom: 10%;
 }
 
-#groceryList {
+#FB_Login {
+  background-image: url('../images/FBlogin.png');
+  height: 200px;
+  width: 400px;
+  background-repeat: no-repeat;
+  background-size: 400px;
+  color: #000000;
+  text-indent: -999em;
+  border: 0;
   display: inline-block;
-  position: relative;
-  margin-left: -30px;
-  margin-top: 20px;
-}
-
-#groceryPriceList {
-  display: inline-block;
-  position: relative;
-  margin-left: 20px;
-  margin-top: -212px;
+  margin-left: 10%;
+  margin-top: -10%;
 }
 
 #foodTotal {
