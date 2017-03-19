@@ -17,14 +17,17 @@
 
     <link rel="stylesheet" type="text/css"
           href="webresources/css/snagjeansfinalproject.css">
-
 </head>
 <body>
-<h1>Welcome to Snag Jeans</h1>
-<h2>Please log in:</h2>
-<h3>Test</h3>
-<div id="left">
-    <a href="${message}">FB Login!</a>
+
+<div class="background">
+   <div class="transbox">
+      <h1>Welcome to Snag Jeans</h1>
+      <h2>Please log in:</h2>
+      <a href="${message}">FB Login!</a>
+   </div>
 </div>
+
+
 </body>
 </html>

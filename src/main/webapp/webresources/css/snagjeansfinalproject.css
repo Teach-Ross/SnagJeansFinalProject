@@ -1,12 +1,11 @@
 body {
-	/* background-image: url("../images/snagjeans_background.jpg"); */
-    background-color: blue;
-	background-size: 100% 1000px;
+	background-image: url("../images/snagjeans_background.jpg");
+	background-size: 100%;
 	background-repeat: no-repeat;
-  font-family: "Calibri", serif;
+    font-family: "Calibri", serif;
     font-size: 25px;
 	text-align: center;
-  color: white;
+    color: white;
 }
 
 ul {
@@ -16,24 +15,26 @@ ul {
 
 div.background {
   position: relative;
-  /* background: url(Grocery_Store.jpg) repeat; */
-  background-color: lightgray;
-  opacity: .8;
-  border: 2px solid lightgray ;
-  width: 60%;
-  margin: 60px auto auto;
+  background-color: #FFE16D;
+  opacity: .6;
+  border: 2px solid #FFE16D ;
+  width: 40%;
+  margin-left: 50%;
+  margin-top: 20%;
+
 }
 
 div.transbox {
   position: relative;
   margin: 30px;
-  background-color: #ffffff;
-  border: 1px solid lightgray ;
-  opacity: 0.7;
+  /* background-color: #ffffff; */
+  /* border: 1px solid lightgray ; */
+  /* opacity: 0.7; */
   width: 65%;
   margin-left: auto;
   margin-right: auto;
   filter: alpha(opacity=60); /* For IE8 and earlier */
+  color: #1F467F;
 }
 
 div.transbox p {

@@ -10,6 +10,8 @@
 <html>
 <head>
     <title>Snag Jeans</title>
+    <link rel="stylesheet" type="text/css"
+          href="webresources/css/snagjeansfinalproject.css">
 </head>
 <body>
 <h1>Please complete your jean template below:</h1>

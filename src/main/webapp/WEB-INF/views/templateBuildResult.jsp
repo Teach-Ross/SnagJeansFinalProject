@@ -16,6 +16,8 @@
             background-color: ${color};
     </style>
 
+    <link rel="stylesheet" type="text/css"
+          href="webresources/css/snagjeansfinalproject.css">
 
 </head>
 <body>

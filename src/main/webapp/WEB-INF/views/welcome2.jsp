@@ -9,10 +9,10 @@
 <html>
 <head>
     <title>New</title>
+    <link rel="stylesheet" type="text/css"
+          href="webresources/css/snagjeansfinalproject.css">
 </head>
 <body>
 HELLO
-
-
 </body>
 </html>

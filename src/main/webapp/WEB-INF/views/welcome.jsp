@@ -9,6 +9,8 @@
 <html>
 <head>
     <title>Title</title>
+    <link rel="stylesheet" type="text/css"
+          href="webresources/css/snagjeansfinalproject.css">
 </head>
 <body>
 <form action="template2">

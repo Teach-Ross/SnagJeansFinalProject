@@ -9,6 +9,8 @@
 <html>
 <head>
     <title>ViewJean</title>
+    <link rel="stylesheet" type="text/css"
+          href="webresources/css/snagjeansfinalproject.css">
 </head>
 <body>
 ${out1}

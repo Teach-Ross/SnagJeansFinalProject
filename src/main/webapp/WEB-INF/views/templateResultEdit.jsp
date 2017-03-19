@@ -9,6 +9,8 @@
 <html>
 <head>
     <title>Snage</title>
+    <link rel="stylesheet" type="text/css"
+          href="webresources/css/snagjeansfinalproject.css">
 </head>
 <body>
 <h1>Would you like to update, discard or save template as new?</h1>
