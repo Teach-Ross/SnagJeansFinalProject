@@ -7,7 +7,7 @@ import com.test.DAO.TemplateDao;
 import com.test.DAO.UserDao;
 import com.test.model.JeanStyleEnum;
 import com.test.model.JeanTemplate;
-import com.test.model.JeanTemplateMap;
+import com.test.util.JeanTemplateMap;
 import com.test.model.User;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
@@ -27,7 +27,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
@@ -263,11 +262,7 @@ public class HomeController {
         model.addAttribute("distress", distress);
         String searchQuery = "";
 
-        try {
-            searchQuery = URLEncoder.encode(returnRandomSearch(name, crop, distress, favoriteCroppedDistress), "UTF-8");
-        } catch (java.io.UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+            searchQuery = returnRandomSearch(name, crop, distress, favoriteCroppedDistress);
 
         JSONObject obj = gatherImages(searchQuery);
 
@@ -508,8 +503,6 @@ public class HomeController {
         if (cropped && distress) {
             if (favoriteCroppedDistress) {
                 search4 = search2;
-            } else {
-                search4 = search3;
             }
         }
 

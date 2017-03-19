@@ -1,4 +1,6 @@
-package com.test.model;
+package com.test.util;
+
+import com.test.model.JeanStyleEnum;
 
 import java.util.ArrayList;
 
@@ -63,6 +65,11 @@ public class JeanTemplateMap {
         }
         return false;
     }
+    /*  @param description - gathered from ShopStyleAPI
+        @param cateogires gathered from ShopStypeAPI, contains all of product categories
+        tests parameters for keywords to set JeanEntity boolean cropped
+        default returns false
+        */
 
     public boolean checkCropped(String description, String brandedName, ArrayList<String> categories) {
 
@@ -136,11 +143,7 @@ public class JeanTemplateMap {
         this.temp.setDistressed(false);
     }
 
-    *//*  @param description - gathered from ShopStyleAPI
-        @param category - gathered from ShopStyle API
-        tests parameters for keywords to set JeanEntity boolean cropped
-        default returns false
-     *//*
+
     private void checkCropped(String description, String category){
         if(category.contains("Cropped")){
             this.temp.setCropped(true);
