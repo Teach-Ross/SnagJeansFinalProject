@@ -1,132 +1,140 @@
 body {
-	background-image: url("../images/snagjeans_background.jpg");
-	background-size: 100%;
-	background-repeat: no-repeat;
+    background-image: url("../images/snagjeans_background.jpg");
+    background-size: cover;
+    /*background-size: 1247px 733px;*/
+    background-repeat: no-repeat;
     font-family: "Calibri", serif;
     font-size: 25px;
-	text-align: center;
+    text-align: center;
     color: white;
     color: #1F467F;
 }
 
 h3 {
-  font-size: 50px;
-  margin-left: 25%;
-  margin-top: -5%;
+    font-size: 35px;
+    margin-left: 5%;
+    margin-top: -5%;
 }
 
 ul {
-  list-style-type: none;
-  text-align: left;
-  margin-left: 10px;}
+    list-style-type: none;
+    text-align: left;
+    margin-left: 10px;
+}
 
 div.background {
-  position: relative;
-  /* background-color: #FFE16D; */
-  /* opacity: .6; */
-  /* border: 2px solid #FFE16D ; */
-  width: 40%;
-  margin-left: 50%;
-  margin-top: 10%;
+    position: relative;
+    /* background-color: #FFE16D; */
+    /* opacity: .6; */
+    /* border: 2px solid #FFE16D ; */
+    width: 40%;
+    margin-left: 50%;
+    margin-top: 10%;
+    padding: 0;
+    display: block;
+    margin: 0 auto;
+    max-height: 100%;
+    max-width: 100%;
 
 }
 
-
 div.transbox {
-  position: relative;
-  margin: 30px;
-  /* background-color: #ffffff; */
-  /* border: 1px solid lightgray ; */
-  /* opacity: 0.7; */
-  width: 82%;
-  margin-left: 20%;
-  filter: alpha(opacity=60); /* For IE8 and earlier */
-  color: #1F467F;
+    position: relative;
+    margin: 30px;
+    /* background-color: #ffffff; */
+    /* border: 1px solid lightgray ; */
+    /* opacity: 0.7; */
+    width: 100%;
+    margin-left: 70%;
+    margin-top: 25%;
+    filter: alpha(opacity=60); /* For IE8 and earlier */
+    color: #1F467F;
 }
 
 div.transbox p {
-  margin: 5%;
-  font-weight: bold;
-  color: #000000;
-  text-align: center;
-  font-size: 30px;
-  font-family: "Times New Roman", Georgia, Serif;
+    margin: 5%;
+    font-weight: bold;
+    color: #000000;
+    text-align: center;
+    font-size: 30px;
+    font-family: "Times New Roman", Georgia, Serif;
 }
 
 div.transbox_welcome {
-  position: relative;
-  margin: 30px;
-  background-color: #1F467F;
-  opacity: 0.7;
-  width: 40%;
-  margin-top: 15%;
-  margin-left: 55%;
-  margin-right: 20%;
-  border-bottom: 20px;
-  /* filter: alpha(opacity=60); /* For IE8 and earlier */
-  color: #ffffff ;
-  font-size: 40px;
-  font-weight: bold;
+    position: relative;
+    margin: 30px;
+    background-color: #1F467F;
+    opacity: 0.7;
+    width: 40%;
+    margin-top: 15%;
+    margin-left: 55%;
+    margin-right: 20%;
+    border-bottom: 20px;
+    /* filter: alpha(opacity=60); /* For IE8 and earlier */
+    color: #ffffff;
+    font-size: 40px;
+    font-weight: bold;
 }
 
 div.transbox_inner {
-  opacity: 1.0;
-  z-index: 2.0;
+    opacity: 1.0;
+    z-index: 2.0;
 }
 
 button {
-  background-color: Transparent;
-  background-repeat:no-repeat;
-  border: none;
-  cursor:pointer;
-  overflow: hidden;
-  outline:none;
+    background-color: Transparent;
+    background-repeat: no-repeat;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
 }
 
 #FB_Login {
-  background-image: url('../images/FBlogin.png');
-  height: 200px;
-  width: 400px;
-  background-repeat: no-repeat;
-  background-size: 400px;
-  text-indent: -999em;
-  border: 0;
-  display: inline-block;
-  margin-left: 20%;
-  margin-top: -10%;
+    background-image: url('../images/FBlogin.png');
+    height: 200px;
+    width: 400px;
+    background-repeat: no-repeat;
+    background-size: 400px;
+    text-indent: -999em;
+    border: 0;
+    display: inline-block;
+    margin-left: 5%;
+    margin-top: -10%;
+}
 
 #newtemplate {
-   background: transparent;
-   opacity: .1;
+    background: transparent;
+    opacity: .1;
 
 }
 
 #edittemplate {
-  background-image: url('../images/Create_Existing_Template_02_Empty.png');
-  height: 100px;
-  width: 200px;
-  background-repeat: no-repeat;
-  background-size: 200px;
-  color: #000000;
-  text-indent: -999em;
-  border: 0;
-  display: inline-block;
-  margin-left: 20%;
-  margin-top: -10%;
+    background-image: url('../images/Create_Existing_Template_02_Empty.png');
+    height: 100px;
+    width: 200px;
+    background-repeat: no-repeat;
+    background-size: 200px;
+    color: #000000;
+    text-indent: -999em;
+    border: 0;
+    display: inline-block;
+    margin-left: 20%;
+    margin-top: -10%;
 }
 
 #buildpreference {
-  position: relative;
-  margin: 30px;
-  background-color: #1F467F;
-  opacity: 0.7;
-  width: 60%;
-  margin-top: 5%;
-  margin-left: 10%;
-  margin-right: 20%;
-  border-bottom: 10%;
-  /* filter: alpha(opacity=60); /* For IE8 and earlier */
-  color: #ffffff ;
-  font-size: 40px;
-  font-weight: bold;
+    position: relative;
+    margin: 30px;
+    background-color: #1F467F;
+    opacity: 0.7;
+    width: 60%;
+    margin-top: 5%;
+    margin-left: 10%;
+    margin-right: 20%;
+    border-bottom: 10%;
+    /* filter: alpha(opacity=60); /* For IE8 and earlier */
+    color: #ffffff;
+    font-size: 40px;
+    font-weight: bold;
 }
