@@ -79,6 +79,10 @@ public class TemplateDao {
                 .list();
         session.close();
 
+        if(results.isEmpty()){
+            return "";
+        }
+
         Object[] array = (Object[]) results.get(0);
 
         return (String) array[1];

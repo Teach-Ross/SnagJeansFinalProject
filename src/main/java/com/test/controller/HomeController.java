@@ -252,17 +252,23 @@ public class HomeController {
         ArrayList<JeanTemplate> templateList = accessTemplate.selectAllUserTemplates(userID);
 
         String name = accessTemplate.selectSearchJeanType(userID);
-        Object[] preferences = accessTemplate.selectSearchCroppedDistressed(userID);
-        boolean crop = (boolean) preferences[0];
-        boolean distress = (boolean) preferences[1];
-        boolean favoriteCroppedDistress = (boolean) preferences[2];
-
-        model.addAttribute("name", name);
-        model.addAttribute("crop", crop);
-        model.addAttribute("distress", distress);
         String searchQuery = "";
+        if(!name.isEmpty()) {
+
+            Object[] preferences = accessTemplate.selectSearchCroppedDistressed(userID);
+            boolean crop = (boolean) preferences[0];
+            boolean distress = (boolean) preferences[1];
+            boolean favoriteCroppedDistress = (boolean) preferences[2];
+
+            model.addAttribute("name", name);
+            model.addAttribute("crop", crop);
+            model.addAttribute("distress", distress);
+
 
             searchQuery = returnRandomSearch(name, crop, distress, favoriteCroppedDistress);
+        }else{
+            searchQuery = "/api/v2/products?pid=uid5921-39054839-10&cat=jeans";
+        }
 
         JSONObject obj = gatherImages(searchQuery);
 
@@ -440,7 +446,6 @@ public class HomeController {
             accessTemplate.update(userJean, Integer.valueOf(temp));
         } else {
             userJean.setTemplateName(templateName);
-
             accessTemplate.insert(userJean);
         }
 
@@ -458,15 +463,19 @@ public class HomeController {
         String apiKey = "acc_9cf903d4cf36e57",
                 apiSecret = "d8254b91c035c098d5a35a93190609a7";
         try {
-            com.mashape.unirest.http.HttpResponse<JsonNode> respoonse2 = Unirest.get("https://api.imagga.com/v1/colors")
+            com.mashape.unirest.http.HttpResponse<JsonNode> response = Unirest.get("https://api.imagga.com/v1/colors")
                     .queryString("url", imageUrl)
                     .basicAuth(apiKey, apiSecret)
                     .header("Accept", "application/json")
                     .asJson();
 
-            JSONArray obj2 = respoonse2.getBody().getObject().getJSONArray("results");
+            JSONArray obj = response.getBody().getObject().getJSONArray("results").getJSONObject(0).getJSONObject("info").getJSONArray("foreground_colors");
 
-            JSONArray obj = respoonse2.getBody().getObject().getJSONArray("results").getJSONObject(0).getJSONObject("info").getJSONArray("foreground_colors");
+            while(obj.isNull(0)){
+                System.out.println("ERROR FOUND FOR COLOR IDENTIFICATION");
+                System.out.println(imageUrl);
+                return "#4e6590";
+            }
 
             return obj.getJSONObject(0).getString("html_code");
 
@@ -503,6 +512,8 @@ public class HomeController {
         if (cropped && distress) {
             if (favoriteCroppedDistress) {
                 search4 = search2;
+            }else{
+                search4 = search3;
             }
         }
 
