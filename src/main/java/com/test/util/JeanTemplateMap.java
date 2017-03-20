@@ -60,7 +60,7 @@ public class JeanTemplateMap {
             }
         }
         String d = description.toLowerCase();
-        if (d.contains("hole") | d.contains("distress") | d.contains("shred") | d.contains("rip") | d.contains("destroy")) {
+        if (d.contains("hole") | d.contains("distress") | d.contains("shred") | d.contains("rip") | d.contains("destroy")| d.contains("slash")) {
             return true;
         }
         return false;

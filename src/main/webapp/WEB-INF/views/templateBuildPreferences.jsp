@@ -17,7 +17,7 @@
 <br>
 <div class="transbox_buildpreference">
     <div class="transbox_inner">
-      <form action="templ ateBuildResult">
+      <form action="templateBuildResult">
 
          <button type="submit"
                  name="jean" value="${jean1}"><img src="${image1}" alt="jeans1"></button>

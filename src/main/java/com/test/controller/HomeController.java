@@ -125,7 +125,12 @@ public class HomeController {
     }
 
     @RequestMapping("/home")
-    public String home() {
+    public String home(@CookieValue("userTag") String userId,
+                       Model model) {
+        User newUser = accessUser.selectUser(userId);
+        String userName = newUser.getName();
+        model.addAttribute("message", userName);
+
         return "welcomeExists";
     }
 
@@ -365,6 +370,8 @@ public class HomeController {
             model.addAttribute("cropped", cropped);
             model.addAttribute("distress", distress);
 
+            //
+
 
 
         /*    JSONArray colorArray = obj.getJSONArray("colors");
@@ -460,7 +467,7 @@ public class HomeController {
 
     public String getHtml(String imageUrl) {
 
-        String apiKey = "acc_9cf903d4cf36e57",
+        String apiKey = apiKey = "acc_9cf903d4cf36e57",
                 apiSecret = "d8254b91c035c098d5a35a93190609a7";
         try {
             com.mashape.unirest.http.HttpResponse<JsonNode> response = Unirest.get("https://api.imagga.com/v1/colors")
@@ -469,7 +476,7 @@ public class HomeController {
                     .header("Accept", "application/json")
                     .asJson();
 
-            JSONArray obj = response.getBody().getObject().getJSONArray("results").getJSONObject(0).getJSONObject("info").getJSONArray("foreground_colors");
+            JSONArray obj = response.getBody().getObject().getJSONArray("results");
 
             while(obj.isNull(0)){
                 System.out.println("ERROR FOUND FOR COLOR IDENTIFICATION");
@@ -477,7 +484,15 @@ public class HomeController {
                 return "#4e6590";
             }
 
-            return obj.getJSONObject(0).getString("html_code");
+            JSONArray obj2 = obj.getJSONObject(0).getJSONObject("info").getJSONArray("foreground_colors");
+
+            while(obj2.isNull(2)){
+                System.out.println("ERROR FOUND FOR COLOR IDENTIFICATION");
+                System.out.println(imageUrl);
+                return "#4e6590";
+            }
+
+            return obj2.getJSONObject(0).getString("html_code");
 
         } catch (UnirestException e) {
             e.printStackTrace();
@@ -494,32 +509,29 @@ public class HomeController {
 
         String search0 = "/api/v2/products?pid=uid5921-39054839-10&cat=jeans";
         String search1 = "/api/v2/products?pid=uid5921-39054839-10&cat=" + jeanStyle.toLowerCase() + "-jeans";
-        String search2;
-        String search3;
+        String search2 = search1;
+        String search3 = search0;
         String search4 = search1;
 
-        if (cropped) {
+        if (cropped && !distress) {
             search2 = "/api/v2/products?pid=uid5921-39054839-10&fts=" + jeanStyle.toLowerCase() + "+cropped+jeans";
-        } else {
-            search2 = search1;
-        }
-        if (distress) {
+            search3 = search2;
+        }else if (!cropped && distress)
+        {
+            search2 = "/api/v2/products?pid=uid5921-39054839-10&fts=" + jeanStyle.toLowerCase() + "+distressed+jeans";
+            search3 = search2;
+        }else if(cropped && distress){
+            search2 = "/api/v2/products?pid=uid5921-39054839-10&fts=" + jeanStyle.toLowerCase() + "+cropped+jeans";
             search3 = "/api/v2/products?pid=uid5921-39054839-10&fts=" + jeanStyle.toLowerCase() + "+distressed+jeans";
-        }else{
-            search3 = search0;
-        }
-
-        if (cropped && distress) {
-            if (favoriteCroppedDistress) {
+            if(favoriteCroppedDistress){
                 search4 = search2;
             }else{
                 search4 = search3;
             }
         }
-
         String[] search = {search0, search1, search2, search3, search4};
-        int[] weight = {0, 1, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4};
-        return search[weight[random.nextInt(12)]];
+        int[] weight = {0, 1, 1, 1, 1, 2, 2, 3, 3, 4};
+        return search[weight[random.nextInt(10)]];
     }
 
     private JSONObject gatherImages(String search) {
