@@ -40,6 +40,13 @@
                 src="webresources/images/Create_A_New_Template_02_Empty.png"
              width="400" height="100" alt="submit" /></button>
      </form>
+        <form action="templateBuildPreferences">
+            <!-- input type="submit" value="Create Template From Inspiration" -->
+            <button type="submit">
+                <img
+                        src="webresources/images/Create_A_New_Template_02_Empty.png"
+                        width="400" height="100" alt="submit" /></button>
+        </form>
         <br><br>
     </div>
 </div>

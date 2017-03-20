@@ -24,8 +24,6 @@
 </head>
 <body>
 
-<div id="hello">ljsssssssssssj
-jjjjjjjjjjj</div>
 
 <div class="background">
     <div class="transbox">
