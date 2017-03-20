@@ -16,17 +16,24 @@
     <title>Snag-Home</title>
 
     <link rel="stylesheet" type="text/css"
+          href="../webresources/css/normalize.css">
+
+
+    <link rel="stylesheet" type="text/css"
           href="../webresources/css/snagjeansfinalproject.css">
 </head>
 <body>
 
+<div id="hello">ljsssssssssssj
+jjjjjjjjjjj</div>
+
 <div class="background">
-   <div class="transbox">
-       <img src="/webresources/images/Snag_Logo_R2_Version5.svg" alt="Snag Logo"
-            height="300px" width="500px">
-       <h3>Build It. Buy It. Own It.</h3>
-      <a id="FB_Login" href="${message}">FB Login!</a>
-   </div>
+    <div class="transbox">
+        <img src="/webresources/images/Snag_Logo_R2_Version5.svg" alt="Snag Logo"
+             height="300px" width="500px">
+        <h3>Build It. Buy It. Own It.</h3>
+        <a id="FB_Login" href="${message}">FB Login!</a>
+    </div>
 </div>
 
 </body>
