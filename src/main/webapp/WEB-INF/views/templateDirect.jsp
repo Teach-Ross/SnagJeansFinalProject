@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Snag Jeans</title>
+    <title>Snag-templateDirect</title>
 
     <link rel="stylesheet" type="text/css"
           href="../webresources/css/normalize.css">

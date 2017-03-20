@@ -22,6 +22,18 @@ ul {
     margin-left: 10px;
 }
 
+label{
+    display: inline-block;
+    float: left;
+    clear: left;
+    width: 250px;
+    text-align: right;
+}
+input {
+    display: inline-block;
+    float: left;
+}
+
 div.background {
     position: relative;
     /* background-color: #FFE16D; */
@@ -92,6 +104,32 @@ div.transbox_direct {
     color: #ffffff;
     font-size: 40px;
     font-weight: bold;
+}
+
+div.transbox_new {
+    position: relative;
+    margin: 30px;
+    background-color: #1F467F;
+    opacity: 0.7;
+    width: 125%;
+    height: 60%;
+    margin-top: -60%;
+    margin-left: -65%;
+    margin-right: 20%;
+    border-bottom: 20px;
+    /* filter: alpha(opacity=60); /* For IE8 and earlier */
+    color: #ffffff;
+    font-size: 35px;
+    font-weight: bold;
+    text-align: left;
+}
+
+div.transbox_form {
+    text-align: center;
+}
+
+div.submit {
+    margin-left: 45%;
 }
 
 div.transbox_inner {
