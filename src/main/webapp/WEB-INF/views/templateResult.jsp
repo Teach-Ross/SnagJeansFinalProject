@@ -8,9 +8,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Snag Jeans</title>
+    <title>Snag-templateResult</title>
+
     <link rel="stylesheet" type="text/css"
-          href="webresources/css/snagjeansfinalproject.css">
+          href="../webresources/css/normalize.css">
+
+    <link rel="stylesheet" type="text/css"
+          href="webresources/css/snagjeansfinalprojectv1.css">
+
 </head>
 <body>
 <h1>Would you like to save or discard your template?</h1>
