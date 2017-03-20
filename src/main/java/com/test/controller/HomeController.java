@@ -8,6 +8,7 @@ import com.test.DAO.UserDao;
 import com.test.model.JeanStyleEnum;
 import com.test.model.JeanTemplate;
 import com.test.model.User;
+import com.test.model.UserPreferences;
 import com.test.util.JeanTemplateMap;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
@@ -40,6 +41,7 @@ public class HomeController {
     private TemplateDao accessTemplate = new TemplateDao();
     private JeanTemplateMap templateMap = new JeanTemplateMap();
     private JeanTemplate userJean = new JeanTemplate();
+    private UserPreferences userPreferences = new UserPreferences();
 
 
     @RequestMapping("/")
@@ -75,11 +77,11 @@ public class HomeController {
         userCookie.setMaxAge(-1);
         response.addCookie(userCookie);
 
-
         User newUser = accessUser.selectUser(id);
 
         if (accessUser.userIdExists(id)) {
             String userName = newUser.getName();
+            userPreferences.buildUserPreferences(id);
             model.addAttribute("message", userName);
             return
                     "welcomeExists";
@@ -142,7 +144,7 @@ public class HomeController {
 
     //pulls users old templates from database, allows user to select one to edit
     @RequestMapping("/editTemplate")
-    public String editTemplate(Model model, @CookieValue("userTag") String userID) {
+    public String editTemplate(Model model, @CookieValue(value="userTag", required = false) String userID) {
         ArrayList<JeanTemplate> templateList = accessTemplate.selectAllUserTemplates(userID);
 
         model.addAttribute("templateList", templateList);

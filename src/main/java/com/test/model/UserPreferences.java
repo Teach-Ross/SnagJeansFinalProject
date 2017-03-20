@@ -1,6 +1,7 @@
-/*
 package com.test.model;
 
+
+import com.test.DAO.TemplateDao;
 
 //stores user prefered jean preferences locally
 public class UserPreferences {
@@ -8,6 +9,7 @@ public class UserPreferences {
     private boolean cropped;
     private boolean distressed;
     private boolean favoriteCroppedOrDistressed;
+    private TemplateDao accessTemplate = new TemplateDao();
 
     public UserPreferences() {
     }
@@ -17,6 +19,15 @@ public class UserPreferences {
         this.cropped = cropped;
         this.distressed = distressed;
         this.favoriteCroppedOrDistressed = favoriteCroppedOrDistressed;
+    }
+
+    public void buildUserPreferences (String userId){
+        this.jeanStyle = accessTemplate.selectSearchJeanType(userId);
+        Object[] preferences = accessTemplate.selectSearchCroppedDistressed(userId);
+        this.cropped = (boolean) preferences[0];
+        this.distressed = (boolean) preferences[1];
+        this.favoriteCroppedOrDistressed = (boolean) preferences[2];
+
     }
 
     public String getJeanStyle() {
@@ -51,4 +62,3 @@ public class UserPreferences {
         this.favoriteCroppedOrDistressed = favoriteCroppedOrDistressed;
     }
 }
-*/
