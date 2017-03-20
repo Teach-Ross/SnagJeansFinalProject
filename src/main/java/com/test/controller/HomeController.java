@@ -7,8 +7,8 @@ import com.test.DAO.TemplateDao;
 import com.test.DAO.UserDao;
 import com.test.model.JeanStyleEnum;
 import com.test.model.JeanTemplate;
-import com.test.util.JeanTemplateMap;
 import com.test.model.User;
+import com.test.util.JeanTemplateMap;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -203,7 +203,7 @@ public class HomeController {
         //used to generate random offset for search query and to generate random product index
         Random random = new Random();
 
-        JSONObject obj = gatherImages("/api/v2/products?pid=uid5921-39054839-10&cat=jeans");
+        JSONObject obj = gatherImages("/api/v2/products?pid=uid5921-39054839-10&fts=jeans");
 
         JSONArray ar = obj.getJSONArray("products");
 
@@ -463,6 +463,10 @@ public class HomeController {
 
         return "templateView";
     }
+    @RequestMapping("test")
+    public String test(){
+        return "test";
+    }
 
 
     public String getHtml(String imageUrl) {
@@ -503,26 +507,23 @@ public class HomeController {
 
     private String returnRandomSearch(String jeanStyle, boolean cropped, boolean distress, boolean favoriteCroppedDistress) {
         Random random = new Random();
-        if (jeanStyle.equalsIgnoreCase("Straight")) {
-            jeanStyle = "straight-leg";
-        }
 
-        String search0 = "/api/v2/products?pid=uid5921-39054839-10&cat=jeans";
-        String search1 = "/api/v2/products?pid=uid5921-39054839-10&cat=" + jeanStyle.toLowerCase() + "-jeans";
+        String search0 = "/api/v2/products?pid=uid5921-39054839-10&fts=jeans";
+        String search1 = "/api/v2/products?pid=uid5921-39054839-10&fts=jeans+" + jeanStyle.toLowerCase();
         String search2 = search1;
         String search3 = search0;
         String search4 = search1;
 
         if (cropped && !distress) {
-            search2 = "/api/v2/products?pid=uid5921-39054839-10&fts=" + jeanStyle.toLowerCase() + "+cropped+jeans";
+            search2 = "/api/v2/products?pid=uid5921-39054839-10&fts=jeans+" + jeanStyle.toLowerCase() + "+cropped";
             search3 = search2;
         }else if (!cropped && distress)
         {
-            search2 = "/api/v2/products?pid=uid5921-39054839-10&fts=" + jeanStyle.toLowerCase() + "+distressed+jeans";
+            search2 = "/api/v2/products?pid=uid5921-39054839-10&fts=jeans+" + jeanStyle.toLowerCase() + "+distressed";
             search3 = search2;
         }else if(cropped && distress){
-            search2 = "/api/v2/products?pid=uid5921-39054839-10&fts=" + jeanStyle.toLowerCase() + "+cropped+jeans";
-            search3 = "/api/v2/products?pid=uid5921-39054839-10&fts=" + jeanStyle.toLowerCase() + "+distressed+jeans";
+            search2 = "/api/v2/products?pid=uid5921-39054839-10&fts=jeans" + jeanStyle.toLowerCase() + "+cropped";
+            search3 = "/api/v2/products?pid=uid5921-39054839-10&fts=jeans" + jeanStyle.toLowerCase() + "+distressed";
             if(favoriteCroppedDistress){
                 search4 = search2;
             }else{
