@@ -13,7 +13,7 @@
 
 <head>
     <meta name="viewport" content="width=device-width">
-    <title>Snag Jeans</title>
+    <title>Snag-Home</title>
 
     <link rel="stylesheet" type="text/css"
           href="../webresources/css/snagjeansfinalproject.css">
