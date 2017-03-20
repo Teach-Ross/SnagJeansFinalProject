@@ -9,6 +9,10 @@
 <html>
 <head>
     <title>Snag Jeans</title>
+
+    <link rel="stylesheet" type="text/css"
+          href="../webresources/css/normalize.css">
+
     <link rel="stylesheet" type="text/css"
           href="webresources/css/snagjeansfinalproject.css">
 </head>
@@ -21,7 +25,7 @@
         <h3>Build It. Buy It. Own It.</h3>
     </div>
 
-<div class="transbox_welcome">
+<div class="transbox_direct">
 
     <div class="transbox_inner">
         <br>

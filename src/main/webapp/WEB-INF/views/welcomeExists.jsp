@@ -10,6 +10,8 @@
 <head>
     <title>Snag-welcomeExists</title>
 
+    <link rel="stylesheet" type="text/css"
+          href="../webresources/css/normalize.css">
 
     <link rel="stylesheet" type="text/css"
           href="webresources/css/snagjeansfinalproject.css">

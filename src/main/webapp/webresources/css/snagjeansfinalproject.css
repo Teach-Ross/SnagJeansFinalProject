@@ -66,8 +66,25 @@ div.transbox_welcome {
     background-color: #1F467F;
     opacity: 0.7;
     width: 110%;
+    height: 60%;
+    margin-top: -60%;
+    margin-left: -50%;
+    margin-right: 20%;
+    border-bottom: 20px;
+    /* filter: alpha(opacity=60); /* For IE8 and earlier */
+    color: #ffffff;
+    font-size: 40px;
+    font-weight: bold;
+}
+
+div.transbox_direct {
+    position: relative;
+    margin: 30px;
+    background-color: #1F467F;
+    opacity: 0.7;
+    width: 110%;
     height: 80%;
-    margin-top: -80%;
+    margin-top: -70%;
     margin-left: -50%;
     margin-right: 20%;
     border-bottom: 20px;
