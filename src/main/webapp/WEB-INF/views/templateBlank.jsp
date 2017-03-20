@@ -24,7 +24,7 @@
             opacity: 0.7;
             width: 50%;
             margin-left: 5%;
-            margin-top: -21%;
+            margin-top: -26%;
             border-bottom: 10%;
 
             /* filter: alpha(opacity=60); /* For IE8 and earlier */
@@ -114,6 +114,7 @@
                    width="250" height="70" alt="submit" /></button>
       </form>
       <div style="color:red;"id="errors"></div>
+       <br>
     </form>
    </div>
 </div>
