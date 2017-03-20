@@ -11,14 +11,10 @@ body {
 
 h3 {
   font-size: 50px;
-  margin-left: 25%;
+  /* margin-left: 25%; */
   margin-top: -5%;
 }
 
-ul {
-  list-style-type: none;
-  text-align: left;
-  margin-left: 10px;}
 
 div.background {
   position: relative;
@@ -38,7 +34,7 @@ div.transbox {
   /* background-color: #ffffff; */
   /* border: 1px solid lightgray ; */
   /* opacity: 0.7; */
-  width: 82%;
+  width: 85%;
   margin-left: 20%;
   filter: alpha(opacity=60); /* For IE8 and earlier */
   color: #1F467F;
@@ -115,18 +111,3 @@ button {
   margin-top: -10%;
 }
 
-/*.buildpreference {
-  position: relative;
-  margin: 30px;
-  background-color: #1F467F;
-  opacity: 0.7;
-  width: 60%;
-  margin-top: 5%;
-  margin-left: 10%;
-  margin-right: 20%;
-  border-bottom: 10%;
-  filter: alpha(opacity=60); /* For IE8 and earlier
-  color: #ffffff ;
-  font-size: 40px;
-  font-weight: bold;
-} */
