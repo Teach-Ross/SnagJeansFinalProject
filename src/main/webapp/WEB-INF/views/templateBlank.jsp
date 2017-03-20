@@ -10,6 +10,10 @@
 <html>
 <head>
     <title>Snag-templateBlank</title>
+
+    <link rel="stylesheet" type="text/css"
+          href="../webresources/css/normalize.css">
+
     <link rel="stylesheet" type="text/css"
           href="webresources/css/snagjeansfinalprojectv1.css">
 
@@ -17,7 +21,7 @@
         .buildscratch {
             position: relative;
             background-color: #1F467F;
-            opacity: 0.9;
+            opacity: 0.7;
             width: 50%;
             margin-left: 5%;
             margin-top: -21%;
@@ -37,6 +41,20 @@
             font-size: 35px;
         }
 
+        p{
+            font-size: 25px;
+        }
+
+        #select1 {
+            font-size: 25px;
+        }
+        #select2 {
+            font-size: 25px;
+        }
+        #style {
+            font-size: 25px;
+        }
+
     </style>
 </head>
 <body>
@@ -52,13 +70,13 @@
 <div class="buildscratch">
    <div>
        <h4>Please complete your jean template below:</h4>
-
+       <p>
        <form action="gather" method="get">
-       <input id="templateId" type="hidden" name="templateId" value="0">
-       <input type="hidden" name="templateName" value="">
-       <select name="waistsize" id="select1">
-            <option value="null">Select Waist Size</option>
-       </select>
+          <input id="templateId" type="hidden" name="templateId" value="0">
+          <input type="hidden" name="templateName" value="">
+          <select name="waistsize" id="select1">
+               <option value="null">Select Waist Size</option>
+          </select>
 
        <select  name="inseamsize" id="select2">
             <option value="null">Select Inseam Size</option>
@@ -73,7 +91,7 @@
           </c:forEach>
        </select>
 
-
+       <br>
        <input type='hidden' value="" name="cropped">
        <input type="checkbox" name="cropped" id="cropped" value="1">
        <label for="cropped">Cropped</label>
@@ -81,13 +99,20 @@
        <input type='hidden' value="" name="distress">
        <input type="checkbox" name="distress" id="distress" value="1">
        <label for="distress">Distressed</label>
-
+       </p>
 
       <p>Select Fabric Swatch:
            <input name="color" class="jscolor {onFineChange:'update(this)'}">
-       <p id="rect" style="border:1px solid gray; width:161px; height:100px;"></p>
+      <p id="rect" style="border:1px solid gray; width:161px; height:100px;
+                           margin-left: 20%"></p>
 
-      <input type="submit" value="Submit" onclick="return Validate()">
+      <!-- input type="submit" value="Submit" onclick="return Validate()" -->
+      <form>
+           <button type="submit" value="Submit" onclick="return Validate()">
+               <img
+                   src="webresources/images/Next_Three_Images.png"
+                   width="250" height="70" alt="submit" /></button>
+      </form>
       <div style="color:red;"id="errors"></div>
     </form>
    </div>

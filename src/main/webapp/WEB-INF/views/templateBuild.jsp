@@ -19,7 +19,7 @@
        opacity: 0.9;
        width: 50%;
        margin-left: 5%;
-       margin-top: -24%;
+       margin-top: -25%;
        border-bottom: 10%;
 
        /* filter: alpha(opacity=60); /* For IE8 and earlier */
