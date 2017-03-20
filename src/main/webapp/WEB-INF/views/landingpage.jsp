@@ -16,7 +16,7 @@
     <title>Snag Jeans</title>
 
     <link rel="stylesheet" type="text/css"
-          href="webresources/css/snagjeansfinalproject.css">
+          href="../webresources/css/snagjeansfinalproject.css">
 </head>
 <body>
 

@@ -115,7 +115,7 @@ button {
   margin-top: -10%;
 }
 
-#buildpreference {
+div.buildpreference {
   position: relative;
   margin: 30px;
   background-color: #1F467F;
