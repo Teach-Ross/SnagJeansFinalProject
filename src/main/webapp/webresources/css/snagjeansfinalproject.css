@@ -53,9 +53,9 @@ div.background {
 div.transbox {
     position: relative;
     margin: 30px;
-    /* background-color: #ffffff; */
-    /* border: 1px solid lightgray ; */
-    /* opacity: 0.7; */
+    /* background-color: #ffffff;
+    border: 1px solid lightgray ;
+    opacity: 0.7; */
     width: 100%;
     margin-left: 70%;
     margin-top: 25%;

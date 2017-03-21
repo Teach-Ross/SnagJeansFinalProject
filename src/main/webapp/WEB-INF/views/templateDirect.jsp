@@ -30,6 +30,7 @@
     <div class="transbox_inner">
         <br>
         <p>Create a new jean template:</p>
+
       <form action="templateBlank">
         <!--input type="submit" value="Create Template From Scratch" -->
           <button type="submit">

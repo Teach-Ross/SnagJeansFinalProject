@@ -16,6 +16,67 @@
 
     <link rel="stylesheet" type="text/css"
           href="webresources/css/snagjeansfinalproject.css">
+    <style>
+        .buildview {
+            position: relative;
+            background-color: #1F467F;
+            opacity: .8;
+            width: 140%;
+            margin-left: -70%;
+            margin-top: -71%;
+            border-bottom: 10%;
+
+            /* filter: alpha(opacity=60); /* For IE8 and earlier */
+            color: #ffffff ;
+            font-size: 40px;
+            font-weight: bold;
+        }
+        .transbox_innernew {
+            position: relative;
+            background-color: #ffffff;
+            opacity: .9;
+            width: 95%;
+            margin-left: 3%;
+            margin-top: 5%;
+            border-bottom: 10%;
+
+            /* filter: alpha(opacity=60); /* For IE8 and earlier */
+            color: #ffffff ;
+            font-size: 40px;
+            font-weight: bold;
+        }
+        h3 {
+            font-size: 40px;
+        }
+
+        h4 {
+            text-align: center;
+            font-size: 35px;
+        }
+
+        p{
+            font-size: 30px;
+        }
+
+        #select1 {
+            font-size: 23px;
+        }
+        #select2 {
+            font-size: 23px;
+        }
+        #style {
+            font-size: 23px;
+        }
+        #cropped {
+            font-size: 23px;
+        }
+        #distress {
+            font-size: 23px;
+        }
+        #rect {
+            background-color: ${color};
+        }
+    </style>
 </head>
 <body>
 
@@ -26,9 +87,12 @@
         <h3>Build It. Buy It. Own It.</h3>
     </div>
 
-    <div class="transbox_new">
+    <div class="buildview">
+        <br>
+        <p>Create a new jean template though selection of one of the below
+            options:</p>
+        <div class="transbox_innernew">
 
-        <div class="transbox_inner">
             <table border="1">
                 <tr>
                     <th>Template Name</th>
@@ -70,18 +134,32 @@
 
                 </c:forEach>
 
-
             </table>
+        </div>
             <br>
             <form action="templateBlank">
-                <div class="options"><input type="submit" value="Create New Template From Scratch"></div>
+                <!--input type="submit" value="Create Template From Scratch" -->
+                <button type="submit">
+                    <img
+                            src="webresources/images/Create_Template_From_Scratch_01.png"
+                            width="300" height="75 alt="submit" /></button>
             </form>
-            <br>
-            <form action="options">
-                <div class="options"><input type="submit" value="Create New Template From Inspiration"></div>
+            <form action="templateBuild">
+                <!-- input type="submit" value="Create Template From Inspiration" -->
+                <button type="submit">
+                    <img
+                            src="webresources/images/Create_A_New_Template_02_Empty.png"
+                            width="300" height="75" alt="submit" /></button>
             </form>
+            <form action="templateBuildPreferences">
+            <!-- input type="submit" value="Create Template From Inspiration" -->
+               <button type="submit">
+                  <img
+                           src="webresources/images/Create_A_New_Template_03_Empty.png"
+                           width="300" height="75" alt="submit" /></button>
+           </form>
+           <br>
         </div>
-    </div>
 </body>
 
 <%--<script>
