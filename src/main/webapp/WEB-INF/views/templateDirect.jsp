@@ -48,7 +48,7 @@
             <!-- input type="submit" value="Create Template From Inspiration" -->
             <button type="submit">
                 <img
-                        src="webresources/images/Create_A_New_Template_02_Empty.png"
+                        src="webresources/images/Create_A_New_Template_03_Empty.png"
                         width="400" height="100" alt="submit" /></button>
         </form>
         <br><br>

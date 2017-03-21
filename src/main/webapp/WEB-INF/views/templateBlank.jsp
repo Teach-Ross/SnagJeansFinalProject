@@ -42,19 +42,24 @@
         }
 
         p{
-            font-size: 25px;
+            font-size: 30px;
         }
 
         #select1 {
-            font-size: 25px;
+            font-size: 23px;
         }
         #select2 {
-            font-size: 25px;
+            font-size: 23px;
         }
         #style {
-            font-size: 25px;
+            font-size: 23px;
         }
-
+        #cropped {
+            font-size: 23px;
+        }
+        #distress {
+            font-size: 23px;
+        }
     </style>
 </head>
 <body>
@@ -110,7 +115,7 @@
       <form>
            <button type="submit" value="Submit" onclick="return Validate()">
                <img
-                   src="webresources/images/Next_Three_Images.png"
+                   src="webresources/images/Submit_01_Empty.png"
                    width="250" height="70" alt="submit" /></button>
       </form>
       <div style="color:red;"id="errors"></div>
