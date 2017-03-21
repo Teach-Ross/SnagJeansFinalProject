@@ -51,6 +51,7 @@ public class UserDao {
                 .add(Restrictions.eq("userId", userId))
                 .setProjection(Projections.rowCount());
         Long rowCount = (Long) userIdSearch.uniqueResult();
+        session.close();
 
         return (rowCount > 0);
 

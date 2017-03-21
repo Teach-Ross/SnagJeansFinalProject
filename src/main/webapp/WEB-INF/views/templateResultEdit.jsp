@@ -61,6 +61,7 @@
 
             <br>
             <button type="submit" form="form1" value="Submit">
+
                  <img
                     src="webresources/images/Save_Template_01_Empty.png"
                     width="250" height="70" alt="submit" /></button>
@@ -73,18 +74,19 @@
                       <input type="submit" value="Update Template"></div>
             </form -->
 
-            <form action="templateSave">
+            <form action="templateSave" id="form2">
                 <div class="enter">
                 <input type="hidden" name="templateId"
                       value="${templateId}">
+                </div>
                 <!--input type="submit" value="Update Template"></div-->
-
-                <button type="submit" form="form1" value="Submit">
+            </form>
+                <button type="submit" form="form2" value="Submit">
                 <img
                    src="webresources/images/Update_Template_02_Empty.png"
                    width="250" height="70" alt="submit" /></button>
                 <br>
-            </form>
+
 
 
 
