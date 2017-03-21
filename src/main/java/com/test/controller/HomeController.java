@@ -58,6 +58,11 @@ public class HomeController {
                 ModelAndView("landingpage", "message", fbConnection.getFBAuthUrl());
 
     }
+
+    @RequestMapping("/privacy")
+    public String privacy(){
+        return "privacyPolicy";
+    }
     /*  mapping for new or existing users after successful facebook longin and redirect
 
         @param code used to obtain accessToken which also us to access FBGraph info
@@ -161,6 +166,7 @@ public class HomeController {
         return "welcomeExists";
     }
 
+    @RequestMapping("/newTemplate")
     //directs user request to create template to templateDirect view
     //which will allow them to create template from scratch, inspiration or preferenced inspiration
     public String newTemplate() {
@@ -425,6 +431,8 @@ public class HomeController {
             String brandedName = obj.getString("brandedName");
             String description = obj.getString("description");
 
+
+            //converts description, categories and brandedName gathered from ShopStyle API to java objects used to prepopulate jean template
             JeanStyleEnum styleEnum = templateMap.getStyle(description, categories);
             boolean cropped = templateMap.checkCropped(description, brandedName, categories);
             boolean distress = templateMap.checkDistress(description, categories);
@@ -439,6 +447,22 @@ public class HomeController {
         return "templateBuildResult";
     }
 
+
+    /*  @param waistSize
+        @param inseamSize
+        @param styleEnum
+        @param htmlColor
+        @param cropped
+        @param distress
+        all these parameters are gathered from user selections on template form
+        @param templateId
+        @param templateName
+        used when user is editing existing template, helps mapping to update or save as new
+        @param userId
+        used to set userId to save in database
+        @param model
+        Method gathers information from user selections on view and creates a JeanTemplate object
+     */
     @RequestMapping("gather")
     public String displayTemplate(
             @RequestParam("waistsize") int waistSize,
@@ -447,13 +471,12 @@ public class HomeController {
             @RequestParam("color") String htmlColor,
             @RequestParam("cropped") String cropped,
             @RequestParam("distress") String distress,
+            //these parameters will only be available when user is editing existing template
             @RequestParam(value = "templateId", required = false) int templateId,
             @RequestParam(value = "templateName", required = false) String templateName,
             @CookieValue("userTag") String userId,
             Model model) {
 
-
-        BigDecimal bd = new BigDecimal(40.00);
 
         userJean.setWaistSize(waistSize);
         userJean.setInseamLength(inseamSize);
@@ -462,25 +485,40 @@ public class HomeController {
         userJean.setUserId(userId);
         userJean.setCropped(templateMap.checkboxToBtye(cropped));
         userJean.setDistressed(templateMap.checkboxToBtye(distress));
+        //base price for jean starts at $40 and increase $5 for both distressed and cropped selections
+        BigDecimal bd = new BigDecimal(40.00);
         if (userJean.getDistressed() != 0) {
             bd = bd.add(new BigDecimal(5));
         }
         if (userJean.getCropped() != 0) {
             bd = bd.add(new BigDecimal(5));
         }
-
         userJean.setPrice(bd);
+
+        //passes templateId to view if available
+        model.addAttribute("templateId", templateId);
+
 
         String tempName = templateName;
 
-        model.addAttribute("templateId", templateId);
-
+        //templateId parameter will be 0 for newTemplates
+        //this test identifies if template is new or existing
         if (templateId != 0) {
             userJean.setTemplateName(tempName);
+            //templateResultEdit view will allow user to update, save as new or discard changes
             return "templateResultEdit";
         }
+        //templateResult view will allow user to save as new or discard changes
         return "templateResult";
     }
+
+    /*  @param templateName
+        will be available if user has chosen to save new template
+        @param templateId
+        @param userId
+        @param model
+        Method tests if user attempting to save new template or update old template
+     */
 
     @RequestMapping("templateSave")
     public String saveTemplate(
@@ -489,13 +527,15 @@ public class HomeController {
             @CookieValue("userTag") String userID,
             Model model) {
 
+        //assigns templateId to String temp, temp will be null if user is saving newTemplate
         String temp = templateId;
 
         if (temp != null) {
-            userJean.setTemplateId(Integer.valueOf(temp));
+            //updates template in database, linking to existing entry by templateId
             accessTemplate.update(userJean, Integer.valueOf(temp));
         } else {
-            userJean.setTemplateId(0);
+
+
             userJean.setTemplateName(templateName);
             accessTemplate.insert(userJean);
         }
@@ -508,10 +548,7 @@ public class HomeController {
 
         return "templateView";
     }
-    @RequestMapping("test")
-    public String test(){
-        return "test";
-    }
+
 
     /*  @param imageUrl gathered from ShopStyleApi
         method return String of HTML hex code of most prominent color identified in image by ImaggaApi

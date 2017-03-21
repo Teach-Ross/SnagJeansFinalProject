@@ -27,11 +27,6 @@ public class UserDao {
     }
 
 
-    public void delete(User user) {
-        Session session = getSessionFactory().openSession();
-        session.beginTransaction();
-
-    }
 
 
     public User selectUser(String userId){

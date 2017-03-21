@@ -44,7 +44,7 @@ public class FBConnection {
     }
 
     public String getAccessToken(String code) {
-        if (accessToken.equals("")) {
+        //if (accessToken.equals("")) {
             URL fbGraphURL;
             try {
                 fbGraphURL = new URL(getFBGraphUrl(code));
@@ -75,7 +75,7 @@ public class FBConnection {
                 throw new RuntimeException("ERROR: Access Token Invalid: "
                         + accessToken);
             }
-        }
+
         return accessToken;
     }
 

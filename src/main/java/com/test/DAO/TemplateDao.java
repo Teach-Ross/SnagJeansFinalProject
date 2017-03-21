@@ -36,6 +36,8 @@ public class TemplateDao {
         session.close();
     }
 
+
+
     public void update(JeanTemplate jeanTemplate, int templateId) {
         Session session = getSessionFactory().openSession();
         session.beginTransaction();
