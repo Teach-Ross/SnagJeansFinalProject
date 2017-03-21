@@ -10,10 +10,25 @@
 <html>
 <head>
     <title>Snag Jeans</title>
+
+    <link rel="stylesheet" type="text/css"
+          href="../webresources/css/normalize.css">
+
     <link rel="stylesheet" type="text/css"
           href="webresources/css/snagjeansfinalproject.css">
 </head>
 <body>
+
+<div class="background">
+    <div class="transbox">
+        <img src="/webresources/images/Snag_Logo_R2_Version5.svg" alt="Snag Logo"
+             height="300px" width="500px">
+        <h3>Build It. Buy It. Own It.</h3>
+    </div>
+
+    <div class="transbox_new">
+
+        <div class="transbox_inner">
 <table border="1">
     <tr>
         <th>Template Name</th>
@@ -64,7 +79,8 @@
 <form action="templateBuild">
     <input type="submit" value="Create New Template From Inspiration">
 </form>
-
+        </div>
+    </div>
 </body>
 
 <%--<script>

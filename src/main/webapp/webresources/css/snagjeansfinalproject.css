@@ -124,12 +124,34 @@ div.transbox_new {
     text-align: left;
 }
 
-div.transbox_form {
+div.transbox_edit {
+    position: relative;
+    margin: 30px;
+    background-color: #1F467F;
+    opacity: 0.7;
+    width: 125%;
+    height: 60%;
+    margin-top: -60%;
+    margin-left: -65%;
+    margin-right: 20%;
+    border-bottom: 20px;
+    /* filter: alpha(opacity=60); /* For IE8 and earlier */
+    color: #ffffff;
+    font-size: 35px;
+    font-weight: bold;
     text-align: center;
 }
 
+div.transbox_form {
+     text-align: center;
+ }
+
 div.submit {
     margin-left: 45%;
+}
+
+div.enter {
+    margin-left: 40%;
 }
 
 div.transbox_inner {
@@ -193,4 +215,11 @@ button {
     color: #ffffff;
     font-size: 40px;
     font-weight: bold;
+}
+
+th{
+    color: black;
+}
+td{
+    color: black;
 }
