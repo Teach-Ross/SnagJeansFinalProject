@@ -109,7 +109,7 @@
       <p>Select Fabric Swatch:
            <input name="color" class="jscolor {onFineChange:'update(this)'}">
       <p id="rect" style="border:1px solid gray; width:161px; height:100px;
-                           margin-left: 20%"></p>
+                           margin-left: 15%"></p>
 
       <!-- input type="submit" value="Submit" onclick="return Validate()" -->
       <form>
