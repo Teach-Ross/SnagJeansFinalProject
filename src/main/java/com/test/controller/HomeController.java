@@ -86,6 +86,7 @@ public class HomeController {
             return
                     "welcomeExists";
         } else {
+            userPreferences.buildUserPreferences(id);
             return "welcomeNew";
         }
     }
@@ -186,6 +187,7 @@ public class HomeController {
         model.addAttribute("waistSize", temp.getWaistSize());
         model.addAttribute("inseamSize", temp.getInseamLength());
         model.addAttribute("templateId", templateId);
+        model.addAttribute("templateName", temp.getTemplateName());
 
 
         return "templateBuildResult";
@@ -256,23 +258,20 @@ public class HomeController {
         //used to generate random offset for search query and to generate random product index
         Random random = new Random();
 
-        ArrayList<JeanTemplate> templateList = accessTemplate.selectAllUserTemplates(userID);
 
-        String name = accessTemplate.selectSearchJeanType(userID);
+
+        String jeanStyle = userPreferences.getJeanStyle();
         String searchQuery = "";
-        if(!name.isEmpty()) {
-
-            Object[] preferences = accessTemplate.selectSearchCroppedDistressed(userID);
-            boolean crop = (boolean) preferences[0];
-            boolean distress = (boolean) preferences[1];
-            boolean favoriteCroppedDistress = (boolean) preferences[2];
-
-            model.addAttribute("name", name);
-            model.addAttribute("crop", crop);
-            model.addAttribute("distress", distress);
+        if(!jeanStyle.isEmpty()) {
 
 
-            searchQuery = returnRandomSearch(name, crop, distress, favoriteCroppedDistress);
+            boolean crop = userPreferences.isCropped();
+            boolean distress = userPreferences.isDistressed();
+            boolean favoriteCroppedDistress = userPreferences.isFavoriteCroppedOrDistressed();
+
+
+
+            searchQuery = returnRandomSearch(jeanStyle, crop, distress, favoriteCroppedDistress);
         }else{
             searchQuery = "/api/v2/products?pid=uid5921-39054839-10&cat=jeans";
         }
@@ -429,13 +428,11 @@ public class HomeController {
         userJean.setPrice(bd);
 
         String tempName = templateName;
-        if (!tempName.isEmpty()) {
-            userJean.setTemplateName(tempName);
-        }
 
         model.addAttribute("templateId", templateId);
 
         if (templateId != 0) {
+            userJean.setTemplateName(tempName);
             return "templateResultEdit";
         }
         return "templateResult";
@@ -454,11 +451,13 @@ public class HomeController {
             userJean.setTemplateId(Integer.valueOf(temp));
             accessTemplate.update(userJean, Integer.valueOf(temp));
         } else {
+            userJean.setTemplateId(0);
             userJean.setTemplateName(templateName);
             accessTemplate.insert(userJean);
         }
 
         ArrayList<JeanTemplate> templateList = accessTemplate.selectAllUserTemplates(userID);
+        userPreferences.buildUserPreferences(userID);
 
         model.addAttribute("templateList", templateList);
 

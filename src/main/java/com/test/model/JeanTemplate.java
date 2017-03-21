@@ -27,6 +27,7 @@ public class JeanTemplate implements Serializable{
     private String userId;
 
     @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name = "TemplateID", nullable = false)
     public int getTemplateId() {
         return templateId;
