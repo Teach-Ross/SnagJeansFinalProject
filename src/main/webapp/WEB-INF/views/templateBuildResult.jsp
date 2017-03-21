@@ -9,62 +9,128 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Snag Jeans</title>
-
-    <style>
-        #rect {
-            background-color: ${color};
-    </style>
+    <title>Snag-templateBuildResult</title>
 
     <link rel="stylesheet" type="text/css"
-          href="webresources/css/snagjeansfinalproject.css">
+          href="../webresources/css/normalize.css">
 
+    <link rel="stylesheet" type="text/css"
+          href="webresources/css/snagjeansfinalprojectv1.css">
+
+    <style>
+        .buildresult {
+            position: relative;
+            background-color: #1F467F;
+            opacity: 0.7;
+            width: 50%;
+            margin-left: 5%;
+            margin-top: -26%;
+            border-bottom: 10%;
+
+            /* filter: alpha(opacity=60); /* For IE8 and earlier */
+            color: #ffffff ;
+            font-size: 40px;
+            font-weight: bold;
+        }
+        h3 {
+            font-size: 40px;
+        }
+
+        h4 {
+            text-align: center;
+            font-size: 35px;
+        }
+
+        p{
+            font-size: 30px;
+        }
+
+        #select1 {
+            font-size: 23px;
+        }
+        #select2 {
+            font-size: 23px;
+        }
+        #style {
+            font-size: 23px;
+        }
+        #cropped {
+            font-size: 23px;
+        }
+        #distress {
+            font-size: 23px;
+        }
+        #rect {
+            background-color: ${color};
+        }
+    </style>
 </head>
+
 <body>
-<h1>Please complete your jean template below:</h1>
-<br>
-<form action="gather" method="get">
-    <input id="templateId" type="hidden" name="templateId" value="0">
-    <input type="hidden" name="templateName" value="${templateName}">
-    <select name="waistsize" id="select1">
-        <option value="null">Select Waist Size</option>
-    </select>
-    <select name="inseamsize" id="select2">
-        <option value="null">Select Inseam Size</option>
-    </select>
 
-    <select name="style" id="style">
+<div class="background">
+    <div class="transbox">
+        <img src="/webresources/images/Snag_Logo_R2_Version5.svg" alt="Snag Logo"
+             height="300px" width="500px">
+        <h3>Build It. Buy It. Own It.</h3>
+    </div>
+</div>
 
-        <option value="null">Select Jean Style</option>
+<div class="buildresult">
+    <div>
+        <h4>Please complete your jean template below:</h4>
+        <p>
 
-        <c:forEach items="${list}" var="option">
-            <option value="${option}">
-                <c:out value="${option}"></c:out>
-            </option>
-        </c:forEach>
-    </select>
+        <form action="gather" method="get">
+        <input id="templateId" type="hidden" name="templateId" value="0">
+        <input type="hidden" name="templateName" value="${templateName}">
 
+        <select name="waistsize" id="select1">
+            <option value="null">Select Waist Size</option>
+        </select>
 
+        <select name="inseamsize" id="select2">
+            <option value="null">Select Inseam Size</option>
+        </select>
 
+        <select name="style" id="style">
+            <option value="null">Select Jean Style</option>
 
-    <input type='hidden' value="" name="cropped">
-    <input type="checkbox" name="cropped" id="cropped" value="1">
-    <label for="cropped">Cropped</label>
+            <c:forEach items="${list}" var="option">
+                <option value="${option}">
+                    <c:out value="${option}"></c:out>
+                </option>
+            </c:forEach>
+        </select>
+        <br>
+        <input type='hidden' value="" name="cropped">
+        <input type="checkbox" name="cropped" id="cropped" value="1">
+        <label for="cropped">Cropped</label>
 
-    <input type='hidden' value="" name="distress">
-    <input type="checkbox" name="distress" id="distress" value="1">
-    <label for="distress">Distressed</label>
+        <input type='hidden' value="" name="distress">
+        <input type="checkbox" name="distress" id="distress" value="1">
+        <label for="distress">Distressed</label>
 
+        <p>Select Fabric Swatch:
+        <input name="color" class="jscolor {onFineChange:'update(this)'}"
+               value="${color}">
+        <p id="rect" style="border:1px solid gray; width:161px; height:100px;
+                     margin-left: 15%"></p>
 
-    <p>Select Fabric Swatch:
-        <input name="color" class="jscolor {onFineChange:'update(this)'}" value="${color}">
-    <p id="rect" style="border:1px solid gray; width:161px; height:100px;"></p>
+        <!--input type="submit" value="Submit"
+        onclick="return Validate()" -->
 
-    <input type="submit" value="Submit" onclick="return Validate()">
-    <div style="color:red;"id="errors"></div>
-</form>
-
-
+        <form>
+            <button type="submit" value="Submit" onclick="return Validate()">
+                <img
+                        src="webresources/images/Submit_01_Empty.png"
+                        width="250" height="70" alt="submit" /></button>
+        </form>
+        <div style="color:red;"id="errors"></div>
+        <br>
+        </form>
+    </div>
+</div>
 </body>
 
 <script>
