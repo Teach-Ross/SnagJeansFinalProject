@@ -43,8 +43,9 @@ public class FBGraph {
         }
         return graph;
     }
-
+    //returns Map object with specified keys for each object gathered from FbGraph
     public Map getGraphData(String fbGraph) {
+
         Map fbProfile = new HashMap();
         try {
             JSONObject json = new JSONObject(fbGraph);

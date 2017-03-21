@@ -33,12 +33,6 @@ public class UserDao {
 
     }
 
-    public void select(User user){
-
-        Session session = getSessionFactory().openSession();
-        session.beginTransaction();
-        Criteria c = session.createCriteria(User.class);
-    }
 
     public User selectUser(String userId){
         User user = new User();

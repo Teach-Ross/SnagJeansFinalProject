@@ -37,61 +37,86 @@ import java.util.Random;
 
 public class HomeController {
 
+    //CRUD for user database
     private UserDao accessUser = new UserDao();
+    //CRUD for template database
     private TemplateDao accessTemplate = new TemplateDao();
+    //helper class for converting raw data from APIs and html selections to JeanTemplate object
     private JeanTemplateMap templateMap = new JeanTemplateMap();
+    //used to store JeanTemplates for inserting or updating JeanTemplate table in database
     private JeanTemplate userJean = new JeanTemplate();
+    //used to store preferences based existing user templates
     private UserPreferences userPreferences = new UserPreferences();
 
-
+    //simple website homepage, uses FBConnection to send authUrl to view
     @RequestMapping("/")
-
     public ModelAndView landingPage() {
-
+        //create FBConnection instance
         FBConnection fbConnection = new FBConnection();
+        //fb.Connection.getFBAuthUrl() directs to FB login and then back to specified REDIRECTURI after successful login
         return new
                 ModelAndView("landingpage", "message", fbConnection.getFBAuthUrl());
 
     }
+    /*  mapping for new or existing users after successful facebook longin and redirect
 
+        @param code used to obtain accessToken which also us to access FBGraph info
+        @param response used to store cookie with user info
+        @param model holds attributes sent to view
+     */
     @RequestMapping("/welcome2")
 
     public String gatherFbData(@RequestParam("code") String code,
                                HttpServletResponse response, Model model) {
-
+        //verifies code recieved from fb login
         if (code == null || code.equals("")) {
             throw new RuntimeException(
                     "ERROR: Didn't get code parameter in callback");
         }
 
         FBConnection fbConnection = new FBConnection();
+        //gathers accessToken using code
         String accessToken = fbConnection.getAccessToken(code);
-
+        //gathers fbGraph String using accessToken
         FBGraph fbGraph = new FBGraph(accessToken);
         String graph = fbGraph.getFBGraph();
         Map fbProfileData = fbGraph.getGraphData(graph);
-
+        //stores fbId locally
         String id = fbProfileData.get("id").toString();
-
+        //creates cookie with user fbId, set cookie to expire when browser closes, attaches cookie HttpServlet
         Cookie userCookie = new Cookie("userTag", id);
         userCookie.setMaxAge(-1);
         response.addCookie(userCookie);
 
-        User newUser = accessUser.selectUser(id);
 
         if (accessUser.userIdExists(id)) {
+            //use fbId to access user within database
+            User newUser = accessUser.selectUser(id);
+            //gather userName to attach to model to send to view
             String userName = newUser.getName();
+            //loads userPrefences intially when user logins
             userPreferences.buildUserPreferences(id);
+            //add userName to model to display on welcomeExists
             model.addAttribute("message", userName);
             return
                     "welcomeExists";
         } else {
+            //loads userPrefernces intially when user logins, for new user this loads "empty preferences"
             userPreferences.buildUserPreferences(id);
             return "welcomeNew";
         }
     }
 
-    //Create UserEntity and insert into database
+    /*
+        @param String name
+        @param String address
+        @param String city
+        @param String zip
+        @param String userId
+        userId is gathered from cookie added at login
+        all other parameters gathered from form in welcomeNew html
+        Method uses these parameters to create new User and insert into database
+     */
     @RequestMapping("/welcomeNew")
 
     public ModelAndView welcomeNew(@RequestParam("name") String name,
@@ -101,13 +126,7 @@ public class HomeController {
                                    @RequestParam("zip") String zip,
                                    @CookieValue("userTag") String userId) {
 
-
-        /*System.out.println("name = " + name);
-        System.out.println("address = " + address);
-        System.out.println("city = " + city);
-        System.out.println("state = " + state);
-        System.out.println("zip = " + zip); */
-
+        //validates user has entered name. If name is empty returns error message to welcomeNew
         if (name.equalsIgnoreCase("")) {
             String errorMessage = "Name is missing and is a required field";
             return new ModelAndView("welcomeNew", "errormessage", errorMessage);
@@ -120,13 +139,18 @@ public class HomeController {
             addUser.setCity(city);
             addUser.setState(state);
             addUser.setZip(zip);
+            //uses UserDao to insert User into database
             accessUser.insert(addUser);
 
             return new
                     ModelAndView("templateDirect", " ", " ");
         }
     }
-
+    /*  @param model holds attributes sent to view
+        @param userId
+        directs user to welcomeExist when they click a home link through throughout the website
+        gathers userId from cookie in order to access and display their userName saved in database
+     */
     @RequestMapping("/home")
     public String home(@CookieValue("userTag") String userId,
                        Model model) {
@@ -137,15 +161,21 @@ public class HomeController {
         return "welcomeExists";
     }
 
-    //asks user if they would like to create blank template or build template from inspiration
-    @RequestMapping("/newTemplate")
+    //directs user request to create template to templateDirect view
+    //which will allow them to create template from scratch, inspiration or preferenced inspiration
     public String newTemplate() {
         return "templateDirect";
     }
 
-    //pulls users old templates from database, allows user to select one to edit
+    /*  @param userId
+        @param model
+        grabs userId from cookie, loads arraylist with all templates matching userId
+        allows user to select or delete
+     */
+
     @RequestMapping("/editTemplate")
     public String editTemplate(Model model, @CookieValue(value="userTag", required = false) String userID) {
+        //uses templateDao to gather all user templates
         ArrayList<JeanTemplate> templateList = accessTemplate.selectAllUserTemplates(userID);
 
         model.addAttribute("templateList", templateList);
@@ -169,17 +199,25 @@ public class HomeController {
         return "templateView";
 
     }
+    /*  @param templateId gathered from user selection on templateView page
+        @param model
+        gathers JeanTemplate object from database by matching templateId
+     */
 
     @RequestMapping("/selectTemplate")
     public String selectTemplate(@RequestParam("id") int templateId, Model model) {
+        //assigns JeanTemplate gathered from database
         JeanTemplate temp = accessTemplate.selectTemplate(templateId);
 
+        //convers string to JeanStyleEnum
         JeanStyleEnum style = JeanStyleEnum.valueOf(temp.getJeanStyle().toUpperCase());
+        //converts byte values from database to boolean
         boolean cropped = (temp.getCropped() != 0);
         boolean distress = (temp.getDistressed() != 0);
 
-
+        //sends array of all JeanStyleEnums to view
         model.addAttribute("list", JeanStyleEnum.values());
+        //sends all JeanTemplate attributes to view
         model.addAttribute("style", style);
         model.addAttribute("cropped", cropped);
         model.addAttribute("distress", distress);
@@ -193,43 +231,53 @@ public class HomeController {
         return "templateBuildResult";
     }
 
+    /*  param model
+        direct user to templateBlank which will display unpopulated template
+     */
+
     @RequestMapping("/templateBlank")
     public String displayBlankTemplate(Model model) {
-
+        //sends array of all JeanStyleEnums to view
         model.addAttribute("list", JeanStyleEnum.values());
-
         return "templateBlank";
     }
 
+    /*  @param model
+        gathers random images from ShopStyleAPI to display
+     */
     @RequestMapping("/templateBuild")
     public String jeansImages(Model model) {
 
         //used to generate random offset for search query and to generate random product index
         Random random = new Random();
-
+        //uses gatherImages method to obtain JSONObject from ShopStyleApi
         JSONObject obj = gatherImages("/api/v2/products?pid=uid5921-39054839-10&fts=jeans");
 
         JSONArray ar = obj.getJSONArray("products");
 
-        //used to store useful
-
-        //identify random product
+        //identify random product with three random distinct ints 0-24
         int[] numbers = random.ints(0, 24).distinct().limit(3).toArray();
         JSONObject productObject = ar.getJSONObject(numbers[0]);
+        //gathers image url
         String image1 = productObject.getJSONObject("image").getJSONObject("sizes").getJSONObject("XLarge").getString("url");
+       //gathers product id
         int id1 = productObject.getInt("id");
         String idString = Integer.toString(id1);
+        //stores image url and product id in ArrayList
         ArrayList<String> jean1 = new ArrayList<String>();
         jean1.add(image1);
         jean1.add(idString);
-
+        //attach both of these to model
         model.addAttribute("image1", image1);
         model.addAttribute("jean1", jean1);
 
         JSONObject productObject2 = ar.getJSONObject(numbers[1]);
+        //gathers image url
         String image2 = productObject2.getJSONObject("image").getJSONObject("sizes").getJSONObject("XLarge").getString("url");
+        //gathers product id
         int id2 = productObject2.getInt("id");
         String idString2 = Integer.toString(id2);
+        //attach both of these to model
         ArrayList<String> jean2 = new ArrayList<String>();
         jean2.add(image2);
         jean2.add(idString2);
@@ -238,9 +286,12 @@ public class HomeController {
         model.addAttribute("jean2", jean2);
 
         JSONObject productObject3 = ar.getJSONObject(numbers[2]);
+        //gathers image url
         String image3 = productObject3.getJSONObject("image").getJSONObject("sizes").getJSONObject("XLarge").getString("url");
+        //gathers product id
         int id3 = productObject3.getInt("id");
         String idString3 = Integer.toString(id3);
+        //attach both of these to model
         ArrayList<String> jean3 = new ArrayList<String>();
         jean3.add(image3);
         jean3.add(idString3);
@@ -251,28 +302,30 @@ public class HomeController {
 
         return "templateBuild";
     }
-
+    /*  @param model
+        returns three jean images to view, these images are skewed towards user preferences
+     */
     @RequestMapping("/templateBuildPreferences")
-    public String jeanImagesPrefferences(Model model,
+    public String jeanImagesPreferences(Model model,
                                          @CookieValue("userTag") String userID) {
         //used to generate random offset for search query and to generate random product index
         Random random = new Random();
 
-
-
+        //gathers user preference for JeanStyle
         String jeanStyle = userPreferences.getJeanStyle();
         String searchQuery = "";
+        //user with no templates will have empty string for jeanStyle
         if(!jeanStyle.isEmpty()) {
 
-
+            //gather user preferences for cropped and distressed
             boolean crop = userPreferences.isCropped();
             boolean distress = userPreferences.isDistressed();
             boolean favoriteCroppedDistress = userPreferences.isFavoriteCroppedOrDistressed();
 
-
-
+            //returns random seach query weighted for user prefences
             searchQuery = returnRandomSearch(jeanStyle, crop, distress, favoriteCroppedDistress);
         }else{
+            //returns simple search for jeans
             searchQuery = "/api/v2/products?pid=uid5921-39054839-10&cat=jeans";
         }
 
@@ -282,7 +335,7 @@ public class HomeController {
 
         //used to store useful
 
-        //identify random product
+        //see comments from templateBuild mapping
         int[] numbers = random.ints(0, 24).distinct().limit(3).toArray();
         JSONObject productObject = ar.getJSONObject(numbers[0]);
         String image1 = productObject.getJSONObject("image").getJSONObject("sizes").getJSONObject("XLarge").getString("url");
@@ -320,18 +373,26 @@ public class HomeController {
 
         return "templateBuildPreferences";
     }
-
-
+    /*  @param jean ArrayList contains both productid and image url
+        @param model
+        method uses these parameters to gather information about jean selection
+        and pre populate view of template
+     */
     @RequestMapping("templateBuildResult")
     public String displayTemplate(Model model,
                                   @RequestParam("jean") ArrayList<String> jean) {
 
+
+        //use of substring indexes to decode arraylist gathered from view
         String imageUrl = jean.get(0).substring(1);
         int length = jean.get(1).length();
         String productId = jean.get(1).substring(0, length - 1);
-        String htmlColor = getHtml(imageUrl);
+
+        //sends imageUrl to ImmaggaApi, getHtmlColor returns string of html color code
+        String htmlColor = getHtmlColor(imageUrl);
         model.addAttribute("color", htmlColor);
 
+        //call ShopStyle api to gather jean specific information and map to display on template page
         try {
             //provides access to by sending requests through http protocol to other http servers
             HttpClient http = HttpClientBuilder.create().build();
@@ -341,6 +402,7 @@ public class HomeController {
             HttpHost host = new HttpHost("api.shopstyle.com", 80, "http");
 
             //reference to location we are trying to retrieve data from
+            //query here is for information on one specific product
             String productUrl = "http://api.shopstyle.com/api/v2/products/" + productId + "?pid=uid5921-39054839-10";
             HttpGet getPage = new HttpGet(productUrl);
 
@@ -351,8 +413,8 @@ public class HomeController {
             String jsonString = EntityUtils.toString(resp.getEntity());
             JSONObject obj = new JSONObject(jsonString);
 
-
             //gather product category
+            //each jean from ShopStyle can have mutiple categories, these are gathered and stored in an arraylist
             JSONArray categoryArray = obj.getJSONArray("categories");
             ArrayList<String> categories = new ArrayList<String>();
             for (int i = 0; i < categoryArray.length(); i++) {
@@ -370,24 +432,6 @@ public class HomeController {
             model.addAttribute("list", JeanStyleEnum.values());
             model.addAttribute("cropped", cropped);
             model.addAttribute("distress", distress);
-
-            //
-
-
-
-        /*    JSONArray colorArray = obj.getJSONArray("colors");
-            JSONObject color = obj.getJSONArray("colors").getJSONObject(0);
-            model.addAttribute("colorName", color.getString("name"));
-
-            for (int i = 0; i < colorArray.length(); i++) {
-                JSONObject color2 = colorArray.getJSONObject(i);
-                JSONArray ar = color2.getJSONArray("canonicalColors");
-                for (int j = 0; j < ar.length(); j++) {
-                    String colorName = "colorName" + j;
-                    model.addAttribute(colorName, ar.getJSONObject(j).getString("name"));
-                }
-                }*/
-
 
         } catch (java.io.IOException e) {
             e.printStackTrace();
@@ -469,20 +513,26 @@ public class HomeController {
         return "test";
     }
 
-
-    public String getHtml(String imageUrl) {
+    /*  @param imageUrl gathered from ShopStyleApi
+        method return String of HTML hex code of most prominent color identified in image by ImaggaApi
+     */
+    public String getHtmlColor(String imageUrl) {
 
         String apiKey = apiKey = "acc_9cf903d4cf36e57",
                 apiSecret = "d8254b91c035c098d5a35a93190609a7";
         try {
             com.mashape.unirest.http.HttpResponse<JsonNode> response = Unirest.get("https://api.imagga.com/v1/colors")
+                    //specifies query sent to ImaggaApi
                     .queryString("url", imageUrl)
+                    //specifies key needed to accept API
                     .basicAuth(apiKey, apiSecret)
                     .header("Accept", "application/json")
+                    //specifies that we want response from API in JSON format
                     .asJson();
 
             JSONArray obj = response.getBody().getObject().getJSONArray("results");
 
+            //returns generic jean color if API calls fails and returns empty JSON
             while(obj.isNull(0)){
                 System.out.println("ERROR FOUND FOR COLOR IDENTIFICATION");
                 System.out.println(imageUrl);
@@ -491,12 +541,14 @@ public class HomeController {
 
             JSONArray obj2 = obj.getJSONObject(0).getJSONObject("info").getJSONArray("foreground_colors");
 
-            while(obj2.isNull(2)){
+            //tests again and returns generic jean color if API calls fails and returns empty JSON
+            while(obj2.isNull(0)){
                 System.out.println("ERROR FOUND FOR COLOR IDENTIFICATION");
                 System.out.println(imageUrl);
                 return "#4e6590";
             }
 
+            //gathers String of htmlCode if all other tests pass
             return obj2.getJSONObject(0).getString("html_code");
 
         } catch (UnirestException e) {
@@ -505,37 +557,58 @@ public class HomeController {
         return null;
     }
 
-
+    /*  @param jeanStyle user preference for jeanstyle
+        @param cropped user preference for cropped jeans
+        @param distress user preference for distressed jeans
+        @param favoriteCroppedDistress user preference for cropped over distressed
+     */
     private String returnRandomSearch(String jeanStyle, boolean cropped, boolean distress, boolean favoriteCroppedDistress) {
         Random random = new Random();
 
         String search0 = "/api/v2/products?pid=uid5921-39054839-10&fts=jeans";
         String search1 = "/api/v2/products?pid=uid5921-39054839-10&fts=jeans+" + jeanStyle.toLowerCase();
+        //assigns jeans + jeanstyle search
         String search2 = search1;
+        //assigns jeans search
         String search3 = search0;
+        //assigns jeans + jeanstyle search
         String search4 = search1;
 
+        //if user prefers cropped but not distressed, weighted random for cropped is 40%
         if (cropped && !distress) {
             search2 = "/api/v2/products?pid=uid5921-39054839-10&fts=jeans+" + jeanStyle.toLowerCase() + "+cropped";
             search3 = search2;
-        }else if (!cropped && distress)
-        {
-            search2 = "/api/v2/products?pid=uid5921-39054839-10&fts=jeans+" + jeanStyle.toLowerCase() + "+distressed";
+        }
+        //if user prefers distressed but not distressed, weighted random for distressed is 40%
+        else if (!cropped && distress)
+        {   search2 = "/api/v2/products?pid=uid5921-39054839-10&fts=jeans+" + jeanStyle.toLowerCase() + "+distressed";
             search3 = search2;
-        }else if(cropped && distress){
+        }
+        //if user prefers both cropped and distressed, program tests which they prefer more
+        else if(cropped && distress){
             search2 = "/api/v2/products?pid=uid5921-39054839-10&fts=jeans" + jeanStyle.toLowerCase() + "+cropped";
             search3 = "/api/v2/products?pid=uid5921-39054839-10&fts=jeans" + jeanStyle.toLowerCase() + "+distressed";
+            //if user prefers cropped over distressed, weighted random for distressed is 20%, and cropped is %30
             if(favoriteCroppedDistress){
                 search4 = search2;
-            }else{
+            }
+            //if user prefers cropped over distressed, weighted random for distressed is 30%, and cropped is %20
+            else{
                 search4 = search3;
             }
         }
+
+
         String[] search = {search0, search1, search2, search3, search4};
         int[] weight = {0, 1, 1, 1, 1, 2, 2, 3, 3, 4};
+        //returns search string generated by random index
         return search[weight[random.nextInt(10)]];
     }
 
+
+    /*  @param search, specifies what type of query is made to ShopStyleApi
+        returns JSONObject based on this parameter
+     */
     private JSONObject gatherImages(String search) {
         //used to generate random offset for search query and to generate random product index
         Random random = new Random();

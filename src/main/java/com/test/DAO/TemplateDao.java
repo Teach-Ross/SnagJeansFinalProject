@@ -36,8 +36,8 @@ public class TemplateDao {
         session.close();
     }
 
-    public void update(JeanTemplate jeanTemplate, int templateId){
-        Session session =getSessionFactory().openSession();
+    public void update(JeanTemplate jeanTemplate, int templateId) {
+        Session session = getSessionFactory().openSession();
         session.beginTransaction();
         jeanTemplate.setTemplateId(templateId);
         session.saveOrUpdate(jeanTemplate);
@@ -45,7 +45,7 @@ public class TemplateDao {
         session.close();
     }
 
-    public JeanTemplate selectTemplate(int templateId){
+    public JeanTemplate selectTemplate(int templateId) {
         JeanTemplate temp = new JeanTemplate();
         Session session = getSessionFactory().openSession();
         session.beginTransaction();
@@ -53,114 +53,103 @@ public class TemplateDao {
         session.close();
         return temp;
     }
-
-
-    public ArrayList<JeanTemplate> selectAllUserTemplates(String userId){
+    /*  Method returns arraylist with all templates matching userId
+        @param userId identifies user in database and links to their templates
+     */
+    public ArrayList<JeanTemplate> selectAllUserTemplates(String userId) {
         Session session = getSessionFactory().openSession();
         session.beginTransaction();
         Criteria c = session.createCriteria(JeanTemplate.class)
-                    .add(Restrictions.eq("userId", userId));
+                .add(Restrictions.eq("userId", userId));
+        //casts c.list to arraylist
         ArrayList<JeanTemplate> templateList = (ArrayList<JeanTemplate>) c.list();
         session.close();
 
         return templateList;
     }
-
+    /*  Method returns most common value for JeanType for a user's existing templates
+        @param userId identifies user in database and links to their templates
+     */
     public String selectSearchJeanType(String userId) {
         Session session = getSessionFactory().openSession();
         session.beginTransaction();
         List results = session.createCriteria(JeanTemplate.class)
+                //gathers all template entries matching userId
                 .add(Restrictions.eq("userId", userId))
                 .setProjection(Projections.projectionList()
-                        .add(Projections.rowCount(), "count")
-                        .add(Projections.groupProperty("jeanStyle")))
+                        //groups entries together by JeanStyle
+                        .add(Projections.groupProperty("jeanStyle"))
+                        //counts number of entries in each group
+                        .add(Projections.rowCount(), "count"))
+                // orders groups by descending results
                 .addOrder(Order.desc("count"))
+                //returns top result
                 .setMaxResults(1)
                 .list();
         session.close();
 
-        if(results.isEmpty()){
+        //accounts users with no templates, return empty string
+        if (results.isEmpty()) {
             return "";
         }
 
+        /*  gather this list entry by casting it to an Object[]
+            Object[] array contains name of common style JeanStyle and number of times it occurs
+         */
         Object[] array = (Object[]) results.get(0);
 
-        return (String) array[1];
+        /*  first entry in this array contains the name of the users most popular JeanStyle
+            again must cast into a String object as Hibernate only returns general java objects
+         */
+        return (String) array[0];
     }
 
-    public Object[] selectSearchCroppedDistressed(String userId){
+    /*  Method returns most common user selections for cropped and distressed
+        Also identifies whether which of these two occurs more often
+        Return Object[] with these three values as booleans
+        @param userId identifies user in database and links to their templates
+     */
+    public Object[] selectSearchCroppedDistressed(String userId) {
         Object[] preferences = new Object[3];
-
         Session session = getSessionFactory().openSession();
         session.beginTransaction();
+        //counts total number of jean templates entries in the database
         Criteria total = session.createCriteria(JeanTemplate.class)
+                //gathers all template entries matching userId
                 .add(Restrictions.eq("userId", userId))
+                //counts number of rows
                 .setProjection(Projections.rowCount());
+        //assigns this row count
         Long rowCount = (Long) total.uniqueResult();
 
+        //counts number of jean templates entries with cropped selection
         Criteria c1 = session.createCriteria(JeanTemplate.class)
                 .add(Restrictions.eq("userId", userId))
                 .add(Restrictions.eq("cropped", (byte) 1))
                 .setProjection(Projections.rowCount());
+        //assigns this row count
         Long countCropped = (Long) c1.uniqueResult();
 
+        //counts number of jean templates entries with distressed selections
         Criteria c2 = session.createCriteria(JeanTemplate.class)
                 .add(Restrictions.eq("userId", userId))
                 .add(Restrictions.eq("distressed", (byte) 1))
                 .setProjection(Projections.rowCount());
         Long countDistressed = (Long) c2.uniqueResult();
 
-
-
+        //returns boolean value true if number of entries with cropped is higher than 50% of total entries
         preferences[0] = (countCropped > (rowCount - countCropped));
+        //returns boolean value true if number of entries with distressed is higher than 50% of total entries
         preferences[1] = (countDistressed > (rowCount - countDistressed));
+        //returns boolean value true if number of entries with cropped is higher than entries with distressed
         preferences[2] = (countCropped > countDistressed);
-
+        session.close();
+        //returns these values in an array
         return preferences;
 
     }
+}
 
-
-
-    }
-
-        /*Object[] array = (Object[]) o;
-
-
-        long max = 0;
-        for(Object o: results){
-
-
-
-            for (int i=0; i < array.length; i++){
-                long count = (long) array[0];
-                if ((long) array[i] > max){
-                    max = (long) array[i];
-                    secondMax = max;
-                    max = numbers[i];
-                }else if (numbers[i] > secondMax) {
-                    secondMax = numbers[i];
-                }
-            }
-            return secondMax;
-        }
-
-
-
-        long count = (long) array[0];
-
-
-
-        System.out.println("" + name + count);
-
-
-
-     *//*   for(Object o: results){
-            long num = (long) o[0];
-            String name = (String) o[1];
-        }
-
-        String m = (String) results.get(0);*/
 
 
 
