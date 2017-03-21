@@ -9,6 +9,10 @@
 <html>
 <head>
     <title>Snag-templateBuild</title>
+
+    <link rel="stylesheet" type="text/css"
+          href="../webresources/css/normalize.css">
+
     <link rel="stylesheet" type="text/css"
           href="webresources/css/snagjeansfinalprojectv1.css">
 
