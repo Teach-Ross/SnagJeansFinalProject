@@ -27,29 +27,36 @@
 
     <div class="transbox_new">
 
-        <div class="transbox_inner">
-
             <br>
 
             <!-- p> UserID: ${message} </p-->
 
             <div class="transbox_form">
 
-                <form action="welcomeNew">
-
+                    <form action="welcomeNew">
 
                     Please register below:<br><br>
 
                     <label>Enter Name: </label><input type="text" id="name" name="name"><br>
+                    <br>
                     <label>Enter Address: </label><input type="text" name="address"> <br>
+                    <br>
                     <label>Enter City: </label><input type="text" name="city"><br>
+                    <br>
                     <label>Enter State: </label><input type="text" name="state"><br>
+                    <br>
                     <label>Enter Zip: </label><input type="text" name="zip"><br>
                     <br>
+
+                    <button type="submit" value="Submit" onclick="return Validate()">
+                                            <img
+                                src="webresources/images/Submit_01_Empty.png"
+                    width="300" height="75" alt="submit" /></button>
+                    <!-- div class="submit"><input type="submit" value="Submit"
+                                     onclick="return Validate()"--><br>
                     <div id="errors"></div>
-                    <br>
-                    <div class="submit"><input type="submit" value="Submit" onclick="return Validate()"><br>
-                </div>
+
+           </div>
 
                 </form>
                 <br>
