@@ -29,56 +29,57 @@
     <div class="transbox_new">
 
         <div class="transbox_inner">
-<table border="1">
-    <tr>
-        <th>Template Name</th>
-        <th>Jean Style</th>
-        <th>Cropped</th>
-        <th>Distressed</th>
-        <th>Jean Color</th>
-        <th>Waist Size</th>
-        <th>Inseam Length</th>
-        <th>Price</th>
-    </tr>
-    <c:forEach var="template" items="${templateList}">
-        <tr>
-            <td>${template.templateName}</td>
-            <td>${template.jeanStyle}</td>
-            <c:choose>
-                <c:when test="${template.cropped != 0}">
-                    <td>YES</td>
-                </c:when>
-                <c:otherwise>
-                    <td>NO</td>
-                </c:otherwise>
-            </c:choose>
-            <c:choose>
-                <c:when test="${template.distressed != 0}">
-                    <td>YES</td>
-                </c:when>
-                <c:otherwise>
-                    <td>NO</td>
-                </c:otherwise>
-            </c:choose>
-            <td style="background-color:${template.color};"><b></b></td>
-            <td>${template.waistSize}</td>
-            <td>${template.inseamLength}</td>
-            <td>$ ${template.price}</td>
-            <td><a href="selectTemplate?id=${template.templateId}"> Select </a></td>
-            <td><a href="deleteTemplate?id=${template.templateId}"> Delete </a></td>
-        </tr>
+            <table border="1">
+                <tr>
+                    <th>Template Name</th>
+                    <th>Jean Style</th>
+                    <th>Cropped</th>
+                    <th>Distressed</th>
+                    <th>Jean Color</th>
+                    <th>Waist Size</th>
+                    <th>Inseam Length</th>
+                    <th>Price</th>
+                </tr>
+                <c:forEach var="template" items="${templateList}">
+                    <tr>
+                        <td>${template.templateName}</td>
+                        <td>${template.jeanStyle}</td>
+                        <c:choose>
+                            <c:when test="${template.cropped != 0}">
+                                <td>YES</td>
+                            </c:when>
+                            <c:otherwise>
+                                <td>NO</td>
+                            </c:otherwise>
+                        </c:choose>
+                        <c:choose>
+                            <c:when test="${template.distressed != 0}">
+                                <td>YES</td>
+                            </c:when>
+                            <c:otherwise>
+                                <td>NO</td>
+                            </c:otherwise>
+                        </c:choose>
+                        <td style="background-color:${template.color};"><b></b></td>
+                        <td>${template.waistSize}</td>
+                        <td>${template.inseamLength}</td>
+                        <td>$ ${template.price}</td>
+                        <td><a href="selectTemplate?id=${template.templateId}"> Select </a></td>
+                        <td><a href="deleteTemplate?id=${template.templateId}"> Delete </a></td>
+                    </tr>
 
-    </c:forEach>
+                </c:forEach>
 
 
-</table>
-
-<form action="templateBlank">
-    <input type="submit" value="Create New Template From Scratch">
-</form>
-<form action="templateBuild">
-    <input type="submit" value="Create New Template From Inspiration">
-</form>
+            </table>
+            <br>
+            <form action="templateBlank">
+                <div class="options"><input type="submit" value="Create New Template From Scratch"></div>
+            </form>
+            <br>
+            <form action="options">
+                <div class="options"><input type="submit" value="Create New Template From Inspiration"></div>
+            </form>
         </div>
     </div>
 </body>

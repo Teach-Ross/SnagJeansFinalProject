@@ -150,6 +150,10 @@ div.submit {
     margin-left: 45%;
 }
 
+div.options {
+    margin-left: 35%;
+}
+
 div.enter {
     margin-left: 40%;
 }
@@ -219,6 +223,7 @@ button {
 
 th{
     color: black;
+
 }
 td{
     color: black;
