@@ -17,7 +17,6 @@ public class TemplateDao {
     private SessionFactory sessionFactory = cfg.buildSessionFactory();
 
 
-
     public void insert(JeanTemplate jeanTemplate) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();

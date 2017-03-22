@@ -16,7 +16,8 @@ public class FBConnection {
         public static final String FB_APP_ID = "1482030681829960";
         public static final String FB_APP_SECRET = "bc0f6bb0537ee9d32feb0cea1487d178";
         //redirects to landing mapping for new or existing users
-        public static final String REDIRECT_URI = "http://snagjeans.com/welcome2";
+        public static final String REDIRECT_URI = "http://snagjeans/welcome2";
+
         static String accessToken = "";
 
 
