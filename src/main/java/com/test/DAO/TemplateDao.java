@@ -13,15 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TemplateDao {
+    private Configuration cfg = new Configuration().configure("hibernate.cfg.xml");
+    private SessionFactory sessionFactory = cfg.buildSessionFactory();
 
-    public SessionFactory getSessionFactory() {
-        Configuration cfg = new Configuration().configure("hibernate.cfg.xml");
-        return cfg.buildSessionFactory();
-    }
 
 
     public void insert(JeanTemplate jeanTemplate) {
-        Session session = getSessionFactory().openSession();
+        Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.save(jeanTemplate);
         session.getTransaction().commit();
@@ -29,7 +27,7 @@ public class TemplateDao {
     }
 
     public void delete(JeanTemplate jeanTemplate) {
-        Session session = getSessionFactory().openSession();
+        Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.delete(jeanTemplate);
         session.getTransaction().commit();
@@ -39,7 +37,7 @@ public class TemplateDao {
 
 
     public void update(JeanTemplate jeanTemplate, int templateId) {
-        Session session = getSessionFactory().openSession();
+        Session session = sessionFactory.openSession();
         session.beginTransaction();
         jeanTemplate.setTemplateId(templateId);
         session.saveOrUpdate(jeanTemplate);
@@ -49,7 +47,7 @@ public class TemplateDao {
 
     public JeanTemplate selectTemplate(int templateId) {
         JeanTemplate temp = new JeanTemplate();
-        Session session = getSessionFactory().openSession();
+        Session session = sessionFactory.openSession();
         session.beginTransaction();
         temp = (JeanTemplate) session.get(JeanTemplate.class, templateId);
         session.close();
@@ -59,7 +57,7 @@ public class TemplateDao {
         @param userId identifies user in database and links to their templates
      */
     public ArrayList<JeanTemplate> selectAllUserTemplates(String userId) {
-        Session session = getSessionFactory().openSession();
+        Session session = sessionFactory.openSession();
         session.beginTransaction();
         Criteria c = session.createCriteria(JeanTemplate.class)
                 .add(Restrictions.eq("userId", userId));
@@ -73,7 +71,7 @@ public class TemplateDao {
         @param userId identifies user in database and links to their templates
      */
     public String selectSearchJeanType(String userId) {
-        Session session = getSessionFactory().openSession();
+        Session session = sessionFactory.openSession();
         session.beginTransaction();
         List results = session.createCriteria(JeanTemplate.class)
                 //gathers all template entries matching userId
@@ -113,7 +111,7 @@ public class TemplateDao {
      */
     public Object[] selectSearchCroppedDistressed(String userId) {
         Object[] preferences = new Object[3];
-        Session session = getSessionFactory().openSession();
+        Session session = sessionFactory.openSession();
         session.beginTransaction();
         //counts total number of jean templates entries in the database
         Criteria total = session.createCriteria(JeanTemplate.class)
@@ -146,6 +144,7 @@ public class TemplateDao {
         //returns boolean value true if number of entries with cropped is higher than entries with distressed
         preferences[2] = (countCropped > countDistressed);
         session.close();
+
         //returns these values in an array
         return preferences;
 

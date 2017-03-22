@@ -134,14 +134,6 @@
 </body>
 
 <script>
-    var cropped = "${cropped}";
-    var check1 = (cropped === "true");
-    document.getElementById("cropped").checked = check1;
-
-    var distress = "${distress}";
-    var check2 = (distress === "true");
-    document.getElementById("distress").checked = check2;
-
     function Validate() {
         var test = document.getElementById("select1");
         var test2 = document.getElementById("select2");
@@ -153,6 +145,14 @@
         }
         return true;
     }
+
+    var cropped = "${cropped}";
+    var check1 = (cropped === "true");
+    document.getElementById("cropped").checked = check1;
+
+    var distress = "${distress}";
+    var check2 = (distress === "true");
+    document.getElementById("distress").checked = check2;
 
 </script>
 

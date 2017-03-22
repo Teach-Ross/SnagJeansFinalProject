@@ -9,17 +9,13 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 public class UserDao {
-    private SessionFactory sessionFactory;
     private Configuration cfg = new Configuration().configure("hibernate.cfg.xml");
+    private SessionFactory sessionFactory = cfg.buildSessionFactory();
 
-    public SessionFactory getSessionFactory() {
-        Configuration cfg = new Configuration().configure("hibernate.cfg.xml");
-        return cfg.buildSessionFactory();
-    }
 
 
     public void insert(User user) {
-        Session session = getSessionFactory().openSession();
+        Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.save(user);
         session.getTransaction().commit();
@@ -27,11 +23,9 @@ public class UserDao {
     }
 
 
-
-
     public User selectUser(String userId){
         User user = new User();
-        Session session = getSessionFactory().openSession();
+        Session session = sessionFactory.openSession();
         session.beginTransaction();
         user = (User) session.get(User.class, userId);
         session.close();
@@ -40,7 +34,7 @@ public class UserDao {
 
         public boolean userIdExists(String userId){
 
-        Session session = getSessionFactory().openSession();
+        Session session = sessionFactory.openSession();
         session.beginTransaction();
         Criteria userIdSearch = session.createCriteria(User.class)
                 .add(Restrictions.eq("userId", userId))

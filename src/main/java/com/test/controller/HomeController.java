@@ -93,7 +93,6 @@ public class HomeController {
         userCookie.setMaxAge(-1);
         response.addCookie(userCookie);
 
-
         if (accessUser.userIdExists(id)) {
             //use fbId to access user within database
             User newUser = accessUser.selectUser(id);
@@ -243,6 +242,8 @@ public class HomeController {
 
     @RequestMapping("/templateBlank")
     public String displayBlankTemplate(Model model) {
+
+
         //sends array of all JeanStyleEnums to view
         model.addAttribute("list", JeanStyleEnum.values());
         return "templateBlank";
@@ -257,7 +258,7 @@ public class HomeController {
         //used to generate random offset for search query and to generate random product index
         Random random = new Random();
         //uses gatherImages method to obtain JSONObject from ShopStyleApi
-        JSONObject obj = gatherImages("/api/v2/products?pid=uid5921-39054839-10&fts=jeans");
+        JSONObject obj = gatherShopStyleImages("/api/v2/products?pid=uid5921-39054839-10&fts=jeans");
 
         JSONArray ar = obj.getJSONArray("products");
 
@@ -335,7 +336,7 @@ public class HomeController {
             searchQuery = "/api/v2/products?pid=uid5921-39054839-10&cat=jeans";
         }
 
-        JSONObject obj = gatherImages(searchQuery);
+        JSONObject obj = gatherShopStyleImages(searchQuery);
 
         JSONArray ar = obj.getJSONArray("products");
 
@@ -395,29 +396,10 @@ public class HomeController {
         String productId = jean.get(1).substring(0, length - 1);
 
         //sends imageUrl to ImmaggaApi, getHtmlColor returns string of html color code
-        String htmlColor = getHtmlColor(imageUrl);
+        String htmlColor = getImaggaHtmlColor(imageUrl);
         model.addAttribute("color", htmlColor);
 
-        //call ShopStyle api to gather jean specific information and map to display on template page
-        try {
-            //provides access to by sending requests through http protocol to other http servers
-            HttpClient http = HttpClientBuilder.create().build();
-
-            //address to call, port 80 is a default
-            //port number 443 for https connection (usually)
-            HttpHost host = new HttpHost("api.shopstyle.com", 80, "http");
-
-            //reference to location we are trying to retrieve data from
-            //query here is for information on one specific product
-            String productUrl = "http://api.shopstyle.com/api/v2/products/" + productId + "?pid=uid5921-39054839-10";
-            HttpGet getPage = new HttpGet(productUrl);
-
-            //execute HTTP request and get HTTP response back
-            HttpResponse resp = http.execute(host, getPage);
-
-            // Put the JSON to a string object
-            String jsonString = EntityUtils.toString(resp.getEntity());
-            JSONObject obj = new JSONObject(jsonString);
+        JSONObject obj = gatherShopStyleProductInfo(productId);
 
             //gather product category
             //each jean from ShopStyle can have mutiple categories, these are gathered and stored in an arraylist
@@ -441,9 +423,6 @@ public class HomeController {
             model.addAttribute("cropped", cropped);
             model.addAttribute("distress", distress);
 
-        } catch (java.io.IOException e) {
-            e.printStackTrace();
-        }
         return "templateBuildResult";
     }
 
@@ -534,7 +513,6 @@ public class HomeController {
             //updates template in database, linking to existing entry by templateId
             accessTemplate.update(userJean, Integer.valueOf(temp));
         } else {
-
             userJean.setTemplateId(0);
             userJean.setTemplateName(templateName);
             accessTemplate.insert(userJean);
@@ -547,51 +525,6 @@ public class HomeController {
 
 
         return "templateView";
-    }
-
-
-    /*  @param imageUrl gathered from ShopStyleApi
-        method return String of HTML hex code of most prominent color identified in image by ImaggaApi
-     */
-    public String getHtmlColor(String imageUrl) {
-
-        String apiKey = apiKey = "acc_9cf903d4cf36e57",
-                apiSecret = "d8254b91c035c098d5a35a93190609a7";
-        try {
-            com.mashape.unirest.http.HttpResponse<JsonNode> response = Unirest.get("https://api.imagga.com/v1/colors")
-                    //specifies query sent to ImaggaApi
-                    .queryString("url", imageUrl)
-                    //specifies key needed to accept API
-                    .basicAuth(apiKey, apiSecret)
-                    .header("Accept", "application/json")
-                    //specifies that we want response from API in JSON format
-                    .asJson();
-
-            JSONArray obj = response.getBody().getObject().getJSONArray("results");
-
-            //returns generic jean color if API calls fails and returns empty JSON
-            while(obj.isNull(0)){
-                System.out.println("ERROR FOUND FOR COLOR IDENTIFICATION");
-                System.out.println(imageUrl);
-                return "#4e6590";
-            }
-
-            JSONArray obj2 = obj.getJSONObject(0).getJSONObject("info").getJSONArray("foreground_colors");
-
-            //tests again and returns generic jean color if API calls fails and returns empty JSON
-            while(obj2.isNull(0)){
-                System.out.println("ERROR FOUND FOR COLOR IDENTIFICATION");
-                System.out.println(imageUrl);
-                return "#4e6590";
-            }
-
-            //gathers String of htmlCode if all other tests pass
-            return obj2.getJSONObject(0).getString("html_code");
-
-        } catch (UnirestException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
     /*  @param jeanStyle user preference for jeanstyle
@@ -646,7 +579,7 @@ public class HomeController {
     /*  @param search, specifies what type of query is made to ShopStyleApi
         returns JSONObject based on this parameter
      */
-    private JSONObject gatherImages(String search) {
+    private JSONObject gatherShopStyleImages(String search) {
         //used to generate random offset for search query and to generate random product index
         Random random = new Random();
 
@@ -676,7 +609,80 @@ public class HomeController {
             e.printStackTrace();
         }
         return null;
+    }
 
+    private JSONObject gatherShopStyleProductInfo(String productId){
+            //call ShopStyle api to gather jean specific information and map to display on template page
+        try {
+            //provides access to by sending requests through http protocol to other http servers
+            HttpClient http = HttpClientBuilder.create().build();
+
+            //address to call, port 80 is a default
+            //port number 443 for https connection (usually)
+            HttpHost host = new HttpHost("api.shopstyle.com", 80, "http");
+
+            //reference to location we are trying to retrieve data from
+            //query here is for information on one specific product
+            String productUrl = "http://api.shopstyle.com/api/v2/products/" + productId + "?pid=uid5921-39054839-10";
+            HttpGet getPage = new HttpGet(productUrl);
+
+            //execute HTTP request and get HTTP response back
+            HttpResponse resp = http.execute(host, getPage);
+
+            // Put the JSON to a string object
+            String jsonString = EntityUtils.toString(resp.getEntity());
+            JSONObject obj = new JSONObject(jsonString);
+
+            return obj;
+
+        }catch (java.io.IOException e) {
+            e.printStackTrace();
+        }
+            return null;
+        }
+
+    /*@param imageUrl gathered from ShopStyleApi
+      method return String of HTML hex code of most prominent color identified in image by ImaggaApi
+   */
+    private String getImaggaHtmlColor(String imageUrl) {
+
+        String apiKey = apiKey = "acc_9cf903d4cf36e57",
+                apiSecret = "d8254b91c035c098d5a35a93190609a7";
+        try {
+            com.mashape.unirest.http.HttpResponse<JsonNode> response = Unirest.get("https://api.imagga.com/v1/colors")
+                    //specifies query sent to ImaggaApi
+                    .queryString("url", imageUrl)
+                    //specifies key needed to accept API
+                    .basicAuth(apiKey, apiSecret)
+                    .header("Accept", "application/json")
+                    //specifies that we want response from API in JSON format
+                    .asJson();
+
+            JSONArray obj = response.getBody().getObject().getJSONArray("results");
+
+            //returns generic jean color if API calls fails and returns empty JSON
+            while(obj.isNull(0)){
+                System.out.println("ERROR FOUND FOR COLOR IDENTIFICATION");
+                System.out.println(imageUrl);
+                return "#4e6590";
+            }
+
+            JSONArray obj2 = obj.getJSONObject(0).getJSONObject("info").getJSONArray("foreground_colors");
+
+            //tests again and returns generic jean color if API calls fails and returns empty JSON
+            while(obj2.isNull(0)){
+                System.out.println("ERROR FOUND FOR COLOR IDENTIFICATION");
+                System.out.println(imageUrl);
+                return "#4e6590";
+            }
+
+            //gathers String of htmlCode if all other tests pass
+            return obj2.getJSONObject(0).getString("html_code");
+
+        } catch (UnirestException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }
