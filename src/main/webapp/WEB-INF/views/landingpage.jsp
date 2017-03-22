@@ -34,5 +34,9 @@
     </div>
 </div>
 
+<p><a href="/privacy">Privacy Policy</a></p>
+
+
+
 </body>
 </html>

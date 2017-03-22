@@ -535,7 +535,7 @@ public class HomeController {
             accessTemplate.update(userJean, Integer.valueOf(temp));
         } else {
 
-
+            userJean.setTemplateId(0);
             userJean.setTemplateName(templateName);
             accessTemplate.insert(userJean);
         }
