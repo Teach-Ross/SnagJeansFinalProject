@@ -14,7 +14,7 @@
           href="../webresources/css/normalize.css">
 
     <link rel="stylesheet" type="text/css"
-          href="webresources/css/snagjeansfinalproject.css">
+          href="webresources/css/snagjeansfinalprojectv1.css">
 </head>
 <body>
 <div class="background">
@@ -25,7 +25,7 @@
     </div>
 
 
-<div class="transbox_welcome">
+<div class="transbox_direct">
 
     <div class="transbox_inner">
 

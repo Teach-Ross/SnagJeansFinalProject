@@ -13,11 +13,13 @@ import java.net.URLConnection;
 
 
 public class FBConnection {
+        // Ross public static final String FB_APP_ID = "1694004864230807";
         public static final String FB_APP_ID = "1482030681829960";
+        // Ross public static final String FB_APP_SECRET = "968583d9adcc1b05da36876bc13fc986";
         public static final String FB_APP_SECRET = "bc0f6bb0537ee9d32feb0cea1487d178";
         //redirects to landing mapping for new or existing users
-        public static final String REDIRECT_URI = "http://snagjeans/welcome2";
-
+        public static final String REDIRECT_URI = "http://localhost:8080/welcome2";
+        //public static final String REDIRECT_URI = "http://i/welcome2";
         static String accessToken = "";
 
 
