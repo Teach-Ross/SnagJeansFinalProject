@@ -15,13 +15,16 @@ public class UserDao {
 
 
     public void insert(User user) {
-        SessionFactory factory = cfg.buildSessionFactory();
         Session session = sessionFactory.openSession();
-        session.beginTransaction();
-        session.save(user);
-        session.getTransaction().commit();
-        session.close();
-        factory.close();
+        try {
+            session.beginTransaction();
+            session.save(user);
+            session.getTransaction().commit();
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally {
+            session.close();
+        }
     }
 
 
