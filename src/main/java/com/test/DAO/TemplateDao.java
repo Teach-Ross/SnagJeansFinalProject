@@ -13,8 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TemplateDao {
-    private Configuration cfg = new Configuration().configure("hibernate.cfg.xml");
-    private SessionFactory sessionFactory = cfg.buildSessionFactory();
+    private static Configuration cfg = new Configuration().configure("hibernate.cfg.xml");
+    private static SessionFactory sessionFactory = cfg.buildSessionFactory();
 
 
     public void insert(JeanTemplate jeanTemplate) {
@@ -26,6 +26,7 @@ public class TemplateDao {
             session.getTransaction().commit();
         }catch(Exception e){
             e.printStackTrace();
+            System.out.println("TemplateDAO error");
         }finally {
             session.close();
         }
@@ -38,6 +39,7 @@ public class TemplateDao {
             session.delete(jeanTemplate);
             session.getTransaction().commit();
         }catch(Exception e){
+            System.out.println("TemplateDAO error");
             e.printStackTrace();
         }finally {
             session.close();
@@ -54,6 +56,7 @@ public class TemplateDao {
             session.saveOrUpdate(jeanTemplate);
             session.getTransaction().commit();
         }catch(Exception e){
+            System.out.println("TemplateDAO error");
             e.printStackTrace();
         }finally {
             session.close();
@@ -67,6 +70,7 @@ public class TemplateDao {
             session.beginTransaction();
             temp = (JeanTemplate) session.get(JeanTemplate.class, templateId);
         }catch(Exception e){
+            System.out.println("TemplateDAO error");
             e.printStackTrace();
         }finally {
             session.close();
@@ -87,7 +91,8 @@ public class TemplateDao {
             ArrayList<JeanTemplate> templateList = (ArrayList<JeanTemplate>) c.list();
             return templateList;
         } catch(Exception e){
-                e.printStackTrace();
+            System.out.println("TemplateDAO error");
+            e.printStackTrace();
             }finally {
                 session.close();
             }
@@ -116,6 +121,7 @@ public class TemplateDao {
                     .list();
             //accounts users with no templates, return empty string
             if (results.isEmpty()) {
+
                 return "";
             }
 
@@ -129,13 +135,12 @@ public class TemplateDao {
          */
             return (String) array[0];
         } catch(Exception e){
-                e.printStackTrace();
+            System.out.println("TemplateDAO error");
+            e.printStackTrace();
             }finally {
                 session.close();
             }
 
-
-        session.close();
         return null;
     }
 
@@ -179,10 +184,10 @@ public class TemplateDao {
             preferences[1] = (countDistressed > (rowCount - countDistressed));
             //returns boolean value true if number of entries with cropped is higher than entries with distressed
             preferences[2] = (countCropped > countDistressed);
-
             //returns these values in an array
             return preferences;
         }catch(Exception e){
+            System.out.println("TemplateDAO error");
             e.printStackTrace();
         }finally {
             session.close();

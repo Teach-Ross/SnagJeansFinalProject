@@ -9,8 +9,8 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 public class UserDao {
-    private Configuration cfg = new Configuration().configure("hibernate.cfg.xml");
-    private SessionFactory sessionFactory = cfg.buildSessionFactory();
+    private static Configuration cfg = new Configuration().configure("hibernate.cfg.xml");
+    private static SessionFactory sessionFactory = cfg.buildSessionFactory();
 
 
 
@@ -31,24 +31,33 @@ public class UserDao {
     public User selectUser(String userId){
         User user = new User();
         Session session = sessionFactory.openSession();
-        session.beginTransaction();
-        user = (User) session.get(User.class, userId);
-        session.close();
+        try {
+            session.beginTransaction();
+            user = (User) session.get(User.class, userId);
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally {
+            session.close();
+        }
         return user;
     }
 
         public boolean userIdExists(String userId){
 
         Session session = sessionFactory.openSession();
-        session.beginTransaction();
-        Criteria userIdSearch = session.createCriteria(User.class)
-                .add(Restrictions.eq("userId", userId))
-                .setProjection(Projections.rowCount());
-        Long rowCount = (Long) userIdSearch.uniqueResult();
-        session.close();
-
-        return (rowCount > 0);
-
+        try {
+            session.beginTransaction();
+            Criteria userIdSearch = session.createCriteria(User.class)
+                    .add(Restrictions.eq("userId", userId))
+                    .setProjection(Projections.rowCount());
+            Long rowCount = (Long) userIdSearch.uniqueResult();
+            return (rowCount > 0);
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally {
+            session.close();
+        }
+        return false;
     }
 }
 

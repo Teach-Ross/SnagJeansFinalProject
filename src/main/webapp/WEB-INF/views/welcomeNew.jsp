@@ -39,13 +39,13 @@
 
                     <label>Enter Name: </label><input type="text" id="name" name="name"><br>
                     <br>
-                    <label>Enter Address: </label><input type="text" name="address"> <br>
+                    <label>Enter Address: </label><input type="text" id="address" name="address"> <br>
                     <br>
-                    <label>Enter City: </label><input type="text" name="city"><br>
+                    <label>Enter City: </label><input type="text" id="city" name="city"><br>
                     <br>
-                    <label>Enter State: </label><input type="text" name="state"><br>
+                    <label>Enter State: </label><input type="text" id="state" name="state"><br>
                     <br>
-                    <label>Enter Zip: </label><input type="text" name="zip"><br>
+                    <label>Enter Zip: </label><input type="text" id="zip" name="zip"><br>
                     <br>
 
                     <button type="submit" value="Submit" onclick="return Validate()">
@@ -54,7 +54,8 @@
                     width="300" height="75" alt="submit" /></button>
                     <!-- div class="submit"><input type="submit" value="Submit"
                                      onclick="return Validate()"--><br>
-                    <div id="errors"></div>
+                        <div style="color:red;"id="errors"></div>
+                    </form>
 
            </div>
 
@@ -76,7 +77,34 @@
             document.getElementById("errors").innerHTML = "Name is missing and is a required field";
             return false;
         }
+        var test2 = document.getElementById("address").value;
+        if (test2.length > 55) {
+            document.getElementById("errors").innerHTML = "Address cannot be greater than 55 characters";
+            return false;
+        }
+
+        var test3 = document.getElementById("city").value;
+        if (test3.length > 25) {
+            document.getElementById("errors").innerHTML = "City cannot be greater than 25 characters";
+            return false;
+        }
+
+
+        var test4 = document.getElementById("state").value;
+        if (test4.length > 25) {
+            document.getElementById("errors").innerHTML = "State cannot be greater than 25 characters";
+            return false;
+        }
+
+
+        var test5 = document.getElementById("zip").value;
+        if(test5.length > 10){
+            document.getElementById("errors").innerHTML = "Zip cannot be greater than 10 characters";
+            return false;
+        }
+
         return true;
+
     }
 </script>
 </html>
