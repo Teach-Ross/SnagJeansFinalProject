@@ -16,6 +16,9 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
@@ -144,7 +147,14 @@ public class HomeController {
             addUser.setState(state);
             addUser.setZip(zip);
             //uses UserDao to insert User into database
-            accessUser.insert(addUser);
+
+            Configuration cfg = new Configuration().configure("hibernate.cfg.xml");
+            SessionFactory factory = cfg.buildSessionFactory();
+            Session session = factory.openSession();
+            session.beginTransaction();
+            session.save(addUser);
+            session.getTransaction().commit();
+            session.close();
 
             return new
                     ModelAndView("templateDirect", " ", " ");
